@@ -1,21 +1,18 @@
 import React from 'react'
+import Navbar from './components/navbar.js'
+import Boards from './components/boards.js'
+import Lists from './components/lists.js'
 
 function App () {
   return (
     <div className='App'>
-      <nav className='nav'>
-        <div>
-          <button className='button'>Home</button>
-          <button className='button'>Boards</button>
-          <input type='text' placeholder='Search...' className='navInput' />
-        </div>
-        <p className='navP'>Trello </p>
-        <div>
-          <button className='button'>+</button>
-          <button className='button'>i</button>
-          <button className='button'>notification</button>
-        </div>
-      </nav>
+      <Navbar />
+      <div>
+        <Boards />
+      </div>
+      <div>
+        <Lists />
+      </div>
     </div>
   )
 }

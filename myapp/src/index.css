@@ -47,3 +47,15 @@ body {
 .navP:hover {
   color: white;
 }
+
+.boardcontainer {
+  display: flex;
+  /* margin: 10px; */
+  margin-left: 25%;
+  margin-top: 30px;
+}
+
+.boardbox {
+  background-color: gainsboro;
+  margin: 10px;
+}

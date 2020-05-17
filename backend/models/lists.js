@@ -1,6 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const listSchema = new Schema({ listName: { type: String, required: true } })
+const CardSchema = require('./cards')
 
-module.exports = mongoose.model('List', listSchema)
+const ListSchema = new Schema({
+  listName: { type: String, required: true },
+  // BoardId: { type: mongoose.Schema.Types.ObjectId }
+  cards: [CardSchema]
+})
+
+mongoose.model('List', ListSchema)
+module.exports = ListSchema

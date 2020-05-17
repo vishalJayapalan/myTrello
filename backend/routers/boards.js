@@ -1,4 +1,5 @@
 const express = require('express')
+// const app = express()
 const Router = express.Router()
 
 const boardController = require('../controllers/board.js')

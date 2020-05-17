@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const boardSchema = new Schema({ boardName: { type: String, required: true } })
+const ListSchema = require('./lists')
 
-module.exports = mongoose.model('Board', boardSchema)
+const BoardSchema = new Schema({
+  boardName: { type: String, required: true },
+  lists: [ListSchema]
+})
+
+module.exports = mongoose.model('Board', BoardSchema)

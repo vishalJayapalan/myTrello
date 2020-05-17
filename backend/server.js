@@ -4,6 +4,8 @@ const cors = require('cors')
 require('dotenv').config()
 
 const boardRoutes = require('./routers/boards')
+const listRoutes = require('./routers/lists')
+const cardRoutes = require('./routers/cards')
 
 const app = express()
 
@@ -19,6 +21,8 @@ mongoose.connect(uri, {
 })
 
 app.use('/', boardRoutes)
+app.use('/board', listRoutes)
+// app.use('/card', cardRoutes)
 
 const connection = mongoose.connection
 

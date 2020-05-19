@@ -1,11 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Board (props) {
+  // console.log(props)
   return (
-    <div className='boardcontainer'>
-      <div className='boardbox'>
-        <p>Create New Board..</p>
+    <Link to={`/lists/${props.board._id}`}>
+      <div className='boardBox'>
+        <p>{props.board.boardName}</p>
       </div>
-    </div>
+    </Link>
   )
 }

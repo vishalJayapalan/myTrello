@@ -1,11 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Navbar () {
   return (
     <nav className='nav'>
       <div>
-        <button className='button'>Home</button>
-        <button className='button'>Boards</button>
+        <Link to='/'>
+          <button className='button'>Home</button>
+        </Link>
+        <Link to='/boards'>
+          <button className='button'>Boards</button>
+        </Link>
         <input type='text' placeholder='Search...' className='navInput' />
       </div>
       <p className='navP'>Trello </p>

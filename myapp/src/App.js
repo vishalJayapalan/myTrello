@@ -8,12 +8,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 function App () {
   return (
     <div className='App'>
-      <Navbar />
       <Router>
+        <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path='/boards' component={Boards} />
-          <Route path='/lists' component={Lists} />
+          <Route path='/lists/:boardId' component={Lists} />
         </Switch>
       </Router>
     </div>

@@ -2,30 +2,26 @@ import React, { useState, useEffect } from 'react'
 import List from './list'
 
 export default function Lists (props) {
-  // console.log(props.match.params.boardId)
-  const [lists, setLists] = useState([])
-
   useEffect(() => {
-    fetchLists()
+    fetchList()
   }, [])
 
-  async function fetchLists () {
+  const [lists, setLists] = useState([{ listName: 'vishal', cards: [] }])
+
+  async function fetchList () {
     const data = await window.fetch(
       `http://localhost:8000/board/${props.match.params.boardId}`
     )
     const jsonData = await data.json()
-    await setLists(jsonData.lists)
-    console.log(jsonData)
-    console.log(lists)
+    setLists(jsonData.lists)
+    console.log(jsonData.lists)
   }
   console.log(lists)
   return (
-    // console.log(lists)
     <div className='listContainer'>
-      {/* <p>{lists[0].listName}</p> */}
-      {/* {lists.map(list => (
+      {lists.map(list => (
         <List key={list._id} list={list} />
-      ))} */}
+      ))}
     </div>
   )
 }

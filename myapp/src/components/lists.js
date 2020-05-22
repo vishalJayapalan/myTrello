@@ -2,26 +2,66 @@ import React, { useState, useEffect } from 'react'
 import List from './list'
 
 export default function Lists (props) {
+  const [lists, setLists] = useState([])
+
   useEffect(() => {
     fetchList()
+    async function fetchList () {
+      const data = await window.fetch(
+        `http://localhost:8000/board/${props.match.params.boardId}`
+      )
+      const jsonData = await data.json()
+      setLists(jsonData.lists)
+    }
   }, [])
 
-  const [lists, setLists] = useState([{ listName: 'vishal', cards: [] }])
+  function dragStart () {
+    console.log('dragStart')
+  }
 
-  async function fetchList () {
+  function dragEnd () {
+    console.log('dragEnd')
+  }
+
+  async function createList (event) {
+    // console.log(event)
+    // const boardId = lists.boardId
+    const listName = event.target.value
+    event.target.value = ''
     const data = await window.fetch(
-      `http://localhost:8000/board/${props.match.params.boardId}`
+      `http://localhost:8000/board/${props.match.params.boardId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ listName: listName }),
+        headers: { 'Content-Type': 'application/json' }
+      }
     )
     const jsonData = await data.json()
-    setLists(jsonData.lists)
-    console.log(jsonData.lists)
+    setLists([...lists, { listName, _id: jsonData.listId, cards: [] }])
   }
-  console.log(lists)
+
   return (
-    <div className='listContainer'>
+    <div className='listsContainer'>
       {lists.map(list => (
-        <List key={list._id} list={list} />
+        <List
+          key={list._id}
+          list={list}
+          boardId={props.match.params.boardId}
+          dragStart={dragStart}
+          dragEnd={dragEnd}
+        />
       ))}
+      <div className='newList'>
+        <input
+          className='createNewList'
+          placeholder='Add Another List...'
+          onKeyUp={event => {
+            if (event.target.value && event.keyCode === 13) {
+              return createList(event)
+            }
+          }}
+        />
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ require('dotenv').config()
 
 const boardRoutes = require('./routers/boards')
 const listRoutes = require('./routers/lists')
-const cardRoutes = require('./routers/cards')
+// const cardRoutes = require('./routers/cards')
 
 const app = express()
 

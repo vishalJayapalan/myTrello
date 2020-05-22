@@ -15,7 +15,7 @@ const createCard = async (req, res) => {
   board.lists[index].cards.push(req.body)
   await board.save()
   res.json({
-    listId: board.lists[index].cards[board.lists[index].cards.length - 1]._id
+    cardId: board.lists[index].cards[board.lists[index].cards.length - 1]._id
   })
 }
 

@@ -11,7 +11,7 @@ function List (props) {
     const listId = props.list._id
     const cardName = event.target.value
     event.target.value = ''
-    console.log(cardName)
+    // console.log(cardName)
     const data = await window.fetch(
       `http://localhost:8000/board/card/${boardId}/${listId}`,
       {
@@ -27,13 +27,19 @@ function List (props) {
   return (
     <div className='listContainer'>
       <h4 className='listName'>{props.list.listName}</h4>
-      <div className='cardContainer'>
+      <div
+        className='cardContainer'
+        onDragOver={e => props.dragOver(e)}
+        onDrop={e => {
+          props.drop(e, props.list._id)
+        }}
+      >
         {cards.map(card => (
           <Card
             key={card._id}
+            listId={props.list._id}
+            dragStart={props.dragStart}
             card={card}
-            handleDragStart={props.dragStart}
-            handleDragEnd={props.dragEnd}
           />
         ))}
         <input

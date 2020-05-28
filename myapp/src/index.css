@@ -2,7 +2,7 @@ body {
   margin: 0;
 }
 .nav {
-  height: 25px;
+  height: 30px;
   background-color: #026aa7;
   display: flex;
   justify-content: space-between;
@@ -12,10 +12,14 @@ body {
   border: lightblue;
   font-style: italic;
   color: white;
+  border-radius: 2px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
+  margin: 2.5px 2px 1px 2px;
+  height: 23px;
+  /* margin-left: 2px; */
+  /* margin-right: 2px; */
   cursor: pointer;
 }
 .button:hover {
@@ -25,11 +29,16 @@ body {
 .navInput {
   background-color: lightblue;
   border: none;
+  border-radius: 2px;
   color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
+  margin: 2.5px 2px 1px 4px;
+  height: 22px;
+}
+.navInput::placeholder {
+  color: white;
 }
 
 .navInput:hover {
@@ -105,8 +114,9 @@ body {
 }
 
 .listContainer {
-  background-color: aliceblue;
+  background-color: rgb(203, 216, 228);
   /* height: 150px; */
+  border-radius: 5px;
   width: 200px;
   margin: 10px;
 }
@@ -133,6 +143,7 @@ body {
   background-color: white;
   margin: black;
   cursor: move;
+  border: 1px solid black;
 }
 
 .newCardInput {

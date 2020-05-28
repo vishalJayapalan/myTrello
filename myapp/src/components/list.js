@@ -5,7 +5,7 @@ import Card from './card'
 function List (props) {
   const [cards, setCards] = useState(props.list.cards)
   // console.log(cards)
-
+  // console.log(props.boardId)
   async function createCard (event) {
     const boardId = props.boardId
     const listId = props.list._id
@@ -39,6 +39,7 @@ function List (props) {
             key={card._id}
             listId={props.list._id}
             dragStart={props.dragStart}
+            dragEnd={props.dragEnd}
             card={card}
           />
         ))}

@@ -31,45 +31,58 @@ export default function Lists (props) {
   }
 
   function dragStart (event, cardId, cardName, listId) {
-    console.log('dragStart:', cardId, cardName)
     event.dataTransfer.setData('cardId', cardId)
     event.dataTransfer.setData('cardName', cardName)
     event.dataTransfer.setData('prevListId', listId)
+    event.target.style.display = 'none'
+  }
 
-    //   const target = event.target
-    //   setTimeout(() => (target.style.display = 'none'), 0)
+  function dragEnd (event) {
+    event.target.style.display = 'block'
   }
 
   function dragOver (event) {
     event.preventDefault()
+    // const target = event.target
+    // console.log(target)
+    // const box = target.getBoundingClientRect()
+    // const offset = event.clientY - box.top - box.height / 2
+    // console.log(offset)
   }
 
   function drop (event, listId) {
+    const target = event.target
+    // console.log(event.target.id)
+    const box = target.getBoundingClientRect()
+    const offset = event.clientY - box.top - box.height / 2
+    // console.log(offset)
     const cardId = event.dataTransfer.getData('cardId')
     const cardName = event.dataTransfer.getData('cardName')
     const prevListId = event.dataTransfer.getData('prevListId')
     const newLists = lists.map(list => {
       if (list._id == prevListId) {
-        const newCards = []
-        for (const card of list.cards) {
-          if (card._id != cardId) {
-            newCards.push(card)
-          }
-        }
-        // console.log(newCards)
+        const newCards = list.cards.filter(card => card._id != cardId)
         list.cards = newCards
-        console.log(list.cards)
       }
       if (list._id == listId) {
-        list.cards.push({ _id: cardId, cardName: cardName })
+        let index = list.cards.length
+        for (let i = 0; i < list.cards.length; i++) {
+          if (list.cards[i]._id == event.target.id) {
+            if (offset > 0) {
+              index = i + 1
+            } else {
+              index = i
+            }
+          }
+        }
+        list.cards.splice(index, 0, { _id: cardId, cardName: cardName })
       }
-      // console.log(list)
       return list
     })
-    console.log(newLists)
+    // console.log(newLists)
     setLists(newLists)
   }
-
+  // console.log(lists)
   return (
     <div className='listsContainer'>
       {lists.map(list => (
@@ -80,6 +93,7 @@ export default function Lists (props) {
           dragOver={dragOver}
           drop={drop}
           dragStart={dragStart}
+          dragEnd={dragEnd}
         />
       ))}
       <div className='newList'>

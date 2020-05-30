@@ -4,14 +4,47 @@ import Card from './card'
 
 function List (props) {
   const [cards, setCards] = useState(props.list.cards)
-  // console.log(cards)
-  // console.log(props.boardId)
+  const [listNameUpdate, setListNameUpdate] = useState(false)
+  // console.log('props', props.list.cards)
+  // console.log('state', cards)
+  let listNameToggle
+  if (listNameUpdate) {
+    listNameToggle = (
+      <input
+        type='text'
+        className='listNameInput'
+        autoFocus
+        defaultValue={props.list.listName}
+        onKeyUp={e => {
+          if (e.keyCode === 13) {
+            setListNameUpdate(false)
+            return props.updateListName(e, props.list._id)
+          }
+        }}
+        onBlur={e => {
+          setListNameUpdate(false)
+          return props.updateListName(e, props.list._id)
+        }}
+      />
+    )
+  } else {
+    listNameToggle = (
+      <h4
+        className='listName'
+        onClick={() => {
+          setListNameUpdate(true)
+        }}
+      >
+        {props.list.listName}
+      </h4>
+    )
+  }
+
   async function createCard (event) {
     const boardId = props.boardId
     const listId = props.list._id
     const cardName = event.target.value
     event.target.value = ''
-    // console.log(cardName)
     const data = await window.fetch(
       `http://localhost:8000/board/card/${boardId}/${listId}`,
       {
@@ -26,7 +59,8 @@ function List (props) {
 
   return (
     <div className='listContainer'>
-      <h4 className='listName'>{props.list.listName}</h4>
+      {listNameToggle}
+
       <div
         className='cardContainer'
         onDragOver={e => props.dragOver(e)}
@@ -34,13 +68,14 @@ function List (props) {
           props.drop(e, props.list._id)
         }}
       >
-        {cards.map(card => (
+        {props.list.cards.map(card => (
           <Card
             key={card._id}
             listId={props.list._id}
             dragStart={props.dragStart}
             dragEnd={props.dragEnd}
             card={card}
+            list={props.list}
           />
         ))}
         <input

@@ -31,10 +31,14 @@ export default function Lists (props) {
   }
 
   function dragStart (event, cardId, cardName, listId) {
+    const target = event.target
     event.dataTransfer.setData('cardId', cardId)
     event.dataTransfer.setData('cardName', cardName)
     event.dataTransfer.setData('prevListId', listId)
-    event.target.style.display = 'none'
+    setTimeout(() => {
+      target.style.display = 'none'
+    }, 0)
+    // event.target.style.display = 'none'
   }
 
   function dragEnd (event) {
@@ -43,19 +47,12 @@ export default function Lists (props) {
 
   function dragOver (event) {
     event.preventDefault()
-    // const target = event.target
-    // console.log(target)
-    // const box = target.getBoundingClientRect()
-    // const offset = event.clientY - box.top - box.height / 2
-    // console.log(offset)
   }
 
   function drop (event, listId) {
     const target = event.target
-    // console.log(event.target.id)
     const box = target.getBoundingClientRect()
     const offset = event.clientY - box.top - box.height / 2
-    // console.log(offset)
     const cardId = event.dataTransfer.getData('cardId')
     const cardName = event.dataTransfer.getData('cardName')
     const prevListId = event.dataTransfer.getData('prevListId')
@@ -79,10 +76,28 @@ export default function Lists (props) {
       }
       return list
     })
-    // console.log(newLists)
     setLists(newLists)
   }
-  // console.log(lists)
+
+  async function updateListName (event, listId) {
+    const value = event.target.value
+    const newLists = lists.map(list => {
+      if (list._id == listId) {
+        list.listName = value
+      }
+      return list
+    })
+    setLists(newLists)
+    await window.fetch(
+      `http://localhost:8000/board/${props.match.params.boardId}/${listId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ listName: value }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+  }
+
   return (
     <div className='listsContainer'>
       {lists.map(list => (
@@ -94,6 +109,7 @@ export default function Lists (props) {
           drop={drop}
           dragStart={dragStart}
           dragEnd={dragEnd}
+          updateListName={updateListName}
         />
       ))}
       <div className='newList'>

@@ -12,7 +12,7 @@ export default function card (props) {
       draggable='true'
     >
       {props.card.cardName}
-      {/* <i className='fas fa-edit' /> */}
+      <i className='fas fa-edit' />
     </p>
   )
 }

@@ -46,6 +46,7 @@ const deleteList = (req, res) => {
 }
 
 const updateList = (req, res) => {
+  // console.log(req.body)
   Board.findById(req.params.id)
     .then(board => {
       const index = board.lists.findIndex(list => list._id == req.params.listId)

@@ -124,7 +124,12 @@ body {
 .listName {
   text-align: center;
 }
-
+.listNameInput {
+  /* text-align: center; */
+  margin: 15px 4px 4px 10%;
+  width: 75%;
+  background-color: rgb(203, 216, 228);
+}
 .cardContainer {
   display: flex;
   flex-direction: column;
@@ -137,15 +142,24 @@ body {
   border-width: 5px;
 } */
 
+.card {
+  display: flex;
+  justify-content: space-between;
+}
+
 .draggable {
   margin: 10px;
   padding: 10px;
   background-color: white;
   margin: black;
-  cursor: move;
+  cursor: pointer;
   border: 1px solid black;
 }
 
 .newCardInput {
   margin: 5px;
+}
+
+.fa-edit {
+  cursor: pointer;
 }

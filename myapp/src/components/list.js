@@ -3,10 +3,8 @@ import Card from './card'
 // import Cards from './cards'
 
 function List (props) {
-  const [cards, setCards] = useState(props.list.cards)
+  // const [cards, setCards] = useState(props.list.cards)
   const [listNameUpdate, setListNameUpdate] = useState(false)
-  // console.log('props', props.list.cards)
-  // console.log('state', cards)
   let listNameToggle
   if (listNameUpdate) {
     listNameToggle = (
@@ -40,25 +38,13 @@ function List (props) {
     )
   }
 
-  async function createCard (event) {
-    const boardId = props.boardId
-    const listId = props.list._id
-    const cardName = event.target.value
-    event.target.value = ''
-    const data = await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ cardName: cardName }),
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-    const jsonData = await data.json()
-    setCards([...cards, { cardName, _id: jsonData.cardId }])
-  }
-
   return (
-    <div className='listContainer'>
+    <div
+      className='listContainer'
+      // onClick={e => {
+      //   if (props.cardDetailToggle) props.exitCardDetails(e)
+      // }}
+    >
       {listNameToggle}
 
       <div
@@ -70,6 +56,8 @@ function List (props) {
       >
         {props.list.cards.map(card => (
           <Card
+            displayCardFunction={props.displayCardFunction}
+            cardEditFunction={props.cardEditFunction}
             key={card._id}
             listId={props.list._id}
             dragStart={props.dragStart}
@@ -82,7 +70,7 @@ function List (props) {
           className='newCardInput'
           onKeyUp={e => {
             if (e.target.value && e.keyCode === 13) {
-              return createCard(e)
+              return props.createCard(e, props.list._id)
             }
           }}
           placeholder='Add New Card....'

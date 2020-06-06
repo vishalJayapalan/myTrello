@@ -18,7 +18,7 @@ const createBoard = (req, res) => {
 const updateBoard = (req, res) => {
   Board.findById(req.params.id)
     .then(board => {
-      board.boardName = req.body.boardName
+      board[`${req.body.name}`] = req.body.value
       board
         .save()
         .then(() => res.json('updated'))

@@ -10,9 +10,10 @@ export default function card (props) {
       }
       onDragEnd={e => props.dragEnd(e)}
       draggable='true'
+      onClick={e => props.displayCardFunction(e)}
     >
       {props.card.cardName}
-      <i className='fas fa-edit' />
+      <i className='fas fa-edit' onClick={e => props.cardEditFunction(e)} />
     </p>
   )
 }

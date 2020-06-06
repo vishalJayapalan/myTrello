@@ -19,6 +19,21 @@ const createCard = async (req, res) => {
   })
 }
 
+const createCardByIndex = async (req, res) => {
+  try {
+    const board = await Board.findById(req.params.id)
+    const index = board.lists.findIndex(list => list._id == req.params.listId)
+    const cards = board.lists[index].cards
+    board.lists[index].cards.push(req.body)
+    await board.save()
+    res.json({
+      cardId: board.lists[index].cards[`${req.params.cardIndex}`]._id
+    })
+  } catch (err) {
+    res.status(400).json('ERROR : ' + err)
+  }
+}
+
 const deleteCard = async (req, res) => {
   try {
     const board = await Board.findById(req.params.id)
@@ -49,4 +64,10 @@ const updateCard = async (req, res) => {
   }
 }
 
-module.exports = { getCards, createCard, deleteCard, updateCard }
+module.exports = {
+  getCards,
+  createCard,
+  createCardByIndex,
+  deleteCard,
+  updateCard
+}

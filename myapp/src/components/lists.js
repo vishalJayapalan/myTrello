@@ -4,6 +4,8 @@ import CardDetails from './cardDetails'
 
 export default function Lists (props) {
   const [lists, setLists] = useState([])
+  const [cardList, setCardList] = useState([])
+  const [cardName, setCardName] = useState('')
   const [boardName, setBoardName] = useState([])
   const [boardNameUpdate, setBoardNameUpdate] = useState(false)
   const [cardDetailToggle, setCardDetailToggle] = useState(false)
@@ -176,9 +178,17 @@ export default function Lists (props) {
       headers: { 'Content-Type': 'application/json' }
     })
   }
-  function displayCardFunction (e) {
+
+  async function updateCardName (event) {
+    console.log(event)
+    const value = event.target.value
+    const boardId = props.match.params.boardId
+  }
+
+  function displayCardFunction (e, cardName, list) {
     setCardDetailToggle(true)
-    console.log(e)
+    setCardName(cardName)
+    setCardList(list)
   }
 
   function cardEditFunction (e) {
@@ -192,7 +202,6 @@ export default function Lists (props) {
     event.stopPropagation()
     setCardDetailToggle(false)
     pointerEventClass = ''
-    // console.log(e.target)
   }
 
   let boardNameToggle
@@ -230,7 +239,13 @@ export default function Lists (props) {
   }
   let cardDetails = ''
   if (cardDetailToggle) {
-    cardDetails = <CardDetails exitCardDetails={exitCardDetails} />
+    cardDetails = (
+      <CardDetails
+        cardName={cardName}
+        list={cardList}
+        exitCardDetails={exitCardDetails}
+      />
+    )
     pointerEventClass = 'avoidClicks'
   }
   // let listContainerClass = ['listsContainer', pointerEventClass]/
@@ -261,6 +276,7 @@ export default function Lists (props) {
             dragStart={dragStart}
             dragEnd={dragEnd}
             updateListName={updateListName}
+            updateCardName={updateCardName}
             createCard={createCard}
           />
         ))}

@@ -23,7 +23,7 @@ const createCardByIndex = async (req, res) => {
   try {
     const board = await Board.findById(req.params.id)
     const index = board.lists.findIndex(list => list._id == req.params.listId)
-    const cards = board.lists[index].cards
+    // const cards = board.lists[index].cards
     board.lists[index].cards.push(req.body)
     await board.save()
     res.json({

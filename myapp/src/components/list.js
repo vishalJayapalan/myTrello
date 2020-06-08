@@ -57,6 +57,7 @@ function List (props) {
         {props.list.cards.map(card => (
           <Card
             displayCardFunction={props.displayCardFunction}
+            updateCardName={props.updateCardName}
             cardEditFunction={props.cardEditFunction}
             key={card._id}
             listId={props.list._id}

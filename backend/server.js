@@ -22,7 +22,6 @@ mongoose.connect(uri, {
 
 app.use('/', boardRoutes)
 app.use('/board', listRoutes)
-// app.use('/card', cardRoutes)
 
 const connection = mongoose.connection
 

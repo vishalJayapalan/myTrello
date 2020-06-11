@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import List from './list'
 import CardDetails from './cardDetails'
+import CardEdit from './cardEdit'
 
 export default function Lists (props) {
   const [lists, setLists] = useState([])
   const [cardList, setCardList] = useState([])
-  const [cardName, setCardName] = useState('')
+  const [card, setCard] = useState([])
   const [boardName, setBoardName] = useState([])
   const [boardNameUpdate, setBoardNameUpdate] = useState(false)
   const [cardDetailToggle, setCardDetailToggle] = useState(false)
+  const [cardEditToggle, setCardEditToggle] = useState(false)
+  const [cardPosition, setCardPosition] = useState([])
 
   useEffect(() => {
     fetchList()
@@ -17,7 +20,6 @@ export default function Lists (props) {
         `http://localhost:8000/board/${props.match.params.boardId}`
       )
       const jsonData = await data.json()
-      // console.log(jsonData)
       setBoardName(jsonData.boardName)
       setLists(jsonData.lists)
     }
@@ -85,12 +87,12 @@ export default function Lists (props) {
     event.target.style = 'margin-top:20px'
   }
 
-  async function deleteCard (boardId, listId, cardId) {
-    await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-      { method: 'DELETE' }
-    )
-  }
+  // async function deleteCard (boardId, listId, cardId) {
+  //   await window.fetch(
+  //     `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
+  //     { method: 'DELETE' }
+  //   )
+  // }
 
   async function createCardAtIndex (
     boardId,
@@ -146,7 +148,7 @@ export default function Lists (props) {
       return list
     })
     setLists(newLists)
-    deleteCard(boardId, prevListId, cardId)
+    deleteCard(prevListId, cardId)
 
     createCardAtIndex(boardId, listId, cardId, cardName, cardIndex)
   }
@@ -185,23 +187,53 @@ export default function Lists (props) {
     const boardId = props.match.params.boardId
   }
 
-  function displayCardFunction (e, cardName, list) {
+  async function deleteCard (listId, cardId) {
+    const boardId = props.match.params.boardId
+    await window.fetch(
+      `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
+      {
+        method: 'DELETE'
+      }
+    )
+    const newLists = lists.filter(list => {
+      if (list._id == listId) {
+        list.cards = list.cards.filter(card => card._id != cardId)
+      }
+      return list
+    })
+    console.log(newLists)
+    setLists(newLists)
+  }
+
+  function displayCardFunction (e, card, list) {
     setCardDetailToggle(true)
-    setCardName(cardName)
+    setCard(card)
     setCardList(list)
   }
 
-  function cardEditFunction (e) {
-    e.preventDefault()
-    console.log(e)
+  function cardEditFunction (e, card, list) {
+    e.stopPropagation()
+    const position = e.target.parentNode.getBoundingClientRect()
+    setCard(card)
+    setCardList(list)
+    setCardEditToggle(true)
+    setCardPosition(position)
   }
 
-  let pointerEventClass = ''
+  function exitCardEdit (event) {
+    event.stopPropagation()
+    setCardEditToggle(false)
+  }
+
+  function updateNExitCardEdit (event) {
+    event.stopPropagation()
+    setCardEditToggle(false)
+  }
 
   function exitCardDetails (event) {
+    console.log(event.target)
     event.stopPropagation()
     setCardDetailToggle(false)
-    pointerEventClass = ''
   }
 
   let boardNameToggle
@@ -237,29 +269,9 @@ export default function Lists (props) {
       </h2>
     )
   }
-  let cardDetails = ''
-  if (cardDetailToggle) {
-    cardDetails = (
-      <CardDetails
-        cardName={cardName}
-        list={cardList}
-        exitCardDetails={exitCardDetails}
-      />
-    )
-    pointerEventClass = 'avoidClicks'
-  }
-  // let listContainerClass = ['listsContainer', pointerEventClass]/
-  let listContainerClass = ['listsWithBoardName', pointerEventClass]
-  listContainerClass = listContainerClass.join(' ')
+
   return (
-    <div
-      className={listContainerClass}
-      onClick={e => {
-        e.preventDefault()
-        e.stopPropagation()
-        if (cardDetailToggle) exitCardDetails(e)
-      }}
-    >
+    <div className='listsWithBoardName'>
       {boardNameToggle}
       <div className='listsContainer'>
         {lists.map(list => (
@@ -270,7 +282,6 @@ export default function Lists (props) {
             cardDetailToggle={cardDetailToggle}
             key={list._id}
             list={list}
-            // onClick={exitCardDetails}
             dragOver={dragOver}
             drop={drop}
             dragStart={dragStart}
@@ -278,6 +289,7 @@ export default function Lists (props) {
             updateListName={updateListName}
             updateCardName={updateCardName}
             createCard={createCard}
+            // deleteCard={deleteCard}
           />
         ))}
         <div className='newList'>
@@ -292,7 +304,21 @@ export default function Lists (props) {
           />
         </div>
       </div>
-      {cardDetails}
+      <CardDetails
+        card={card}
+        list={cardList}
+        detailShow={cardDetailToggle}
+        exitCardDetails={exitCardDetails}
+      />
+      <CardEdit
+        cardEditShow={cardEditToggle}
+        card={card}
+        list={cardList}
+        updateNExitCardEdit={updateNExitCardEdit}
+        exitCardEdit={exitCardEdit}
+        cardPosition={cardPosition}
+        deleteCard={deleteCard}
+      />
     </div>
   )
 }

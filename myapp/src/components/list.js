@@ -48,7 +48,7 @@ function List (props) {
       {listNameToggle}
 
       <div
-        className='cardContainer'
+        className='cardsContainer'
         onDragOver={e => props.dragOver(e)}
         onDrop={e => {
           props.drop(e, props.list._id)
@@ -65,6 +65,7 @@ function List (props) {
             dragEnd={props.dragEnd}
             card={card}
             list={props.list}
+            // deleteCard={props.deleteCard}
           />
         ))}
         <input

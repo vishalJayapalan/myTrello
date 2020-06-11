@@ -2,11 +2,16 @@ import React from 'react'
 
 export default function CardDetails (props) {
   return (
-    <div className='overlay'>
-      <div className='cardDetailsContainer' onBlur={e => props.exitCardDetails}>
+    <div
+      className='overlay'
+      style={{ display: props.detailShow ? ' block' : ' none' }}
+      onClick={e => {
+        if (e.target.className === 'overlay') props.exitCardDetails(e)
+      }}
+    >
+      <div className='cardDetailsContainer'>
         <div className='nameCardDetails'>
-          {/* <h3>{props.cardName}</h3> */}
-          <textarea className='cardName' value={props.cardName} />
+          <textarea className='cardName' defaultValue={props.card.cardName} />
           <p>
             in list <b>{props.list.listName}</b>
           </p>
@@ -25,7 +30,10 @@ export default function CardDetails (props) {
             placeholder='write a comment'
           />
         </div>
-        <i className='fas fa-times closeCardDetail' />
+        <i
+          className='fas fa-times closeCardDetail'
+          onClick={e => props.exitCardDetails(e)}
+        />
         <div className='cardSideBar'>
           <div>
             <h3>ADD TO CARD</h3>

@@ -11,3 +11,6 @@ const UserSchema = new Schema({
     required: true
   }
 })
+
+mongoose.model('User', UserSchema)
+module.exports = UserSchema

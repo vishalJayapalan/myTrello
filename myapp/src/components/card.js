@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function card (props) {
-  // console.log(props.card)
   return (
     <p
       className='card draggable'
@@ -11,12 +10,13 @@ export default function card (props) {
       }
       onDragEnd={e => props.dragEnd(e)}
       draggable='true'
-      onClick={e =>
-        props.displayCardFunction(e, props.card.cardName, props.list)
-      }
+      onClick={e => props.displayCardFunction(e, props.card, props.list)}
     >
       {props.card.cardName}
-      <i className='fas fa-edit' onClick={e => props.cardEditFunction(e)} />
+      <i
+        className='fas fa-edit'
+        onClick={e => props.cardEditFunction(e, props.card, props.list)}
+      />
     </p>
   )
 }

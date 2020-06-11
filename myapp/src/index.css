@@ -62,11 +62,13 @@ textarea {
 }
 
 .navP {
-  color: darkseagreenx;
+  color: darkseagreen;
   height: 25px;
   margin: 4px 2px;
   cursor: pointer;
   font-style: italic;
+  margin-left: -15%;
+  font-size: 150%;
 }
 
 .navP:hover {
@@ -107,9 +109,10 @@ textarea {
 .boardContainer {
   background-color: gainsboro;
   margin: 10px;
-  padding: 10px;
+  padding: 15px;
   width: 150px;
   text-align: center;
+  border-radius: 5px;
 }
 
 .boardName {
@@ -168,7 +171,7 @@ textarea {
   margin-top: 30px;
 }
 
-.cardContainer {
+.cardsContainer {
   display: flex;
   flex-direction: column;
 }
@@ -198,20 +201,10 @@ textarea {
 
 /* CARD DETAILS */
 
-.avoidClicks {
-  position: fixed;
-  /* background-color: rgba(0, 0, 0, 0.5); */
-  /* top: 50%; */
-  /* left: 50%; */
-  /* font-size: 50px; */
-  /* color: white; */
-  /* transform: translate(-50%, -50%); */
-  /* -ms-transform: translate(-50%, -50%); */
-}
-
 .overlay {
-  position: absolute;
-  /* display: none; */
+  position: fixed;
+  /* position: absolute; */
+  display: none;
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -303,6 +296,42 @@ textarea {
   resize: none;
 }
 
+/* CARD EDIT */
+.cardEditContainer {
+  display: grid;
+  /* position: absolute; */
+  position: fixed;
+  grid-column-gap: 10px;
+}
+
+.cardEditTextarea {
+  grid-row: 1/2;
+  grid-column: 1/1;
+}
+.cardEditSaveBtn {
+  grid-row: 2/2;
+  grid-column: 1/1;
+  width: 5.25vw;
+}
+
+.cardEditButtons {
+  grid-column: 3/4;
+  grid-row: 1/4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.cardEditButtons a {
+  background-color: #d8dbe0;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.cardEditButtons a:hover {
+  background-color: #b9bec5;
+}
+/* Make names Rather than p tag to textArea */
 /* SIGN UP PAGE */
 
 .signUpContainer {

@@ -35,7 +35,7 @@ export default function CardEdit (props) {
           <a>Change Due Date</a>
           <a
             onClick={e => {
-              props.deleteCard(props.list._id, props.card._id)
+              props.deleteCard(props.boardId, props.list._id, props.card._id)
               props.exitCardEdit(e)
             }}
           >

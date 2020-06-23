@@ -1,52 +1,25 @@
 import React, { useState } from 'react'
 import Card from './card'
-// import Cards from './cards'
 
 function List (props) {
-  // const [cards, setCards] = useState(props.list.cards)
-  const [listNameUpdate, setListNameUpdate] = useState(false)
-  let listNameToggle
-  if (listNameUpdate) {
-    listNameToggle = (
-      <input
-        type='text'
-        className='listNameInput'
-        autoFocus
-        defaultValue={props.list.listName}
-        onKeyUp={e => {
-          if (e.keyCode === 13) {
-            setListNameUpdate(false)
-            return props.updateListName(e, props.list._id)
-          }
-        }}
-        onBlur={e => {
-          setListNameUpdate(false)
-          return props.updateListName(e, props.list._id)
-        }}
-      />
-    )
-  } else {
-    listNameToggle = (
-      <h4
-        className='listName'
-        onClick={() => {
-          setListNameUpdate(true)
-        }}
-      >
-        {props.list.listName}
-      </h4>
-    )
-  }
-
   return (
-    <div
-      className='listContainer'
-      // onClick={e => {
-      //   if (props.cardDetailToggle) props.exitCardDetails(e)
-      // }}
-    >
-      {listNameToggle}
-
+    <div className='listContainer'>
+      <div className='listNameContainer'>
+        <textarea
+          className='listName'
+          defaultValue={props.list.listName}
+          onBlur={e => {
+            return props.updateListName(e, props.list._id)
+          }}
+        />
+        <i
+          className='fas fa-ellipsis-h dots'
+          onClick={e => {
+            props.openListActions(e, props.list)
+          }}
+          // onClick={() => props.deleteList(props.list)}
+        />
+      </div>
       <div
         className='cardsContainer'
         onDragOver={e => props.dragOver(e)}
@@ -65,7 +38,7 @@ function List (props) {
             dragEnd={props.dragEnd}
             card={card}
             list={props.list}
-            // deleteCard={props.deleteCard}
+            // openListActions={props.openListActions}
           />
         ))}
         <input
@@ -75,7 +48,7 @@ function List (props) {
               return props.createCard(e, props.list._id)
             }
           }}
-          placeholder='Add New Card....'
+          placeholder='+ Add New Card....'
         />
       </div>
     </div>

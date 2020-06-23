@@ -9,3 +9,4 @@ const BoardSchema = new Schema({
 })
 
 module.exports = mongoose.model('Board', BoardSchema)
+// module.exports = BoardSchema

@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react'
 import List from './list'
 import CardDetails from './cardDetails'
 import CardEdit from './cardEdit'
+import ListActions from './listActions.js'
 
 export default function Lists (props) {
+  const [boards, setBoards] = useState([])
   const [lists, setLists] = useState([])
   const [cardList, setCardList] = useState([])
   const [card, setCard] = useState([])
   const [boardName, setBoardName] = useState([])
-  const [boardNameUpdate, setBoardNameUpdate] = useState(false)
+  const [list, setList] = useState([])
+  const [listActionToggle, setListActionToggle] = useState(false)
+  // const [boardNameUpdate, setBoardNameUpdate] = useState(false)
   const [cardDetailToggle, setCardDetailToggle] = useState(false)
   const [cardEditToggle, setCardEditToggle] = useState(false)
   const [cardPosition, setCardPosition] = useState([])
+  const [listPosition, setListPosition] = useState([])
 
   useEffect(() => {
     fetchList()
@@ -23,7 +28,13 @@ export default function Lists (props) {
       setBoardName(jsonData.boardName)
       setLists(jsonData.lists)
     }
-  }, [])
+    fetchBoard()
+    async function fetchBoard () {
+      const data = await window.fetch('http://localhost:8000')
+      const jsonData = await data.json()
+      setBoards(jsonData)
+    }
+  }, [props.match.params.boardId])
 
   async function createList (event) {
     const listName = event.target.value
@@ -54,7 +65,7 @@ export default function Lists (props) {
     )
     const jsonData = await data.json()
     const newLists = lists.map(list => {
-      if (list._id == listId) {
+      if (list._id === listId) {
         list.cards.push({ cardName, _id: jsonData.cardId })
       }
       return list
@@ -87,13 +98,6 @@ export default function Lists (props) {
     event.target.style = 'margin-top:20px'
   }
 
-  // async function deleteCard (boardId, listId, cardId) {
-  //   await window.fetch(
-  //     `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-  //     { method: 'DELETE' }
-  //   )
-  // }
-
   async function createCardAtIndex (
     boardId,
     listId,
@@ -111,7 +115,7 @@ export default function Lists (props) {
     )
   }
 
-  function drop (event, listId) {
+  async function drop (event, listId) {
     const boardId = props.match.params.boardId
     const target = event.target
     target.style = 'margin-top:10px'
@@ -123,15 +127,15 @@ export default function Lists (props) {
     const cardName = event.dataTransfer.getData('cardName')
     const prevListId = event.dataTransfer.getData('prevListId')
     const newLists = lists.map(list => {
-      if (list._id == prevListId) {
-        const newCards = list.cards.filter(card => card._id != cardId)
+      if (list._id === prevListId) {
+        const newCards = list.cards.filter(card => card._id !== cardId)
 
         list.cards = newCards
       }
-      if (list._id == listId) {
+      if (list._id === listId) {
         let index = list.cards.length
         for (let i = 0; i < list.cards.length; i++) {
-          if (list.cards[i]._id == event.target.id) {
+          if (list.cards[i]._id === event.target.id) {
             if (offset > 0) {
               index = i + 1
             } else {
@@ -148,15 +152,15 @@ export default function Lists (props) {
       return list
     })
     setLists(newLists)
-    deleteCard(prevListId, cardId)
+    await deleteCard(boardId, prevListId, cardId)
 
-    createCardAtIndex(boardId, listId, cardId, cardName, cardIndex)
+    await createCardAtIndex(boardId, listId, cardId, cardName, cardIndex)
   }
 
   async function updateListName (event, listId) {
     const value = event.target.value
     const newLists = lists.map(list => {
-      if (list._id == listId) {
+      if (list._id === listId) {
         list.listName = value
       }
       return list
@@ -181,14 +185,44 @@ export default function Lists (props) {
     })
   }
 
-  async function updateCardName (event) {
-    console.log(event)
-    const value = event.target.value
+  async function deleteList () {
+    const newLists = lists.filter(lis => lis._id !== list._id)
+    setLists(newLists)
     const boardId = props.match.params.boardId
+    await window.fetch(`http://localhost:8000/board/${boardId}/${list._id}`, {
+      method: 'DELETE'
+    })
+    setListActionToggle(false)
   }
 
-  async function deleteCard (listId, cardId) {
+  async function updateCard (name, cardName, listId, cardId) {
     const boardId = props.match.params.boardId
+    const newLists = lists.map(list => {
+      if (list._id === listId) {
+        const newCards = list.cards.map(card => {
+          if (card._id === cardId) {
+            card[`${name}`] = cardName
+          }
+          return card
+        })
+        list.cards = newCards
+      }
+
+      return list
+    })
+    setLists(newLists)
+    await window.fetch(
+      `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ name: name, value: cardName }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+  }
+
+  async function deleteCard (boardId, listId, cardId) {
+    // const boardId = props.match.params.boardId
     await window.fetch(
       `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
       {
@@ -196,12 +230,11 @@ export default function Lists (props) {
       }
     )
     const newLists = lists.filter(list => {
-      if (list._id == listId) {
-        list.cards = list.cards.filter(card => card._id != cardId)
+      if (list._id === listId) {
+        list.cards = list.cards.filter(card => card._id !== cardId)
       }
       return list
     })
-    console.log(newLists)
     setLists(newLists)
   }
 
@@ -231,48 +264,60 @@ export default function Lists (props) {
   }
 
   function exitCardDetails (event) {
-    console.log(event.target)
     event.stopPropagation()
     setCardDetailToggle(false)
   }
 
-  let boardNameToggle
+  function openListActions (e, list) {
+    setList(list)
+    setListActionToggle(true)
+    const box = e.target.getBoundingClientRect()
+    setListPosition(box)
+  }
 
-  if (boardNameUpdate) {
-    boardNameToggle = (
-      <input
-        type='text'
-        className='boardNameInput'
-        autoFocus
-        defaultValue={boardName}
-        onKeyUp={e => {
-          if (e.keyCode === 13) {
-            setBoardNameUpdate(false)
-            return updateBoard('boardName', e.target.value)
-          }
-        }}
-        onBlur={e => {
-          setBoardNameUpdate(false)
-          return updateBoard('boardName', e.target.value)
-        }}
-      />
-    )
-  } else {
-    boardNameToggle = (
-      <h2
-        className='boardNameInList'
-        onClick={() => {
-          setBoardNameUpdate(true)
-        }}
-      >
-        {boardName}
-      </h2>
-    )
+  function closeListActions () {
+    setListActionToggle(false)
+  }
+
+  async function handleMoveCard (
+    fromBoardId,
+    toBoardId,
+    fromListId,
+    toListId,
+    card,
+    toIndex
+  ) {
+    const cardId = card._id
+    const cardName = card.cardName
+    const newLists = lists.map(list => {
+      if (list._id === fromListId) {
+        const newCards = list.cards.filter(card => card._id !== cardId)
+
+        list.cards = newCards
+      }
+      if (list._id === toListId) {
+        list.cards.splice(toIndex, 0, {
+          _id: cardId,
+          cardName: cardName
+        })
+      }
+      return list
+    })
+    setLists(newLists)
+    await deleteCard(fromBoardId, fromListId, cardId)
+
+    await createCardAtIndex(toBoardId, toListId, cardId, cardName, toIndex)
   }
 
   return (
     <div className='listsWithBoardName'>
-      {boardNameToggle}
+      <textarea
+        defaultValue={boardName}
+        className='boardNameInList'
+        onBlur={e => {
+          return updateBoard('boardName', e.target.value)
+        }}
+      />
       <div className='listsContainer'>
         {lists.map(list => (
           <List
@@ -287,15 +332,14 @@ export default function Lists (props) {
             dragStart={dragStart}
             dragEnd={dragEnd}
             updateListName={updateListName}
-            updateCardName={updateCardName}
             createCard={createCard}
-            // deleteCard={deleteCard}
+            openListActions={openListActions}
           />
         ))}
         <div className='newList'>
           <input
             className='createNewList'
-            placeholder='Add Another List...'
+            placeholder='+ Add Another List...'
             onKeyUp={event => {
               if (event.target.value && event.keyCode === 13) {
                 return createList(event)
@@ -307,17 +351,30 @@ export default function Lists (props) {
       <CardDetails
         card={card}
         list={cardList}
+        boards={boards}
+        boardName={boardName}
+        boardId={props.match.params.boardId}
         detailShow={cardDetailToggle}
         exitCardDetails={exitCardDetails}
+        updateCard={updateCard}
+        deleteCard={deleteCard}
+        handleMoveCard={handleMoveCard}
       />
       <CardEdit
         cardEditShow={cardEditToggle}
+        boardId={props.match.params.boardId}
         card={card}
         list={cardList}
         updateNExitCardEdit={updateNExitCardEdit}
         exitCardEdit={exitCardEdit}
         cardPosition={cardPosition}
         deleteCard={deleteCard}
+      />
+      <ListActions
+        listActionShow={listActionToggle}
+        listPosition={listPosition}
+        closeListActions={closeListActions}
+        deleteList={deleteList}
       />
     </div>
   )

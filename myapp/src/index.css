@@ -15,6 +15,11 @@ textarea {
   line-height: 20px;
   font-weight: 400;
 }
+p,
+i {
+  cursor: pointer;
+  margin-left: 5px;
+}
 
 .nav {
   height: 30px;
@@ -90,7 +95,7 @@ textarea {
   display: flex;
   align-items: center;
   height: 50px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .createNewList {
@@ -136,6 +141,10 @@ textarea {
   margin-top: 10px;
   align-self: center;
   cursor: pointer;
+  width: 25vw;
+  height: 20px;
+  border: none;
+  font-size: 150%;
 }
 .boardNameInput {
   margin-top: 10px;
@@ -148,24 +157,57 @@ textarea {
 }
 
 .listContainer {
-  background-color: rgb(203, 216, 228);
+  background-color: #ebecf0;
   border-radius: 5px;
-  width: 17.5vw;
+  width: 20vw;
   margin: 10px;
+}
+.listNameContainer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .listName {
   /* text-align: center; */
   margin-left: 15px;
   margin-top: 15px;
-  font-size: 75%;
+  font-size: 125%;
+  background-color: #ebecf0;
+  border: none;
+  width: 75%;
 }
 
-.listNameInput {
+.dots {
+  margin: 10px;
+  padding: 5px;
+  /* align-self: center; */
+}
+
+/* LIST ACTIONS */
+.listActionsContainer {
+  position: fixed;
+  width: 15vw;
+  background-color: white;
+  display: none;
+  border: 1px solid black;
+}
+
+.listActionTitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.listActionTitle {
+  margin-top: 4.5px;
+  margin-left: 4.5px;
+  font-size: 125%;
+  font-weight: bold;
+}
+
+/* .listNameInput {
   margin: 15px 4px 4px 10%;
   width: 75%;
   background-color: rgb(203, 216, 228);
-}
+} */
 
 .dropMargin {
   margin-top: 30px;
@@ -178,21 +220,28 @@ textarea {
 
 .card {
   display: flex;
+  width: 90%;
+  height: auto;
   border-radius: 5px;
   justify-content: space-between;
+  /* overflow-wrap: break-word; */
+  overflow: hidden;
 }
 
 .draggable {
-  margin: 10px;
-  padding: 10px;
+  margin: 5px 0px 0px 5px;
+  padding: 5px;
   background-color: white;
   margin: black;
   cursor: pointer;
-  border: 1px solid black;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  /* border: 1px solid black; */
 }
 
 .newCardInput {
-  margin: 5px;
+  margin: 7.5px;
+  border: none;
+  background-color: inherit;
 }
 
 .fa-edit {
@@ -296,6 +345,36 @@ textarea {
   resize: none;
 }
 
+/* MOVE CARD */
+
+.moveCardContainer {
+  background-color: white;
+  /* z-index: 0; */
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+}
+.moveCardTitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.moveCardTitle {
+  margin: 10px 10px 10px 20px;
+}
+
+.moveCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.moveCardBtn {
+  margin-top: 10px;
+  margin-left: 40%;
+}
+
 /* CARD EDIT */
 .cardEditContainer {
   display: grid;
@@ -323,13 +402,16 @@ textarea {
   align-items: flex-start;
 }
 .cardEditButtons a {
-  background-color: #d8dbe0;
+  background-color: rgba(0, 0, 0, 0.6);
   margin-top: 5px;
   padding: 5px;
+  border-radius: 5px;
+  color: white;
 }
 
 .cardEditButtons a:hover {
-  background-color: #b9bec5;
+  background-color: rgba(0, 0, 0, 1.6);
+  margin-left: 5px;
 }
 /* Make names Rather than p tag to textArea */
 /* SIGN UP PAGE */
@@ -337,9 +419,11 @@ textarea {
 .signUpContainer {
   display: flex;
   flex-direction: column;
-  margin: 20vh 40vw;
-  width: 20vw;
-  height: 60vh;
+  margin: 10vh 40vw 20vh 40vw;
+  width: 350px;
+  height: 500px;
+  /* min-width: 300px; */
+  min-height: 250px;
   border-radius: 3px;
   background-color: rgb(203, 216, 228);
   justify-content: space-evenly;

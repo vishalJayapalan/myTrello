@@ -5,7 +5,7 @@ require('dotenv').config()
 
 const boardRoutes = require('./routers/boards')
 const listRoutes = require('./routers/lists')
-// const cardRoutes = require('./routers/cards')
+const userRoutes = require('./routers/users')
 
 const app = express()
 
@@ -17,11 +17,14 @@ app.use(express.json())
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 })
 
 app.use('/', boardRoutes)
 app.use('/board', listRoutes)
+app.use('/user', userRoutes)
+// app.use('/users', require('./routers/users'))
 
 const connection = mongoose.connection
 

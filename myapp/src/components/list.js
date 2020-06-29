@@ -7,6 +7,7 @@ function List (props) {
       <div className='listNameContainer'>
         <textarea
           className='listName'
+          spellCheck='false'
           defaultValue={props.list.listName}
           onBlur={e => {
             return props.updateListName(e, props.list._id)

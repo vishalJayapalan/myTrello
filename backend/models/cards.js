@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const CardSchema = new Schema({
   cardName: { type: String, required: true },
-  cardDescription: { type: String }
+  cardDescription: { type: String, default: '' }
   //   listId: { type: mongoose.Schema.Types.ObjectId }
 })
 

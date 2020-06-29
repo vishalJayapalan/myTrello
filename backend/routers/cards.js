@@ -1,16 +1,18 @@
 const express = require('express')
 const Router = express.Router()
 
+const auth = require('../middleware/auth')
+
 const cardController = require('../controllers/card.js')
 
-Router.get('/:id/:listId', cardController.getCards)
+Router.get('/:id/:listId', auth, cardController.getCards)
 
-Router.post('/:id/:listId', cardController.createCard)
+Router.post('/:id/:listId', auth, cardController.createCard)
 
-Router.post('/:id/:listId/:cardIndex', cardController.createCardByIndex)
+Router.post('/:id/:listId/:cardIndex', auth, cardController.createCardByIndex)
 
-Router.put('/:id/:listId/:cardId', cardController.updateCard)
+Router.put('/:id/:listId/:cardId', auth, cardController.updateCard)
 
-Router.delete('/:id/:listId/:cardId', cardController.deleteCard)
+Router.delete('/:id/:listId/:cardId', auth, cardController.deleteCard)
 
 module.exports = Router

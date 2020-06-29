@@ -1,29 +1,42 @@
 const { User, validate } = require('../models/users')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
+
+/*
+Route localhost:8000/user
+*/
 
 const getUsers = async (req, res) => {
-  const user = await await User.findById(req.user._id).select('-password')
+  const user = await User.findById(req.user._id).select('-password')
   res.json(user)
 }
 
+/*
+Route localhost:8000/user/login
+*/
+
 const login = async (req, res) => {
   const { email, password } = req.body
-  if (!email || !password) return res.json({ msg: 'Please Enter all fields' })
-  const user = await User.findOne({ email })
-  if (!user) return res.json({ msg: 'user does not exist' })
+  try {
+    if (!email || !password) return res.json({ msg: 'Please Enter all fields' })
+    const user = await User.findOne({ email })
+    if (!user) return res.status(404).json({ msg: 'user does not exist' })
 
-  if (await bcrypt.compare(password, user.password)) {
-    const token = user.generateAuthToken()
-    return res.header('x-auth-token', token).send({
-      _id: user._id,
-      userName: user.userName,
-      password: user.password,
-      email: user.email
-    })
+    if (await bcrypt.compare(password, user.password)) {
+      const token = user.generateAuthToken()
+      return res.header('x-auth-token', token).send({
+        token: token
+      })
+    }
+    // Write an else case for bcrypt compare
+  } catch (err) {
+    return res.status(400).json({ msg: 'Invalid Credencials' })
   }
-  return res.status(400).json({ msg: 'Invalid Credencials' })
 }
+
+/*
+Route localhost:8000/user
+*/
 
 const addUser = async (req, res) => {
   const { error } = validate(req.body)
@@ -47,7 +60,8 @@ const addUser = async (req, res) => {
     _id: user._id,
     userName: user.userName,
     password: user.password,
-    email: user.email
+    email: user.email,
+    token: token
   })
 }
 

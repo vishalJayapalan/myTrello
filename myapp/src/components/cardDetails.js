@@ -67,6 +67,15 @@ export default function CardDetails (props) {
           <textarea
             className='cardDescriptionText'
             placeholder='Add a more detailed Description'
+            value={props.card.cardDescription}
+            onChange={e =>
+              props.updateCard(
+                'cardDescription',
+                e.target.value,
+                props.list._id,
+                props.card._id
+              )
+            }
           />
         </div>
         <div className='cardComments'>

@@ -74,20 +74,32 @@ i {
   font-style: italic;
   margin-left: -15%;
   font-size: 150%;
+  text-decoration: none;
 }
 
 .navP:hover {
   color: white;
 }
 
+.boardsPage {
+  /* background-color: lightskyblue; */
+  height: 100vh;
+}
+
 .newBoard {
   display: flex;
   align-items: center;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 15px;
+  width: 150px;
 }
 
 .createNewBoard {
   background: transparent;
   border: none;
+  outline: none;
+  width: inherit;
 }
 
 .newList {
@@ -95,13 +107,15 @@ i {
   display: flex;
   align-items: center;
   height: 50px;
-  margin-top: 10px;
+  margin: 10px;
+  border-radius: 5px;
 }
 
 .createNewList {
   background: transparent;
   border: none;
   margin-left: 5px;
+  outline: none;
 }
 
 .boardsContainer {
@@ -122,6 +136,8 @@ i {
 
 .boardName {
   text-decoration: none;
+  overflow-wrap: break-word;
+  overflow: hidden;
 }
 
 .newBoard {
@@ -135,10 +151,21 @@ i {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background-color: rgb(80, 178, 240);
+}
+
+.listNavbar {
+  /* background-color: lavender; */
+  /* background-color: hsla(0, 0%, 100%, 0.24); */
+  display: flex;
+  justify-content: space-between;
+  /* height: 32px; */
 }
 
 .boardNameInList {
-  margin-top: 10px;
+  background-color: inherit;
+  color: white;
+  margin-left: 30px;
   align-self: center;
   cursor: pointer;
   width: 25vw;
@@ -146,6 +173,76 @@ i {
   border: none;
   font-size: 150%;
 }
+
+/* SHOW MENU */
+
+.showMenu {
+  margin-right: 10px;
+  background-color: hsla(0, 0%, 100%, 0.14);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  color: white;
+  height: 32px;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 4px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.showMenu:hover {
+  background-color: hsla(0, 0%, 100%, 0.24);
+}
+.showMenuContainer {
+  background-color: #f4f5f7;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  position: fixed;
+  width: 20vw;
+  margin-left: 80vw;
+  margin-top: 30px;
+}
+
+.menuTitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.menuTitle {
+  margin-left: 100px;
+}
+
+.menus {
+  align-self: center;
+}
+.menu {
+  background-color: inherit;
+  padding: 5px;
+}
+.menu:hover {
+  background-color: rgb(228, 218, 230);
+}
+
+hr {
+  /* color: black; */
+  border: 1px solid black;
+  width: 80%;
+}
+
+/* ABOUT BOARD */
+
+.aboutBoardContainer {
+  background-color: #f4f5f7;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  position: fixed;
+  width: 20vw;
+  margin-left: 80vw;
+  margin-top: 30px;
+}
+
 .boardNameInput {
   margin-top: 10px;
   align-self: center;
@@ -229,7 +326,7 @@ i {
 }
 
 .draggable {
-  margin: 5px 0px 0px 5px;
+  margin: 5px 0px 0px 7.5px;
   padding: 5px;
   background-color: white;
   margin: black;
@@ -272,7 +369,7 @@ i {
   margin-top: 7.5vh;
   margin-left: 17.5vw;
   width: 65vw;
-  height: 100vh;
+  height: 75vh;
 }
 
 .nameCardDetails {
@@ -428,22 +525,15 @@ textarea {
   background-color: rgb(203, 216, 228);
   justify-content: space-evenly;
   align-items: center;
+  box-shadow: 2px 2px 2px;
 }
 
-.emailError {
-  color: red;
-  font-size: 75%;
-  justify-self: left;
+.form {
+  display: flex;
+  flex-direction: column;
 }
-
-.nameError {
+.errorMessage {
   color: red;
-  font-size: 75%;
-}
-
-.passwordError {
-  color: red;
-  font-size: 75%;
 }
 
 /* SIGN IN PAGE */
@@ -451,11 +541,52 @@ textarea {
 .signInContainer {
   display: flex;
   flex-direction: column;
-  margin: 20vh 40vw;
-  width: 20vw;
-  height: 60vh;
+  margin: 10vh 40vw 20vh 40vw;
+  width: 350px;
+  height: 500px;
+  /* min-width: 300px; */
+  min-height: 250px;
   border-radius: 3px;
   background-color: rgb(203, 216, 228);
   justify-content: space-evenly;
   align-items: center;
+  box-shadow: 2px 2px 2px;
+}
+
+.fal {
+  /* margin: 0; */
+  /* padding: 0; */
+  color: black;
+  background-color: white;
+}
+
+/* moveList */
+
+.moveListContainer {
+  background-color: white;
+  /* z-index: 0; */
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+}
+.moveListTitleContainer {
+  display: flex;
+  justify-content: space-between;
+  /* height: 100px; */
+}
+
+.moveListTitle {
+  margin: 10px 10px 10px 20px;
+}
+
+.moveList {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+}
+
+.moveListBtn {
+  margin-top: 10px;
+  margin-left: 40%;
 }

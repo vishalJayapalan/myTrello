@@ -2,10 +2,6 @@ import React from 'react'
 
 export default function ListActions (props) {
   return (
-    // <div
-    //   className='overlay'
-    //   style={{ display: props.listActionShow ? ' block' : ' none' }}
-    // >
     <div
       className='listActionsContainer'
       style={{
@@ -23,9 +19,9 @@ export default function ListActions (props) {
       </div>
       <hr />
       <div>
-        <p>Add Card...</p>
+        {/* <p>Add Card...</p> */}
         <p>Copy List</p>
-        <p>Move List</p>
+        <p onClick={() => props.openMoveList()}>Move List</p>
         <p onClick={() => props.deleteList()}>DeleteList</p>
       </div>
     </div>

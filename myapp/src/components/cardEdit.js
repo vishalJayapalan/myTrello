@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function CardEdit (props) {
+  const [cardName, setCardName] = useState('')
   return (
     <div
       className='overlay'
@@ -19,12 +20,20 @@ export default function CardEdit (props) {
         <div className='cardEditTextarea'>
           <textarea
             defaultValue={props.card.cardName}
+            onChange={e => setCardName(e.target.value)}
             // onKeyUp={e => props.editCardName(e)}
           />
         </div>
         <button
           className='cardEditSaveBtn'
-          onClick={e => props.updateNExitCardEdit(e)}
+          onClick={e =>
+            props.updateNExitCardEdit(
+              e,
+              cardName,
+              props.list._id,
+              props.card._id
+            )
+          }
         >
           Save
         </button>

@@ -1,42 +1,111 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 
 export default function SignUp () {
+  const [login, setLogin] = useState(false)
   const [email, setEmail] = useState('')
   const [userName, setUserName] = useState('')
-  const [Password, setPassword] = useState('')
-  return (
-    <form>
+  const [password, setPassword] = useState('')
+  useEffect(() => {
+    const token = getCookie('x-auth-token')
+    if (token) setLogin(true)
+  }, [])
+
+  const setCookie = (name, value) => {
+    const d = new Date()
+    d.setTime(d.getTime() + 60 * 60 * 1000)
+    const expires = 'expires=' + d.toUTCString()
+    document.cookie = name + '=' + value + ';' + expires + ';path=/'
+  }
+
+  function getCookie (cookieName) {
+    const name = cookieName + '='
+    const cookies = document.cookie.split(';')
+    for (let index = 0; index < cookies.length; index++) {
+      const cookie = cookies[index].trim()
+      if (cookie.startsWith(name)) {
+        return cookie.slice(name.length, cookie.length)
+      }
+    }
+    return ''
+  }
+
+  async function userSignUp (event) {
+    event.preventDefault()
+    try {
+      const response = await window.fetch('http://localhost:8000/user/', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          userName: userName,
+          password: password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status >= 200 && response.status < 300) {
+        const jsonData = await response.json()
+        console.log(jsonData)
+        setEmail('')
+        setUserName('')
+        setPassword('')
+        setCookie('x-auth-token', jsonData.token)
+        setLogin(true)
+      } else {
+        throw new Error(response.statusText)
+      }
+    } catch (err) {
+      console.log(err)
+      console.log('inhere')
+      // should handle when invalid
+    }
+  }
+
+  return login ? (
+    <Redirect to='/boards' />
+  ) : (
+    <form onSubmit={userSignUp}>
       <div className='signUpContainer'>
         <h1>Sign Up</h1>
-        <div className='emailContainer'>
+        <div className='errorMessage'>Error messages</div>
+        <div className='form emailContainer'>
           <label>Email Address</label>
           <input
+            required
+            title='enter a valid email address'
+            value={email}
             placeholder='Enter Email Address'
             onChange={e => {
-              console.log(e.target.value)
               setEmail(e.target.value)
             }}
           />
-          {/* <p className='emailError'>Enter Valid Email Address</p> */}
         </div>
-        <div>
+        <div className='form'>
           <label>Name</label>
-          <input placeholder='Enter Full Name' />
-          {/* <p className='nameError'>Enter atLeast 3 Characters</p> */}
+          <input
+            type='text'
+            value={userName}
+            required
+            title='6 characters minimum'
+            onChange={e => setUserName(e.target.value)}
+            placeholder='Enter Full Name'
+          />
         </div>
-        <div>
+        <div className='form'>
           <label>Password</label>
-          <input placeholder='Create Password' />
-          {/* <p className='passwordError'>'dynamic value based on input'</p> */}
+          <input
+            type='password'
+            value={password}
+            required
+            pattern='.{6,}'
+            title='6 characters minimum'
+            onChange={e => setPassword(e.target.value)}
+            placeholder='Create Password'
+          />
         </div>
-        <button
-          onClick={() => {
-            console.log('buttonClicked')
-          }}
-        >
-          Sign Up
-        </button>
+        <button type='submit'>Sign Up</button>
         <p>
           <Link to='/login'>already Have an Account?login</Link>
         </p>

@@ -4,6 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 export default function SignUp () {
   const [login, setLogin] = useState(false)
   const [email, setEmail] = useState('')
+  const [errMsg, setErrMsg] = useState([])
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   useEffect(() => {
@@ -54,7 +55,11 @@ export default function SignUp () {
         setCookie('x-auth-token', jsonData.token)
         setLogin(true)
       } else {
-        throw new Error(response.statusText)
+        const jsonData = await response.json()
+        console.log(jsonData)
+        setErrMsg(jsonData.msg)
+        // throw new Error(response.statusText)
+        throw new Error(jsonData.msg)
       }
     } catch (err) {
       console.log(err)
@@ -69,10 +74,11 @@ export default function SignUp () {
     <form onSubmit={userSignUp}>
       <div className='signUpContainer'>
         <h1>Sign Up</h1>
-        <div className='errorMessage'>Error messages</div>
+        <div className='errorMessage'>{errMsg}</div>
         <div className='form emailContainer'>
           <label>Email Address</label>
           <input
+            type='email'
             required
             title='enter a valid email address'
             value={email}
@@ -88,6 +94,7 @@ export default function SignUp () {
             type='text'
             value={userName}
             required
+            pattern='.{6,}'
             title='6 characters minimum'
             onChange={e => setUserName(e.target.value)}
             placeholder='Enter Full Name'

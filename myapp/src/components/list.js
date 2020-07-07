@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Card from './card'
 
 function List (props) {
+  // console.log('insideLIst', props.list.cards)
   return (
     <div className='listContainer'>
       <div className='listNameContainer'>

@@ -17,60 +17,65 @@ export default function Lists (props) {
   const [lists, setLists] = useState([])
   const [cardList, setCardList] = useState([])
   const [card, setCard] = useState([])
+  const [board, setBoard] = useState([])
   const [boardName, setBoardName] = useState([])
   const [list, setList] = useState([])
   const [listActionToggle, setListActionToggle] = useState(false)
-  // const [boardNameUpdate, setBoardNameUpdate] = useState(false)
   const [cardDetailToggle, setCardDetailToggle] = useState(false)
   const [cardEditToggle, setCardEditToggle] = useState(false)
   const [cardPosition, setCardPosition] = useState([])
   const [listPosition, setListPosition] = useState([])
   const [routeErrors, setRouteErrors] = useState(false)
   const [showMenuToggle, setShowMenuToggle] = useState(false)
+  const [showAboutBoardToggle, setShowAboutBoardToggle] = useState(false)
   const [boardDeleted, setBoardDeleted] = useState(false)
   const [listMoveToggle, setListMoveToggle] = useState(false)
   const [toBoard, setToBoard] = useState([])
+  const [userName, setUserName] = useState('')
 
   useEffect(() => {
     fetchList()
-    async function fetchList () {
-      try {
-        await fetchUser()
-        // Write an try catch to handle the non-valid boardId
-        const data = await window.fetch(
-          `http://localhost:8000/board/${props.match.params.boardId}`,
-          {
-            method: 'GET',
-            credencials: 'include',
-            headers: {
-              'x-auth-token': getCookie('x-auth-token')
-            }
-          }
-        )
-        if (data.status >= 200 && data.status < 300) {
-          const jsonData = await data.json()
-          setBoardName(jsonData.boardName)
-          setLists(jsonData.lists)
-        } else {
-          throw new Error(data.statusText)
-        }
-      } catch (err) {
-        setRouteErrors(true)
-      }
-    }
+
     fetchBoard()
-    async function fetchBoard () {
-      const data = await window.fetch('http://localhost:8000', {
-        method: 'GET',
-        credencials: 'include',
-        headers: {
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      })
-      const jsonData = await data.json()
-      setBoards(jsonData)
-    }
   }, [props.match.params.boardId])
+
+  async function fetchList () {
+    try {
+      await fetchUser()
+      const data = await window.fetch(
+        `http://localhost:8000/board/${props.match.params.boardId}`,
+        {
+          method: 'GET',
+          credencials: 'include',
+          headers: {
+            'x-auth-token': getCookie('x-auth-token')
+          }
+        }
+      )
+      if (data.status >= 200 && data.status < 300) {
+        const jsonData = await data.json()
+        setBoardName(jsonData.boardName)
+        setBoard(jsonData)
+        setLists(jsonData.lists)
+      } else {
+        throw new Error(data.statusText)
+      }
+    } catch (err) {
+      setRouteErrors(true)
+    }
+  }
+
+  async function fetchBoard () {
+    const data = await window.fetch('http://localhost:8000', {
+      method: 'GET',
+      credencials: 'include',
+      headers: {
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    const jsonData = await data.json()
+    setBoards(jsonData)
+  }
 
   async function fetchUser () {
     try {
@@ -82,9 +87,7 @@ export default function Lists (props) {
         }
       })
       const jsonResp = await resp.json()
-      // await setUser(jsonResp)
-      // console.log(user)
-      // console.log(jsonResp)
+      setUserName(jsonResp.userName)
       setLogout(false)
       return jsonResp
     } catch (err) {
@@ -131,7 +134,7 @@ export default function Lists (props) {
       `http://localhost:8000/board/card/${boardId}/${listId}`,
       {
         method: 'POST',
-        body: JSON.stringify({ cardName: cardName }),
+        body: JSON.stringify({ cardName: cardName, description: '' }),
         headers: {
           'Content-Type': 'application/json',
           'x-auth-token': getCookie('x-auth-token')
@@ -150,6 +153,7 @@ export default function Lists (props) {
 
   function dragStart (event, cardId, cardName, listId) {
     const target = event.target
+    // console.log(target)
     event.dataTransfer.setData('cardId', cardId)
     event.dataTransfer.setData('cardName', cardName)
     event.dataTransfer.setData('prevListId', listId)
@@ -173,26 +177,6 @@ export default function Lists (props) {
     event.target.style = 'margin-top:20px'
   }
 
-  async function createCardAtIndex (
-    boardId,
-    listId,
-    cardId,
-    cardName,
-    cardIndex
-  ) {
-    await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ _id: cardId, cardName: cardName }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-  }
-
   async function drop (event, listId) {
     const boardId = props.match.params.boardId
     const target = event.target
@@ -202,18 +186,22 @@ export default function Lists (props) {
     const box = target.getBoundingClientRect()
     const offset = event.clientY - box.top - box.height / 2
     const cardId = event.dataTransfer.getData('cardId')
-    const cardName = event.dataTransfer.getData('cardName')
+    // const cardName = event.dataTransfer.getData('cardName')
     const prevListId = event.dataTransfer.getData('prevListId')
-    const newLists = lists.map(list => {
+    let moveCard
+    lists.forEach(list => {
       if (list._id === prevListId) {
-        const newCards = list.cards.filter(card => card._id !== cardId)
-
-        list.cards = newCards
+        moveCard = list.cards.filter(card => card._id === cardId)[0]
       }
+    })
+
+    await deleteCard(boardId, prevListId, cardId)
+
+    const newLists = lists.map(list => {
       if (list._id === listId) {
         let index = list.cards.length
         for (let i = 0; i < list.cards.length; i++) {
-          if (list.cards[i]._id === event.target.id) {
+          if (list.cards[i]._id === target.id) {
             if (offset > 0) {
               index = i + 1
             } else {
@@ -222,17 +210,39 @@ export default function Lists (props) {
           }
         }
         cardIndex = index
-        list.cards.splice(index, 0, {
-          _id: cardId,
-          cardName: cardName
-        })
+        list.cards.splice(index, 0, moveCard)
       }
       return list
     })
     setLists(newLists)
-    await deleteCard(boardId, prevListId, cardId)
 
-    await createCardAtIndex(boardId, listId, cardId, cardName, cardIndex)
+    await createCardAtIndex(boardId, listId, cardIndex, moveCard)
+  }
+
+  async function createListAtIndex (boardId, list, listIndex) {
+    await window.fetch(`http://localhost:8000/board/${boardId}/${listIndex}`, {
+      method: 'POST',
+      body: JSON.stringify(list),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+  }
+
+  async function createCardAtIndex (boardId, listId, cardIndex, moveCard) {
+    console.log(moveCard)
+    await window.fetch(
+      `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
+      {
+        method: 'POST',
+        body: JSON.stringify(moveCard),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
+    )
   }
 
   async function updateListName (event, listId) {
@@ -258,7 +268,9 @@ export default function Lists (props) {
   }
 
   async function updateBoard (name, value) {
-    setBoardName(value)
+    if (name === 'boardName') setBoardName(value)
+    setBoard({ ...board, [name]: value })
+    // setBoard(...board, (name = value))
     await window.fetch(`http://localhost:8000/${props.match.params.boardId}`, {
       method: 'PUT',
       body: JSON.stringify({ name: name, value: value }),
@@ -393,9 +405,7 @@ export default function Lists (props) {
   }
 
   async function changeToBoard (boardName) {
-    // console.log(boardName)
     await setToBoard(boards.filter(board => board.boardName === boardName))
-    // console.log(toBoard)
   }
 
   async function handleMoveCard (
@@ -407,33 +417,28 @@ export default function Lists (props) {
     toIndex
   ) {
     const cardId = card._id
-    const cardName = card.cardName
-    const newLists = lists.map(list => {
-      if (list._id === fromListId) {
-        const newCards = list.cards.filter(card => card._id !== cardId)
 
-        list.cards = newCards
-      }
+    await deleteCard(fromBoardId, fromListId, cardId)
+
+    const newLists = lists.map(list => {
       if (list._id === toListId) {
-        list.cards.splice(toIndex, 0, {
-          _id: cardId,
-          cardName: cardName
-        })
+        list.cards.splice(toIndex, 0, card)
       }
       return list
     })
     setLists(newLists)
-    await deleteCard(fromBoardId, fromListId, cardId)
 
-    await createCardAtIndex(toBoardId, toListId, cardId, cardName, toIndex)
+    await createCardAtIndex(toBoardId, toListId, toIndex, card)
   }
-  async function handleMoveList (fromBoardId, toBoardId, list, toIndex) {
-    // console.log(fromBoardId, toBoardId, list, toIndex)
-    const listId = list._id
-    // const cards = list.cards
+
+  async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
+    // const listId = list._id
+    setList(moveList)
+    await deleteList()
+
     const newBoards = boards.map(board => {
       if (board._id === fromBoardId) {
-        const newLists = board.lists.filter(list => list._id !== listId)
+        const newLists = board.lists.filter(list => list._id !== moveList._id)
         board.lists = newLists
       }
       if (board._id === toBoardId) {
@@ -442,19 +447,12 @@ export default function Lists (props) {
       return board
     })
     setBoards(newBoards)
-    // console.log(boards)
-    // console.log(newBoards.slice())
     const board = newBoards.filter(board => {
-      // console.log(board)
       return board._id === props.match.params.boardId
     })
-    // console.log(board)
-    // console.log(lists)
-    // console.log(board[0].lists)
     setLists(board[0].lists)
     setListMoveToggle(false)
-    // const newList = board.lists.
-    // const newLists = boards.lists.filter()
+    await createListAtIndex(toBoardId, moveList, toIndex)
   }
 
   function showMenu () {
@@ -463,9 +461,17 @@ export default function Lists (props) {
   function closeShowMenu () {
     setShowMenuToggle(false)
   }
+  function showAboutBoard () {
+    setShowAboutBoardToggle(true)
+  }
+
+  function closeAboutBoard () {
+    setShowAboutBoardToggle(false)
+  }
 
   function closeAboutAndShowMenu () {
-    console.log('working on closing of both')
+    closeAboutBoard()
+    closeShowMenu()
   }
 
   function renderRedirect () {
@@ -483,7 +489,7 @@ export default function Lists (props) {
       <Navbar />
       {renderRedirect()}
       <div className='listNavbar'>
-        <textarea
+        <input
           defaultValue={boardName}
           spellCheck='false'
           className='boardNameInList'
@@ -491,6 +497,7 @@ export default function Lists (props) {
             return updateBoard('boardName', e.target.value)
           }}
         />
+        <p className='inviteToBoard'>invite</p>
         <p className='showMenu' onClick={() => showMenu()}>
           Show menu...
         </p>
@@ -525,57 +532,74 @@ export default function Lists (props) {
           />
         </div>
       </div>
-      <CardDetails
-        card={card}
-        list={cardList}
-        boards={boards}
-        boardName={boardName}
-        boardId={props.match.params.boardId}
-        detailShow={cardDetailToggle}
-        exitCardDetails={exitCardDetails}
-        updateCard={updateCard}
-        deleteCard={deleteCard}
-        handleMoveCard={handleMoveCard}
-      />
-      <CardEdit
-        cardEditShow={cardEditToggle}
-        boardId={props.match.params.boardId}
-        card={card}
-        list={cardList}
-        updateNExitCardEdit={updateNExitCardEdit}
-        exitCardEdit={exitCardEdit}
-        cardPosition={cardPosition}
-        deleteCard={deleteCard}
-      />
-      <ListActions
-        listActionShow={listActionToggle}
-        listPosition={listPosition}
-        closeListActions={closeListActions}
-        deleteList={deleteList}
-        openMoveList={openMoveList}
-      />
-      <MoveList
-        listPosition={listPosition}
-        listMoveShow={listMoveToggle}
-        boards={boards}
-        boardId={props.match.params.boardId}
-        boardName={boardName}
-        list={list}
-        lists={lists}
-        closeMoveList={closeMoveList}
-        toBoard={toBoard}
-        changeToBoard={changeToBoard}
-        onMoveList={handleMoveList}
-      />
-      <ShowMenuComponent
-        showMenuToggle={showMenuToggle}
-        closeShowMenu={closeShowMenu}
-        deleteBoard={deleteBoard}
-      />
-      <AboutBoard
-        showMenu={showMenu}
-        closeAboutAndShowMenu={closeAboutAndShowMenu}
-      />
+      {cardDetailToggle && (
+        <CardDetails
+          card={card}
+          list={cardList}
+          boards={boards}
+          boardName={boardName}
+          boardId={props.match.params.boardId}
+          detailShow={cardDetailToggle}
+          exitCardDetails={exitCardDetails}
+          updateCard={updateCard}
+          deleteCard={deleteCard}
+          handleMoveCard={handleMoveCard}
+        />
+      )}
+      {cardEditToggle && (
+        <CardEdit
+          cardEditShow={cardEditToggle}
+          boardId={props.match.params.boardId}
+          card={card}
+          list={cardList}
+          updateNExitCardEdit={updateNExitCardEdit}
+          exitCardEdit={exitCardEdit}
+          cardPosition={cardPosition}
+          deleteCard={deleteCard}
+        />
+      )}
+      {listActionToggle && (
+        <ListActions
+          listActionShow={listActionToggle}
+          listPosition={listPosition}
+          closeListActions={closeListActions}
+          deleteList={deleteList}
+          openMoveList={openMoveList}
+        />
+      )}
+      {listMoveToggle && (
+        <MoveList
+          listPosition={listPosition}
+          listMoveShow={listMoveToggle}
+          boards={boards}
+          boardId={props.match.params.boardId}
+          boardName={boardName}
+          list={list}
+          lists={lists}
+          closeMoveList={closeMoveList}
+          toBoard={toBoard}
+          changeToBoard={changeToBoard}
+          onMoveList={handleMoveList}
+        />
+      )}
+      {showMenuToggle && (
+        <ShowMenuComponent
+          showMenuToggle={showMenuToggle}
+          closeShowMenu={closeShowMenu}
+          deleteBoard={deleteBoard}
+          showAboutBoard={showAboutBoard}
+        />
+      )}
+      {showAboutBoardToggle && (
+        <AboutBoard
+          board={board}
+          userName={userName}
+          closeAboutAndShowMenu={closeAboutAndShowMenu}
+          showAboutBoardToggle={showAboutBoardToggle}
+          closeAboutBoard={closeAboutBoard}
+          updateBoard={updateBoard}
+        />
+      )}
     </div>
   )
 }

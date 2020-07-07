@@ -23,8 +23,6 @@ id is the BOard Id
 
 const createList = (req, res) => {
   const list = req.body
-  // list.boardId = req.params.id
-  // list.listId = new mongoose.Types.ObjectId()
   Board.findById(req.params.id)
     .then(board => {
       board.lists.push(list)
@@ -36,6 +34,24 @@ const createList = (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err))
     })
     .catch(err => res.status(400).json('Error: ' + err))
+}
+
+/*
+  route : /board/id/listIndex
+  id is the board Id
+*/
+
+const createListByIndex = async (req, res) => {
+  try {
+    const board = await Board.findById(req.params.id)
+    board.lists.splice(req.params.listIndex, 0, req.body)
+    await board.save()
+    res.json({
+      cardId: board.lists[`${req.params.listIndex}`]._id
+    })
+  } catch (err) {
+    res.status(400).json('ERROR : ' + err)
+  }
 }
 
 /*
@@ -68,7 +84,6 @@ id is the BOard Id
 */
 
 const updateList = (req, res) => {
-  // console.log(req.body)
   Board.findById(req.params.id)
     .then(board => {
       const index = board.lists.findIndex(list => list._id == req.params.listId)
@@ -81,4 +96,10 @@ const updateList = (req, res) => {
     .catch(err => res.status(400).json('ERROR: ' + err))
 }
 
-module.exports = { getLists, createList, deleteList, updateList }
+module.exports = {
+  getLists,
+  createList,
+  createListByIndex,
+  deleteList,
+  updateList
+}

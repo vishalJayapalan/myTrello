@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import MoveCard from './moveCard'
 
 export default function CardDetails (props) {
-  // console.log(props)
   const [moveCardPosition, setMoveCardPosition] = useState([])
   const [moveCardShow, setMoveCardShow] = useState(false)
   const [inBoard, setInBoard] = useState(
@@ -36,7 +35,7 @@ export default function CardDetails (props) {
   return (
     <div
       className='overlay'
-      style={{ display: props.detailShow ? ' block' : ' none' }}
+      // style={{ display: props.detailShow ? ' block' : ' none' }}
       onClick={e => {
         if (e.target.className === 'overlay') {
           props.exitCardDetails(e)
@@ -49,6 +48,7 @@ export default function CardDetails (props) {
           <textarea
             className='cardName'
             defaultValue={props.card.cardName}
+            spellCheck='false'
             onBlur={e =>
               props.updateCard(
                 'cardName',
@@ -78,13 +78,6 @@ export default function CardDetails (props) {
             }
           />
         </div>
-        <div className='cardComments'>
-          <label>Activity</label>
-          <textarea
-            className='cardDescriptionText'
-            placeholder='write a comment'
-          />
-        </div>
         <i
           className='fas fa-times closeCardDetail'
           onClick={e => props.exitCardDetails(e)}
@@ -95,22 +88,9 @@ export default function CardDetails (props) {
             <div>
               <a className='darker'>Members</a>
             </div>
-            {/* <div>
-              <a className='darker'>Labels</a>
-            </div> */}
-
-            <div>
-              <a className='darker'>CheckList</a>
-            </div>
             <div>
               <a className='darker'>DueDate</a>
             </div>
-            {/* <div>
-              <a className='darker'>Attachment</a>
-            </div> */}
-            {/* <div>
-              <a className='darker'>Cover</a>
-            </div> */}
           </div>
           <div>
             <h3>ACTIONS</h3>
@@ -122,12 +102,7 @@ export default function CardDetails (props) {
             <div>
               <a className='darker'>Copy</a>
             </div>
-            {/* <div>
-              <a className='darker'>Make Template</a>
-            </div> */}
-            {/* <div>
-              <a className='darker'>Watch</a>
-            </div> */}
+
             <div>
               <a
                 className='darker'
@@ -143,28 +118,26 @@ export default function CardDetails (props) {
                 Delete
               </a>
             </div>
-            <div>
-              <a className='darker'>Share</a>
-            </div>
           </div>
         </div>
       </div>
-      <MoveCard
-        moveCardPosition={moveCardPosition}
-        cardMoveShow={moveCardShow}
-        closeMoveCard={closeMoveCard}
-        card={props.card}
-        list={props.list}
-        boards={props.boards}
-        boardName={props.boardName}
-        boardId={props.boardId}
-        // inCard={inCard}
-        inList={inList}
-        changeInList={changeInList}
-        inBoard={inBoard}
-        changeInBoard={changeInBoard}
-        onMoveCard={props.handleMoveCard}
-      />
+      {moveCardShow && (
+        <MoveCard
+          moveCardPosition={moveCardPosition}
+          cardMoveShow={moveCardShow}
+          closeMoveCard={closeMoveCard}
+          card={props.card}
+          list={props.list}
+          boards={props.boards}
+          boardName={props.boardName}
+          boardId={props.boardId}
+          inList={inList}
+          changeInList={changeInList}
+          inBoard={inBoard}
+          changeInBoard={changeInBoard}
+          onMoveCard={props.handleMoveCard}
+        />
+      )}
     </div>
   )
 }

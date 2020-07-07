@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function MoveList (props) {
   // listMoveSHow moveListPosition closeMoveListChangeInBoard boards
+  const [boardName, setBoardName] = useState(props.boardName)
   const [inPosition, setPosition] = useState(0)
+  // console.log(boardName)
   return (
     <div
       className='moveListContainer'
       style={{
-        display: props.listMoveShow ? ' block' : ' none',
+        // display: props.listMoveShow ? ' block' : ' none',
         marginTop: props.listMoveShow ? `${props.listPosition.y}px` : '0px',
         marginLeft: props.listMoveShow ? `${props.listPosition.x}px` : '0px'
       }}
@@ -23,14 +25,18 @@ export default function MoveList (props) {
       <div className='moveList moveListBoard'>
         <label>Board</label>
         <select
-          onChange={e => props.changeToBoard(e.target.value)}
-          //   defaultValue={props.boardName}
+          value={boardName}
+          onChange={e => {
+            setBoardName(e.target.value)
+            props.changeToBoard(e.target.value)
+          }}
+          // defaultValue={props.boardName}
         >
           {props.boards.map(board => (
             <option
               key={board._id}
               id={board._id}
-              selected={board._id === props.boardId}
+              // selected={board._id === props.boardId}
             >
               {board.boardName}
             </option>

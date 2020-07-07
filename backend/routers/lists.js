@@ -12,6 +12,8 @@ Router.get('/:id', auth, listController.getLists)
 
 Router.post('/:id', auth, listController.createList)
 
+Router.post('/:id/:listIndex', auth, listController.createListByIndex)
+
 Router.put('/:id/:listId', auth, listController.updateList)
 
 Router.delete('/:id/:listId', auth, listController.deleteList)

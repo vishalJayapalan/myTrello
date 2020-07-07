@@ -12,6 +12,17 @@ const getBoards = (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 }
 
+const getBoards2 = async (req, res) => {
+  const boards = await Board.find()
+  const teamBoards = []
+  boards.forEach(board => {
+    if (board.team.includes(req.user._id)) {
+      teamBoards.push(board)
+    }
+  })
+  return res.json(teamBoards)
+}
+
 /*
   route :  /
 */
@@ -20,6 +31,7 @@ const createBoard = (req, res) => {
   const board = new Board()
   board.boardName = req.body.boardName
   board.adminUser = req.user._id
+  // board.team.push(req.user._id)
   board
     .save()
     .then(() => res.json({ boardId: board._id }))
@@ -54,4 +66,10 @@ const deleteBoard = (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 }
 
-module.exports = { getBoards, createBoard, deleteBoard, updateBoard }
+module.exports = {
+  getBoards,
+  getBoards2,
+  createBoard,
+  deleteBoard,
+  updateBoard
+}

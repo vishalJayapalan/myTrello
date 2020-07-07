@@ -4,7 +4,7 @@ export default function ShowMenu (props) {
   return (
     <div
       className='showMenuContainer'
-      style={{ display: props.showMenuToggle ? 'block' : 'none' }}
+      // style={{ display: props.showMenuToggle ? 'block' : 'none' }}
     >
       <div className='menuTitleContainer'>
         <h3 className='menuTitle'>Menu</h3>

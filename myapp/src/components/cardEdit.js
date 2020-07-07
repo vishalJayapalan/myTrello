@@ -5,7 +5,7 @@ export default function CardEdit (props) {
   return (
     <div
       className='overlay'
-      style={{ display: props.cardEditShow ? 'block' : 'none' }}
+      // style={{ display: props.cardEditShow ? 'block' : 'none' }}
       onClick={e => {
         if (e.target.className === 'overlay') props.exitCardEdit(e)
       }}

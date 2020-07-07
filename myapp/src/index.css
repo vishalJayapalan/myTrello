@@ -168,10 +168,33 @@ i {
   margin-left: 30px;
   align-self: center;
   cursor: pointer;
-  width: 25vw;
+  /* width: 25vw; */
+  width: auto;
   height: 20px;
   border: none;
+  outline: none;
   font-size: 150%;
+}
+.boardNameInList:hover {
+  background-color: hsla(0, 0%, 100%, 0.24);
+}
+
+/* INVITE TO BOARD */
+
+.inviteToBoard {
+  background-color: hsla(0, 0%, 100%, 0.14);
+  color: white;
+  height: 32px;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.inviteToBoard:hover {
+  background-color: hsla(0, 0%, 100%, 0.24);
 }
 
 /* SHOW MENU */
@@ -242,6 +265,24 @@ hr {
   margin-left: 80vw;
   margin-top: 30px;
 }
+.aboutBoard {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+}
+
+.aboutBoardTitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.boardDescription {
+  margin: 5px;
+  width: 18vw;
+  height: 100px;
+}
+
+/* END OF ABOUT BOARD */
 
 .boardNameInput {
   margin-top: 10px;
@@ -259,6 +300,7 @@ hr {
   width: 20vw;
   margin: 10px;
 }
+
 .listNameContainer {
   display: flex;
   justify-content: space-between;
@@ -271,6 +313,7 @@ hr {
   font-size: 125%;
   background-color: #ebecf0;
   border: none;
+  outline: none;
   width: 75%;
 }
 
@@ -338,6 +381,7 @@ hr {
 .newCardInput {
   margin: 7.5px;
   border: none;
+  outline: none;
   background-color: inherit;
 }
 
@@ -350,7 +394,7 @@ hr {
 .overlay {
   position: fixed;
   /* position: absolute; */
-  display: none;
+  /* display: none; */
   width: 100vw;
   height: 100vh;
   top: 0;

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 
 export default function MoveCard (props) {
   const [inPosition, setPosition] = useState(0)
+
   return (
     <div
       className='moveCardContainer'
       style={{
-        display: props.cardMoveShow ? ' block' : ' none',
+        // display: props.cardMoveShow ? ' block' : ' none',
         marginTop: props.cardMoveShow ? `${props.moveCardPosition.y}px` : '0px',
         marginLeft: props.cardMoveShow ? `${props.moveCardPosition.x}px` : '0px'
       }}

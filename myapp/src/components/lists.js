@@ -9,6 +9,9 @@ import PageNotFound from './pageNotFound'
 import { Redirect } from 'react-router-dom'
 import ShowMenuComponent from './showMenu'
 import AboutBoard from './aboutBoard'
+import InviteToBoard from './inviteToBoard.js'
+import ShowMembers from './showMembers'
+// import { addTeamMember } from '../../../backend/controllers/board.js'
 // import ShowMenu from './showMenu.js'
 
 export default function Lists (props) {
@@ -32,6 +35,13 @@ export default function Lists (props) {
   const [listMoveToggle, setListMoveToggle] = useState(false)
   const [toBoard, setToBoard] = useState([])
   const [userName, setUserName] = useState('')
+  const [users, setUsers] = useState([])
+  // const [team, setTeam] = useState([])
+  const [usersPosition, setUsersPosition] = useState([])
+  const [teamViewPosition, setTeamViewPosition] = useState([])
+
+  const [showUsersToTeamToggle, setShowUsersToTeamToggle] = useState(false)
+  const [showMembersToggle, setShowMembersToggle] = useState(false)
 
   useEffect(() => {
     fetchList()
@@ -42,6 +52,7 @@ export default function Lists (props) {
   async function fetchList () {
     try {
       await fetchUser()
+      await fetchUsers()
       const data = await window.fetch(
         `http://localhost:8000/board/${props.match.params.boardId}`,
         {
@@ -94,6 +105,18 @@ export default function Lists (props) {
       setLogout(true)
       return ''
     }
+  }
+
+  async function fetchUsers () {
+    const response = await window.fetch('http://localhost:8000/user/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    const jsonResp = await response.json()
+    setUsers(jsonResp)
   }
 
   function getCookie (cookieName) {
@@ -419,7 +442,6 @@ export default function Lists (props) {
     const cardId = card._id
 
     await deleteCard(fromBoardId, fromListId, cardId)
-
     const newLists = lists.map(list => {
       if (list._id === toListId) {
         list.cards.splice(toIndex, 0, card)
@@ -427,8 +449,56 @@ export default function Lists (props) {
       return list
     })
     setLists(newLists)
-
     await createCardAtIndex(toBoardId, toListId, toIndex, card)
+  }
+
+  async function viewUsers (event) {
+    const box = event.target.getBoundingClientRect()
+    setUsersPosition(box)
+    setShowUsersToTeamToggle(!showUsersToTeamToggle)
+  }
+
+  function closeInviteToBoard () {
+    setShowUsersToTeamToggle(false)
+  }
+
+  async function addTeamMember (event) {
+    const teamMemberId = event.target.id
+    const data = await window.fetch(
+      `http://localhost:8000/team/${props.match.params.boardId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ teamMemberId: teamMemberId }),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
+    )
+
+    const jsonData = await data.json()
+    console.log(jsonData)
+    setBoard(jsonData)
+  }
+
+  async function removeTeamMember (event) {
+    const teamMemberId = event.target.parentNode.id
+    console.log(event.target.parentNode)
+    console.log(teamMemberId)
+    const data = await window.fetch(
+      `http://localhost:8000/team/${props.match.params.boardId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ teamMemberId: teamMemberId }),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
+    )
+    const jsonData = await data.json()
+    console.log(jsonData)
+    setBoard(jsonData)
   }
 
   async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
@@ -474,12 +544,20 @@ export default function Lists (props) {
     closeShowMenu()
   }
 
+  function showMembers (event) {
+    const box = event.target.getBoundingClientRect()
+    setTeamViewPosition(box)
+    setShowMembersToggle(!showMembersToggle)
+  }
+  function closeShowMembers () {
+    setShowMembersToggle(false)
+  }
+
   function renderRedirect () {
     if (boardDeleted) {
       return <Redirect to='/' />
     }
   }
-
   return logout ? (
     <Redirect to='/login' />
   ) : routeErrors ? (
@@ -497,7 +575,12 @@ export default function Lists (props) {
             return updateBoard('boardName', e.target.value)
           }}
         />
-        <p className='inviteToBoard'>invite</p>
+        <p className='showMembers' onClick={showMembers}>
+          team
+        </p>
+        <p className='inviteToBoard' onClick={viewUsers}>
+          invite
+        </p>
         <p className='showMenu' onClick={() => showMenu()}>
           Show menu...
         </p>
@@ -598,6 +681,25 @@ export default function Lists (props) {
           showAboutBoardToggle={showAboutBoardToggle}
           closeAboutBoard={closeAboutBoard}
           updateBoard={updateBoard}
+        />
+      )}
+      {showUsersToTeamToggle && (
+        <InviteToBoard
+          users={users}
+          usersPosition={usersPosition}
+          closeInviteToBoard={closeInviteToBoard}
+          addTeamMember={addTeamMember}
+          userName={userName}
+          team={board.team}
+        />
+      )}
+      {showMembersToggle && (
+        <ShowMembers
+          users={users}
+          teamPosition={teamViewPosition}
+          team={board.team}
+          closeShowMembers={closeShowMembers}
+          removeTeamMember={removeTeamMember}
         />
       )}
     </div>

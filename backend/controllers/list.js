@@ -9,7 +9,10 @@ id is the BOard Id
 const getLists = (req, res) => {
   Board.findById(req.params.id)
     .then(board => {
-      if (board.adminUser == req.user._id) {
+      if (
+        board.adminUser == req.user._id ||
+        board.team.includes(req.user._id)
+      ) {
         res.json(board)
       }
     })

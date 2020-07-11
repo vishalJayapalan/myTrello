@@ -31,7 +31,7 @@ const createBoard = (req, res) => {
   const board = new Board()
   board.boardName = req.body.boardName
   board.adminUser = req.user._id
-  // board.team.push(req.user._id)
+  board.team.push(req.user._id)
   board
     .save()
     .then(() => res.json({ boardId: board._id }))
@@ -66,10 +66,38 @@ const deleteBoard = (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 }
 
+/*
+  route: /team/:id
+  id is the boardId
+*/
+
+const addTeamMember = async (req, res) => {
+  const board = await Board.findById(req.params.id)
+  board.team.push(req.body.teamMemberId)
+  await board.save()
+  res.json(board)
+}
+
+/*
+  route: /team/:id
+  id is the boardId
+*/
+const removeTeamMember = async (req, res) => {
+  // console.log(req.body.teamMemberId)
+  const board = await Board.findById(req.params.id)
+  board.team = board.team.filter(
+    teamMemberId => teamMemberId != req.body.teamMemberId
+  )
+  await board.save()
+  res.json(board)
+}
+
 module.exports = {
   getBoards,
   getBoards2,
   createBoard,
   deleteBoard,
-  updateBoard
+  updateBoard,
+  addTeamMember,
+  removeTeamMember
 }

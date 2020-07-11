@@ -6,9 +6,18 @@ const bcrypt = require('bcrypt')
 Route localhost:8000/user
 */
 
-const getUsers = async (req, res) => {
+const getUser = async (req, res) => {
   const user = await User.findById(req.user._id).select('-password')
   res.json(user)
+}
+
+/*
+  /user/all
+*/
+
+const getUsers = async (req, res) => {
+  const users = await User.find().select('-password')
+  res.json(users)
 }
 
 /*
@@ -65,4 +74,4 @@ const addUser = async (req, res) => {
   })
 }
 
-module.exports = { login, getUsers, addUser }
+module.exports = { login, getUser, getUsers, addUser }

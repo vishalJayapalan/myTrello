@@ -13,7 +13,7 @@ export default function ListActions (props) {
       <div className='listActionTitleContainer'>
         <span className='listActionTitle'>List Actions</span>
         <i
-          className='fas fa-times closeCardDetail'
+          className='fas fa-times closeListActions'
           onClick={() => props.closeListActions()}
         />
       </div>

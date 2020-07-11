@@ -11,8 +11,8 @@ const BoardSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     // ref: 'User',
     required: true
-  }
-  // team: [mongoose.Schema.Types.ObjectId]
+  },
+  team: [mongoose.Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model('Board', BoardSchema)

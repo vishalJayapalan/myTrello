@@ -1,4 +1,4 @@
-const Board = require('../models/boards')
+const Board = require('../boards/boardsModel')
 
 /*
 route : /board/card/id/listId

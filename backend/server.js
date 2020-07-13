@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
 
-const boardRoutes = require('./routers/boards')
-const listRoutes = require('./routers/lists')
-const userRoutes = require('./routers/users')
+const boardRoutes = require('./boards/boardsRouter')
+const listRoutes = require('./lists/listsRouter')
+const userRoutes = require('./users/usersRouter')
 
 const app = express()
 

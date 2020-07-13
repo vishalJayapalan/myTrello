@@ -18,10 +18,16 @@ export default function ShowMenu (props) {
         <p className='menu' onClick={() => props.showAboutBoard()}>
           About this Board
         </p>
-        <p className='menu'>Copy Board</p>
-        <p className='menu' onClick={() => props.deleteBoard()}>
-          delete this board
-        </p>
+        {/* <p className='menu'>Copy Board</p> */}
+        {props.user._id === props.board.adminUser ? (
+          <p className='menu' onClick={() => props.deleteBoard()}>
+            delete this board
+          </p>
+        ) : (
+          <p className='menu' onClick={() => props.leaveBoard()}>
+            leave this board
+          </p>
+        )}
       </div>
     </div>
   )

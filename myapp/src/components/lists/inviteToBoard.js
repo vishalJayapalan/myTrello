@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 
 export default function InviteToBoard (props) {
   const [search, setSearch] = useState('')
-  console.log(props.team)
-  const searchUsers = props.users.filter(
-    user =>
-      (user.userName.includes(search.toLowerCase()) ||
-        user.userName.includes(search.toUpperCase())) &&
-      !props.team.includes(user._id)
-  )
+  let searchUsers = []
+  if (search) {
+    searchUsers = props.users.filter(
+      user =>
+        (user.userName.includes(search.toLowerCase()) ||
+          user.userName.includes(search.toUpperCase())) &&
+        !props.team.includes(user._id)
+    )
+  }
+
   return (
     <div
       className='inviteToBoardContainer'

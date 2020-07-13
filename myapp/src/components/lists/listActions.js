@@ -20,7 +20,7 @@ export default function ListActions (props) {
       <hr />
       <div>
         {/* <p>Add Card...</p> */}
-        <p>Copy List</p>
+        {/* <p>Copy List</p> */}
         <p onClick={() => props.openMoveList()}>Move List</p>
         <p onClick={() => props.deleteList()}>DeleteList</p>
       </div>

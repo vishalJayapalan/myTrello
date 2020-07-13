@@ -23,7 +23,7 @@ export default function AboutBoard (props) {
           <span>Made By</span>
           <p>
             <i className='fas fa-user' />
-            {props.userName}
+            {props.user.userName}
           </p>
         </div>
         <div className='boardDescriptionContainer'>

@@ -3,7 +3,7 @@ const Router = express.Router()
 
 const auth = require('../middleware/auth')
 
-const cardController = require('../controllers/card.js')
+const cardController = require('./cardsController')
 
 Router.get('/:id/:listId', auth, cardController.getCards)
 

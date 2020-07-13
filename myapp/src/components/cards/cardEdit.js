@@ -7,7 +7,10 @@ export default function CardEdit (props) {
       className='overlay'
       // style={{ display: props.cardEditShow ? 'block' : 'none' }}
       onClick={e => {
-        if (e.target.className === 'overlay') props.exitCardEdit(e)
+        if (e.target.className === 'overlay') {
+          props.exitCardEdit(e)
+          props.closeMoveCard(e)
+        }
       }}
     >
       <div
@@ -38,8 +41,8 @@ export default function CardEdit (props) {
           Save
         </button>
         <div className='cardEditButtons'>
-          <a>Change Members</a>
-          <a>Move</a>
+          {/* <a>Change Members</a> */}
+          <a onClick={e => props.openMoveCard(e)}>Move</a>
           <a>Copy</a>
           <a>Change Due Date</a>
           <a

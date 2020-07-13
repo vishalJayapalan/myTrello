@@ -1,9 +1,12 @@
 import React from 'react'
+import Navbar from './navbar/navbar'
 
 export default function Home (props) {
   return (
     <div>
-      <p>Home page</p>
+      <Navbar />
+      <p>Activities Still Work on Progresss !!!</p>
+      {/* <img src = ''></img> */}
     </div>
   )
 }

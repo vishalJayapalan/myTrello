@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function ShowTeam (props) {
   const teamUsers = props.users.filter(user => props.team.includes(user._id))
-
   return (
     <div
       className='showTeamContainer'
@@ -23,10 +22,12 @@ export default function ShowTeam (props) {
         {teamUsers.map(teamUser => (
           <div key={teamUser._id} id={teamUser._id}>
             <span>{teamUser.userName}</span>
-            <i
-              className='fas fa-times removeFromTeam'
-              onClick={e => props.removeTeamMember(e)}
-            />
+            {teamUser._id !== props.board.adminUser && (
+              <i
+                className='fas fa-times removeFromTeam'
+                onClick={e => props.removeTeamMember(e)}
+              />
+            )}
           </div>
         ))}
       </div>

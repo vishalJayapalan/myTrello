@@ -1,4 +1,4 @@
-const { User, validate } = require('../models/users')
+const { User, validate } = require('./usersModel')
 const bcrypt = require('bcrypt')
 // const jwt = require('jsonwebtoken')
 
@@ -29,13 +29,17 @@ const login = async (req, res) => {
   try {
     if (!email || !password) return res.json({ msg: 'Please Enter all fields' })
     const user = await User.findOne({ email })
-    if (!user) return res.status(404).json({ msg: 'user does not exist' })
-
-    if (await bcrypt.compare(password, user.password)) {
+    if (!user) {
+      return res.status(404).json({ msg: 'emailId or password is incorrect' })
+    }
+    const correctPassword = await bcrypt.compare(password, user.password)
+    if (correctPassword) {
       const token = user.generateAuthToken()
       return res.header('x-auth-token', token).send({
         token: token
       })
+    } else {
+      return res.status(404).json({ msg: 'emailId or password is incorrect' })
     }
     // Write an else case for bcrypt compare
   } catch (err) {
@@ -50,10 +54,10 @@ Route localhost:8000/user
 const addUser = async (req, res) => {
   const { error } = validate(req.body)
   if (error) return res.status(400).send(error.details[0].message)
-
   let user = await User.findOne({ email: req.body.email })
-  if (user) return res.status(400).send('User already registered.')
-
+  if (user) return res.status(400).json({ msg: 'User already registered' })
+  user = await User.findOne({ userName: req.body.userName })
+  if (user) return res.status(400).json({ msg: 'Name already taken' })
   const { email, userName, password } = req.body
 
   user = new User({

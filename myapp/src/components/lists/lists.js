@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import Navbar from './navbar.js'
+import Navbar from '../navbar/navbar.js'
 import List from './list'
-import CardDetails from './cardDetails'
-import CardEdit from './cardEdit'
-import ListActions from './listActions.js'
-import MoveList from './moveList'
-import PageNotFound from './pageNotFound'
+import CardDetails from '../cards/cardDetails'
+import CardEdit from '../cards/cardEdit'
+import ListActions from '../lists/listActions.js'
+import MoveList from '../lists/moveList'
+// import CopyList from './copyCard'
+import PageNotFound from '../pageNotFound/pageNotFound'
 import { Redirect } from 'react-router-dom'
 import ShowMenuComponent from './showMenu'
 import AboutBoard from './aboutBoard'
 import InviteToBoard from './inviteToBoard.js'
 import ShowMembers from './showMembers'
+import MoveCard from '../cards/moveCard'
+
 // import { addTeamMember } from '../../../backend/controllers/board.js'
 // import ShowMenu from './showMenu.js'
 
@@ -34,7 +37,7 @@ export default function Lists (props) {
   const [boardDeleted, setBoardDeleted] = useState(false)
   const [listMoveToggle, setListMoveToggle] = useState(false)
   const [toBoard, setToBoard] = useState([])
-  const [userName, setUserName] = useState('')
+  const [user, setUser] = useState('')
   const [users, setUsers] = useState([])
   // const [team, setTeam] = useState([])
   const [usersPosition, setUsersPosition] = useState([])
@@ -43,10 +46,13 @@ export default function Lists (props) {
   const [showUsersToTeamToggle, setShowUsersToTeamToggle] = useState(false)
   const [showMembersToggle, setShowMembersToggle] = useState(false)
 
+  const [moveCardPosition, setMoveCardPosition] = useState([])
+  const [moveCardShow, setMoveCardShow] = useState(false)
+  const [inBoard, setInBoard] = useState([])
+  const [inList, setInList] = useState(props.list)
+
   useEffect(() => {
     fetchList()
-
-    fetchBoard()
   }, [props.match.params.boardId])
 
   async function fetchList () {
@@ -68,6 +74,7 @@ export default function Lists (props) {
         setBoardName(jsonData.boardName)
         setBoard(jsonData)
         setLists(jsonData.lists)
+        fetchBoard()
       } else {
         throw new Error(data.statusText)
       }
@@ -98,7 +105,7 @@ export default function Lists (props) {
         }
       })
       const jsonResp = await resp.json()
-      setUserName(jsonResp.userName)
+      setUser(jsonResp)
       setLogout(false)
       return jsonResp
     } catch (err) {
@@ -174,9 +181,22 @@ export default function Lists (props) {
     setLists(newLists)
   }
 
-  function dragStart (event, cardId, cardName, listId) {
+  // function dragStartList (event, listId) {
+  //   const target = event.target
+  //   event.dataTransfer.setData('listId', listId)
+  //   setTimeout(() => {
+  //     target.style.display = 'none'
+  //   }, 0)
+  // }
+
+  // function dragEndList (event) {}
+
+  // function dragOverList (event) {}
+
+  // async function dropList (event) {}
+
+  function dragStartCard (event, cardId, cardName, listId) {
     const target = event.target
-    // console.log(target)
     event.dataTransfer.setData('cardId', cardId)
     event.dataTransfer.setData('cardName', cardName)
     event.dataTransfer.setData('prevListId', listId)
@@ -187,11 +207,11 @@ export default function Lists (props) {
     }, 0)
   }
 
-  function dragEnd (event) {
+  function dragEndCard (event) {
     event.target.style.display = 'flex'
   }
 
-  function dragOver (event) {
+  function dragOverCard (event) {
     event.preventDefault()
     const childs = event.target.parentNode.childNodes
     for (const child of Array.from(childs)) {
@@ -200,7 +220,7 @@ export default function Lists (props) {
     event.target.style = 'margin-top:20px'
   }
 
-  async function drop (event, listId) {
+  async function dropCard (event, listId) {
     const boardId = props.match.params.boardId
     const target = event.target
     target.style = 'margin-top:10px'
@@ -254,7 +274,6 @@ export default function Lists (props) {
   }
 
   async function createCardAtIndex (boardId, listId, cardIndex, moveCard) {
-    console.log(moveCard)
     await window.fetch(
       `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
       {
@@ -437,7 +456,7 @@ export default function Lists (props) {
     fromListId,
     toListId,
     card,
-    toIndex
+    toIndex = 0
   ) {
     const cardId = card._id
 
@@ -450,6 +469,9 @@ export default function Lists (props) {
     })
     setLists(newLists)
     await createCardAtIndex(toBoardId, toListId, toIndex, card)
+    closeMoveCard()
+    setCardDetailToggle(false)
+    setCardEditToggle(false)
   }
 
   async function viewUsers (event) {
@@ -477,14 +499,11 @@ export default function Lists (props) {
     )
 
     const jsonData = await data.json()
-    console.log(jsonData)
     setBoard(jsonData)
   }
 
   async function removeTeamMember (event) {
     const teamMemberId = event.target.parentNode.id
-    console.log(event.target.parentNode)
-    console.log(teamMemberId)
     const data = await window.fetch(
       `http://localhost:8000/team/${props.match.params.boardId}`,
       {
@@ -497,8 +516,27 @@ export default function Lists (props) {
       }
     )
     const jsonData = await data.json()
-    console.log(jsonData)
     setBoard(jsonData)
+    if (teamMemberId === user._id) {
+      setBoardDeleted(true)
+    }
+  }
+
+  async function leaveBoard () {
+    const data = await window.fetch(
+      `http://localhost:8000/team/${props.match.params.boardId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ teamMemberId: user._id }),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
+    )
+    const jsonData = await data.json()
+    setBoard(jsonData)
+    setBoardDeleted(true)
   }
 
   async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
@@ -553,6 +591,31 @@ export default function Lists (props) {
     setShowMembersToggle(false)
   }
 
+  function openMoveCard (event) {
+    const position = event.target.getBoundingClientRect()
+    setMoveCardPosition(position)
+    setInBoard(boards.filter(board => board._id === props.match.params.boardId))
+    setInList([cardList])
+    setMoveCardShow(true)
+  }
+
+  function closeMoveCard (event) {
+    setMoveCardShow(false)
+  }
+
+  async function changeInBoard (event) {
+    await setInBoard(
+      boards.filter(board => board.boardName === event.target.value)
+    )
+    await setInList([inBoard[0].lists[0]])
+  }
+
+  async function changeInList (event) {
+    await setInList(
+      inBoard[0].lists.filter(list => list.listName === event.target.value)
+    )
+  }
+
   function renderRedirect () {
     if (boardDeleted) {
       return <Redirect to='/' />
@@ -585,7 +648,13 @@ export default function Lists (props) {
           Show menu...
         </p>
       </div>
-      <div className='listsContainer'>
+      <div
+        className='listsContainer'
+        // onDragOver={e => dragOverList(e)}
+        // onDrop={e => {
+        //   dropList(e, props.list._id)
+        // }}
+      >
         {lists.map(list => (
           <List
             displayCardFunction={displayCardFunction}
@@ -594,10 +663,12 @@ export default function Lists (props) {
             cardDetailToggle={cardDetailToggle}
             key={list._id}
             list={list}
-            dragOver={dragOver}
-            drop={drop}
-            dragStart={dragStart}
-            dragEnd={dragEnd}
+            dragOverCard={dragOverCard}
+            dropCard={dropCard}
+            dragStartCard={dragStartCard}
+            dragEndCard={dragEndCard}
+            // dragStartList={dragStartList}
+            // dragEndList={dragEndList}
             updateListName={updateListName}
             createCard={createCard}
             openListActions={openListActions}
@@ -621,6 +692,8 @@ export default function Lists (props) {
           list={cardList}
           boards={boards}
           boardName={boardName}
+          openMoveCard={openMoveCard}
+          closeMoveCard={closeMoveCard}
           boardId={props.match.params.boardId}
           detailShow={cardDetailToggle}
           exitCardDetails={exitCardDetails}
@@ -635,6 +708,8 @@ export default function Lists (props) {
           boardId={props.match.params.boardId}
           card={card}
           list={cardList}
+          openMoveCard={openMoveCard}
+          closeMoveCard={closeMoveCard}
           updateNExitCardEdit={updateNExitCardEdit}
           exitCardEdit={exitCardEdit}
           cardPosition={cardPosition}
@@ -665,18 +740,22 @@ export default function Lists (props) {
           onMoveList={handleMoveList}
         />
       )}
+      {/* {listCopyToggle && <CopyList />} */}
       {showMenuToggle && (
         <ShowMenuComponent
           showMenuToggle={showMenuToggle}
           closeShowMenu={closeShowMenu}
           deleteBoard={deleteBoard}
           showAboutBoard={showAboutBoard}
+          user={user}
+          board={board}
+          leaveBoard={leaveBoard}
         />
       )}
       {showAboutBoardToggle && (
         <AboutBoard
           board={board}
-          userName={userName}
+          user={user}
           closeAboutAndShowMenu={closeAboutAndShowMenu}
           showAboutBoardToggle={showAboutBoardToggle}
           closeAboutBoard={closeAboutBoard}
@@ -689,7 +768,7 @@ export default function Lists (props) {
           usersPosition={usersPosition}
           closeInviteToBoard={closeInviteToBoard}
           addTeamMember={addTeamMember}
-          userName={userName}
+          // userName={userName}
           team={board.team}
         />
       )}
@@ -700,6 +779,24 @@ export default function Lists (props) {
           team={board.team}
           closeShowMembers={closeShowMembers}
           removeTeamMember={removeTeamMember}
+          board={board}
+        />
+      )}
+      {moveCardShow && (
+        <MoveCard
+          moveCardPosition={moveCardPosition}
+          cardMoveShow={moveCardShow}
+          closeMoveCard={closeMoveCard}
+          card={card}
+          list={cardList}
+          boards={boards}
+          boardName={boardName}
+          boardId={props.match.params.boardId}
+          inList={inList}
+          changeInList={changeInList}
+          inBoard={inBoard}
+          changeInBoard={changeInBoard}
+          onMoveCard={handleMoveCard}
         />
       )}
     </div>

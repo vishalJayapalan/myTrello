@@ -1,6 +1,7 @@
-const Board = require('../models/boards')
+const Board = require('./boardsModel')
 
 /*
+GET
   route :  /
 */
 
@@ -12,7 +13,7 @@ const getBoards = (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 }
 
-const getBoards2 = async (req, res) => {
+const getBoardsTeam = async (req, res) => {
   const boards = await Board.find()
   const teamBoards = []
   boards.forEach(board => {
@@ -24,6 +25,7 @@ const getBoards2 = async (req, res) => {
 }
 
 /*
+  GET
   route :  /
 */
 
@@ -39,6 +41,7 @@ const createBoard = (req, res) => {
 }
 
 /*
+  PUT
   route :  /:id
   id is the BoardId
 */
@@ -56,6 +59,7 @@ const updateBoard = (req, res) => {
 }
 
 /*
+  DELETE
   route :  /:id
   id is the BoardID
 */
@@ -67,6 +71,7 @@ const deleteBoard = (req, res) => {
 }
 
 /*
+  POST
   route: /team/:id
   id is the boardId
 */
@@ -79,11 +84,11 @@ const addTeamMember = async (req, res) => {
 }
 
 /*
+  PUT
   route: /team/:id
   id is the boardId
 */
 const removeTeamMember = async (req, res) => {
-  // console.log(req.body.teamMemberId)
   const board = await Board.findById(req.params.id)
   board.team = board.team.filter(
     teamMemberId => teamMemberId != req.body.teamMemberId
@@ -94,7 +99,7 @@ const removeTeamMember = async (req, res) => {
 
 module.exports = {
   getBoards,
-  getBoards2,
+  getBoardsTeam,
   createBoard,
   deleteBoard,
   updateBoard,

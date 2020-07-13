@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const CardSchema = require('./cards')
+const CardSchema = require('../cards/cardsModel')
 
 const ListSchema = new Schema({
   listName: { type: String, required: true },

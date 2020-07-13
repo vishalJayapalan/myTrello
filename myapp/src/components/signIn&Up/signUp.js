@@ -45,7 +45,6 @@ export default function SignUp () {
           'Content-Type': 'application/json'
         }
       })
-
       if (response.status >= 200 && response.status < 300) {
         const jsonData = await response.json()
         console.log(jsonData)
@@ -55,6 +54,7 @@ export default function SignUp () {
         setCookie('x-auth-token', jsonData.token)
         setLogin(true)
       } else {
+        console.log(response)
         const jsonData = await response.json()
         console.log(jsonData)
         setErrMsg(jsonData.msg)
@@ -63,7 +63,6 @@ export default function SignUp () {
       }
     } catch (err) {
       console.log(err)
-      console.log('inhere')
       // should handle when invalid
     }
   }

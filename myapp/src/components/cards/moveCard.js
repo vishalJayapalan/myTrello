@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 
 export default function MoveCard (props) {
+  console.log(props)
+  // const [boardName, setBoardName] = useState(props.boardName)
+  // const [listName, setListName] = useState(props.list.listName)
   const [inPosition, setPosition] = useState(0)
 
   return (
@@ -22,7 +25,12 @@ export default function MoveCard (props) {
       <hr />
       <div className='moveCard moveCardBoard'>
         <label>Board</label>
-        <select onChange={e => props.changeInBoard(e)}>
+        <select
+          onChange={e => {
+            props.changeInBoard(e)
+          }}
+          value={props.boardName}
+        >
           {props.boards.map(board => (
             <option key={board._id} id={board.id}>
               {board.boardName}
@@ -32,7 +40,7 @@ export default function MoveCard (props) {
       </div>
       <div className='moveCard moveCardList'>
         <label>List</label>
-        <select onChange={e => props.changeInList(e)}>
+        <select onChange={e => props.changeInList(e)} value={props.listName}>
           {props.inBoard.length &&
             props.inBoard[0].lists.map(list => (
               <option key={list._id} id={list._id}>

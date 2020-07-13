@@ -1,36 +1,35 @@
 import React, { useState } from 'react'
-import MoveCard from './moveCard'
 
 export default function CardDetails (props) {
-  const [moveCardPosition, setMoveCardPosition] = useState([])
-  const [moveCardShow, setMoveCardShow] = useState(false)
-  const [inBoard, setInBoard] = useState(
-    props.boards.filter(board => board._id === props.boardId)
-  )
-  const [inList, setInList] = useState(props.list)
+  // const [moveCardPosition, setMoveCardPosition] = useState([])
+  // const [moveCardShow, setMoveCardShow] = useState(false)
+  // const [inBoard, setInBoard] = useState(
+  //   props.boards.filter(board => board._id === props.boardId)
+  // )
+  // const [inList, setInList] = useState(props.list)
 
-  function openMoveCard (event) {
-    const position = event.target.getBoundingClientRect()
-    setMoveCardPosition(position)
-    setMoveCardShow(true)
-    setInBoard(props.boards.filter(board => board._id === props.boardId))
-    setInList([props.list])
-  }
-  function closeMoveCard (event) {
-    setMoveCardShow(false)
-  }
-  async function changeInBoard (event) {
-    await setInBoard(
-      props.boards.filter(board => board.boardName === event.target.value)
-    )
-    await setInList([inBoard[0].lists[0]])
-  }
+  // function openMoveCard (event) {
+  //   const position = event.target.getBoundingClientRect()
+  //   setMoveCardPosition(position)
+  //   setMoveCardShow(true)
+  //   setInBoard(props.boards.filter(board => board._id === props.boardId))
+  //   setInList([props.list])
+  // }
+  // function closeMoveCard (event) {
+  //   setMoveCardShow(false)
+  // }
+  // async function changeInBoard (event) {
+  //   await setInBoard(
+  //     props.boards.filter(board => board.boardName === event.target.value)
+  //   )
+  //   await setInList([inBoard[0].lists[0]])
+  // }
 
-  async function changeInList (event) {
-    await setInList(
-      inBoard[0].lists.filter(list => list.listName === event.target.value)
-    )
-  }
+  // async function changeInList (event) {
+  //   await setInList(
+  //     inBoard[0].lists.filter(list => list.listName === event.target.value)
+  //   )
+  // }
 
   return (
     <div
@@ -39,7 +38,7 @@ export default function CardDetails (props) {
       onClick={e => {
         if (e.target.className === 'overlay') {
           props.exitCardDetails(e)
-          closeMoveCard(e)
+          props.closeMoveCard(e)
         }
       }}
     >
@@ -85,9 +84,9 @@ export default function CardDetails (props) {
         <div className='cardSideBar'>
           <div>
             <h3>ADD TO CARD</h3>
-            <div>
+            {/* <div>
               <a className='darker'>Members</a>
-            </div>
+            </div> */}
             <div>
               <a className='darker'>DueDate</a>
             </div>
@@ -95,7 +94,7 @@ export default function CardDetails (props) {
           <div>
             <h3>ACTIONS</h3>
             <div>
-              <a className='darker' onClick={e => openMoveCard(e)}>
+              <a className='darker' onClick={e => props.openMoveCard(e)}>
                 Move
               </a>
             </div>
@@ -121,7 +120,7 @@ export default function CardDetails (props) {
           </div>
         </div>
       </div>
-      {moveCardShow && (
+      {/* {moveCardShow && (
         <MoveCard
           moveCardPosition={moveCardPosition}
           cardMoveShow={moveCardShow}
@@ -137,7 +136,7 @@ export default function CardDetails (props) {
           changeInBoard={changeInBoard}
           onMoveCard={props.handleMoveCard}
         />
-      )}
+      )} */}
     </div>
   )
 }

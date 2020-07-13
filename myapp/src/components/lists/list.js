@@ -1,10 +1,14 @@
 import React from 'react'
-import Card from './card'
+import Card from '../cards/card'
 
 function List (props) {
-  // console.log('insideLIst', props.list.cards)
   return (
-    <div className='listContainer'>
+    <div
+      className='listContainer'
+      // draggable='true'
+      // onDragStart={e => props.dragStartList(e, props.list._id)}
+      // onDragEnd={e => props.dragEndList(e)}
+    >
       <div className='listNameContainer'>
         <textarea
           className='listName'
@@ -24,9 +28,9 @@ function List (props) {
       </div>
       <div
         className='cardsContainer'
-        onDragOver={e => props.dragOver(e)}
+        onDragOver={e => props.dragOverCard(e)}
         onDrop={e => {
-          props.drop(e, props.list._id)
+          props.dropCard(e, props.list._id)
         }}
       >
         {props.list.cards.map(card => (
@@ -36,8 +40,8 @@ function List (props) {
             cardEditFunction={props.cardEditFunction}
             key={card._id}
             listId={props.list._id}
-            dragStart={props.dragStart}
-            dragEnd={props.dragEnd}
+            dragStartCard={props.dragStartCard}
+            dragEndCard={props.dragEndCard}
             card={card}
             list={props.list}
             // openListActions={props.openListActions}

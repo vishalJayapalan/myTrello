@@ -6,9 +6,14 @@ export default function card (props) {
       className='card draggable'
       id={props.card._id}
       onDragStart={e =>
-        props.dragStart(e, props.card._id, props.card.cardName, props.listId)
+        props.dragStartCard(
+          e,
+          props.card._id,
+          props.card.cardName,
+          props.listId
+        )
       }
-      onDragEnd={e => props.dragEnd(e)}
+      onDragEnd={e => props.dragEndCard(e)}
       draggable='true'
       onClick={e => props.displayCardFunction(e, props.card, props.list)}
     >

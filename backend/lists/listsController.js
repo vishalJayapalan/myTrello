@@ -1,4 +1,4 @@
-const Board = require('../models/boards')
+const Board = require('../boards/boardsModel')
 // const mongoose = require('mongoose')
 
 /*
@@ -14,6 +14,8 @@ const getLists = (req, res) => {
         board.team.includes(req.user._id)
       ) {
         res.json(board)
+      } else {
+        res.status(404).json({ msg: 'Not authorized' })
       }
     })
     .catch(err => res.status(400).json('Error: ' + err))

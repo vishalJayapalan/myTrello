@@ -2,9 +2,9 @@ const express = require('express')
 const Router = express.Router()
 const auth = require('../middleware/auth')
 
-const listController = require('../controllers/list')
+const listController = require('./listsController')
 
-const cardRouter = require('./cards')
+const cardRouter = require('../cards/cardsRouter')
 
 Router.use('/card', cardRouter)
 

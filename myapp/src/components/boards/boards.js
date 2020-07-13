@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Board from './board'
-import Navbar from './navbar.js'
+import Navbar from '../navbar/navbar.js'
 import { Redirect } from 'react-router-dom'
 
 export default function Boards (props) {

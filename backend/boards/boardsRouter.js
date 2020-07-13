@@ -3,11 +3,11 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const Router = express.Router()
 
-const boardController = require('../controllers/board.js')
+const boardController = require('./boardsController.js')
 
 // Router.get('/', auth, boardController.getBoards)
 
-Router.get('/', auth, boardController.getBoards2)
+Router.get('/', auth, boardController.getBoardsTeam)
 
 Router.post('/', auth, boardController.createBoard)
 Router.post('/team/:id', boardController.addTeamMember)

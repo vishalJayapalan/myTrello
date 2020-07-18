@@ -81,6 +81,17 @@ i {
   color: white;
 }
 
+.navSpan {
+  /* color: white; */
+  height: 25px;
+  margin: 4px 2px;
+  cursor: auto;
+  font-style: italic;
+  margin-left: -15%;
+  /* font-size: 150%; */
+  text-decoration: none;
+}
+
 .boardsPage {
   /* background-color: lightskyblue; */
   height: 100vh;
@@ -159,6 +170,7 @@ i {
   /* background-color: hsla(0, 0%, 100%, 0.24); */
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
   /* height: 32px; */
 }
 
@@ -252,6 +264,11 @@ hr {
   width: 80%;
 }
 
+.aboutAndShowMenuContainer {
+  position: fixed;
+  height: 100vh;
+}
+
 /* ABOUT BOARD */
 
 .aboutBoardContainer {
@@ -274,6 +291,10 @@ hr {
 .aboutBoardTitleContainer {
   display: flex;
   justify-content: space-between;
+}
+.closeAboutBoard {
+  margin-right: 15px;
+  margin-top: 15px;
 }
 
 .boardDescription {

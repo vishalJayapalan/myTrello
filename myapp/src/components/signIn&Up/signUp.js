@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
+import { setCookie, getCookie } from '../util/cookies'
 
 export default function SignUp () {
   const [login, setLogin] = useState(false)
@@ -12,24 +13,24 @@ export default function SignUp () {
     if (token) setLogin(true)
   }, [])
 
-  const setCookie = (name, value) => {
-    const d = new Date()
-    d.setTime(d.getTime() + 60 * 60 * 1000)
-    const expires = 'expires=' + d.toUTCString()
-    document.cookie = name + '=' + value + ';' + expires + ';path=/'
-  }
+  // const setCookie = (name, value) => {
+  //   const d = new Date()
+  //   d.setTime(d.getTime() + 60 * 60 * 1000)
+  //   const expires = 'expires=' + d.toUTCString()
+  //   document.cookie = name + '=' + value + ';' + expires + ';path=/'
+  // }
 
-  function getCookie (cookieName) {
-    const name = cookieName + '='
-    const cookies = document.cookie.split(';')
-    for (let index = 0; index < cookies.length; index++) {
-      const cookie = cookies[index].trim()
-      if (cookie.startsWith(name)) {
-        return cookie.slice(name.length, cookie.length)
-      }
-    }
-    return ''
-  }
+  // function getCookie (cookieName) {
+  //   const name = cookieName + '='
+  //   const cookies = document.cookie.split(';')
+  //   for (let index = 0; index < cookies.length; index++) {
+  //     const cookie = cookies[index].trim()
+  //     if (cookie.startsWith(name)) {
+  //       return cookie.slice(name.length, cookie.length)
+  //     }
+  //   }
+  //   return ''
+  // }
 
   async function userSignUp (event) {
     event.preventDefault()
@@ -47,16 +48,13 @@ export default function SignUp () {
       })
       if (response.status >= 200 && response.status < 300) {
         const jsonData = await response.json()
-        console.log(jsonData)
         setEmail('')
         setUserName('')
         setPassword('')
         setCookie('x-auth-token', jsonData.token)
         setLogin(true)
       } else {
-        console.log(response)
         const jsonData = await response.json()
-        console.log(jsonData)
         setErrMsg(jsonData.msg)
         // throw new Error(response.statusText)
         throw new Error(jsonData.msg)

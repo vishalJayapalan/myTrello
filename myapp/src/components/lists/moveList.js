@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 export default function MoveList (props) {
   // listMoveSHow moveListPosition closeMoveListChangeInBoard boards
-  const [boardName, setBoardName] = useState(props.boardName)
+  const [boardName, setBoardName] = useState(props.board.boardName)
   const [inPosition, setPosition] = useState(0)
   // console.log(boardName)
   return (

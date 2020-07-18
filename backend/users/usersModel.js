@@ -8,7 +8,8 @@ require('dotenv').config()
 const UserSchema = new Schema({
   userName: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -22,9 +23,13 @@ const UserSchema = new Schema({
 })
 
 UserSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 3600
-  })
+  const token = jwt.sign(
+    { _id: this._id, userName: this.userName },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: 3600
+    }
+  )
   return token
 }
 

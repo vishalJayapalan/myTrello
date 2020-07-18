@@ -1,10 +1,36 @@
 import React, { useState } from 'react'
 
 export default function MoveCard (props) {
-  console.log(props)
+  // console.log(props)
   // const [boardName, setBoardName] = useState(props.boardName)
   // const [listName, setListName] = useState(props.list.listName)
   const [inPosition, setPosition] = useState(0)
+
+  async function handleMoveCard (
+    fromBoardId,
+    toBoardId,
+    fromListId,
+    toListId,
+    card,
+    toIndex = 0
+  ) {
+    const cardId = card._id
+    // console.log('before', lists)
+    await deleteCard(fromBoardId, fromListId, cardId)
+    // console.log('after', lists)
+    const newLists = lists.map(list => {
+      if (list._id === toListId) {
+        list.cards.splice(toIndex, 0, card)
+      }
+      return list
+    })
+    props.updateListState(newLists)
+    // setLists(newLists)
+    await createCardAtIndex(toBoardId, toListId, toIndex, card)
+    closeMoveCard()
+    setCardDetailToggle(false)
+    setCardEditToggle(false)
+  }
 
   return (
     <div
@@ -29,7 +55,7 @@ export default function MoveCard (props) {
           onChange={e => {
             props.changeInBoard(e)
           }}
-          value={props.boardName}
+          value={props.inBoard[0].boardName}
         >
           {props.boards.map(board => (
             <option key={board._id} id={board.id}>
@@ -40,7 +66,10 @@ export default function MoveCard (props) {
       </div>
       <div className='moveCard moveCardList'>
         <label>List</label>
-        <select onChange={e => props.changeInList(e)} value={props.listName}>
+        <select
+          onChange={e => props.changeInList(e)}
+          value={props.inList[0].listName}
+        >
           {props.inBoard.length &&
             props.inBoard[0].lists.map(list => (
               <option key={list._id} id={list._id}>
@@ -63,7 +92,8 @@ export default function MoveCard (props) {
       <button
         className='moveCardBtn'
         onClick={() =>
-          props.onMoveCard(
+          // props.onMoveCard(
+          handleMoveCard(
             props.boardId,
             props.inBoard[0]._id,
             props.list._id,
@@ -78,3 +108,4 @@ export default function MoveCard (props) {
     </div>
   )
 }
+// fromboardId,toBoardId,fromListId,toListId,card,toIndex

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ShowTeam (props) {
+export default function ShowMembers (props) {
   const teamUsers = props.users.filter(user => props.team.includes(user._id))
   return (
     <div
@@ -14,7 +14,7 @@ export default function ShowTeam (props) {
         <span>Team members</span>
         <i
           className='fas fa-times closeShowTeam'
-          onClick={() => props.closeShowMembers()}
+          onClick={e => props.showMembers(e)}
         />
       </div>
       <hr />

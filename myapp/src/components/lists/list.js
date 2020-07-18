@@ -3,12 +3,7 @@ import Card from '../cards/card'
 
 function List (props) {
   return (
-    <div
-      className='listContainer'
-      // draggable='true'
-      // onDragStart={e => props.dragStartList(e, props.list._id)}
-      // onDragEnd={e => props.dragEndList(e)}
-    >
+    <div className='listContainer'>
       <div className='listNameContainer'>
         <textarea
           className='listName'
@@ -23,7 +18,6 @@ function List (props) {
           onClick={e => {
             props.openListActions(e, props.list)
           }}
-          // onClick={() => props.deleteList(props.list)}
         />
       </div>
       <div
@@ -44,7 +38,6 @@ function List (props) {
             dragEndCard={props.dragEndCard}
             card={card}
             list={props.list}
-            // openListActions={props.openListActions}
           />
         ))}
         <input

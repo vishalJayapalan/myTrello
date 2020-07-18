@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 
-export default function Navbar () {
+export default function Navbar ({ user }) {
   const [logout, setLogout] = useState(false)
 
   function logoutAndReroute () {
@@ -31,6 +31,7 @@ export default function Navbar () {
         <button className='button' onClick={() => logoutAndReroute()}>
           Logout
         </button>
+        {user && <p className='navSpan'>User: {user.userName}</p>}
         {/* <button className='button'>+</button>
         <button className='button'>i</button>
         <button className='button'>notification</button> */}

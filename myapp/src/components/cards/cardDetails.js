@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 export default function CardDetails (props) {
+  console.log(props)
   // const [moveCardPosition, setMoveCardPosition] = useState([])
   // const [moveCardShow, setMoveCardShow] = useState(false)
   // const [inBoard, setInBoard] = useState(
@@ -84,9 +85,6 @@ export default function CardDetails (props) {
         <div className='cardSideBar'>
           <div>
             <h3>ADD TO CARD</h3>
-            {/* <div>
-              <a className='darker'>Members</a>
-            </div> */}
             <div>
               <a className='darker'>DueDate</a>
             </div>

@@ -8,7 +8,7 @@ export default function AboutBoard (props) {
     >
       <div className='aboutBoardTitleContainer'>
         <i
-          className='fas fa-chevron-left'
+          className='fas fa-chevron-left closeAboutBoard'
           onClick={() => props.closeAboutBoard()}
         />
         <h3>About this board</h3>

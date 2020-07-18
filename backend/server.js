@@ -8,7 +8,6 @@ const listRoutes = require('./lists/listsRouter')
 const userRoutes = require('./users/usersRouter')
 
 const app = express()
-
 const port = process.env.PORT || 8000
 const uri = process.env.ATLAS_URI
 

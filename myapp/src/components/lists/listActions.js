@@ -14,7 +14,7 @@ export default function ListActions (props) {
         <span className='listActionTitle'>List Actions</span>
         <i
           className='fas fa-times closeListActions'
-          onClick={() => props.closeListActions()}
+          onClick={e => props.closeListActions(e)}
         />
       </div>
       <hr />

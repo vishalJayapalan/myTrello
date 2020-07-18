@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import AboutBoard from './aboutBoard'
+import {
+  deleteBoardFunction,
+  leaveBoardFunction
+} from '../boards/boardFunctions'
+import { getCookie } from '../util/cookies'
 
 export default function ShowMenu (props) {
   const [showAboutBoardToggle, setShowAboutBoardToggle] = useState(false)
 
   function aboutBoardToggler () {
     setShowAboutBoardToggle(!showAboutBoardToggle)
-    console.log(showAboutBoardToggle)
   }
   function closeAboutAndShowMenu () {
     aboutBoardToggler()
@@ -32,11 +36,31 @@ export default function ShowMenu (props) {
           </p>
           {/* <p className='menu'>Copy Board</p> */}
           {props.user._id === props.board.adminUser ? (
-            <p className='menu' onClick={() => props.deleteBoard()}>
+            <p
+              className='menu'
+              onClick={() =>
+                deleteBoardFunction(
+                  props.board._id,
+                  getCookie,
+                  props.updateBoardDeletedState
+                )
+              }
+            >
               delete this board
             </p>
           ) : (
-            <p className='menu' onClick={() => props.leaveBoard()}>
+            <p
+              className='menu'
+              onClick={() =>
+                leaveBoardFunction(
+                  props.board._id,
+                  props.user,
+                  getCookie,
+                  props.updateBoardState,
+                  props.updateBoardDeletedState
+                )
+              }
+            >
               leave this board
             </p>
           )}
@@ -49,7 +73,7 @@ export default function ShowMenu (props) {
           closeAboutAndShowMenu={closeAboutAndShowMenu}
           showAboutBoardToggle={showAboutBoardToggle}
           closeAboutBoard={aboutBoardToggler}
-          updateBoard={props.updateBoard}
+          updateBoardState={props.updateBoardState}
         />
       )}
     </div>

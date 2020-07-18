@@ -10,8 +10,8 @@ const boardController = require('./boardsController.js')
 Router.get('/', auth, boardController.getBoardsTeam)
 
 Router.post('/', auth, boardController.createBoard)
-Router.post('/team/:id', boardController.addTeamMember)
-Router.put('/team/:id', boardController.removeTeamMember)
+Router.post('/team/:id', auth, boardController.addTeamMember)
+Router.put('/team/:id', auth, boardController.removeTeamMember)
 Router.put('/:id', auth, boardController.updateBoard)
 Router.delete('/:id', auth, boardController.deleteBoard)
 

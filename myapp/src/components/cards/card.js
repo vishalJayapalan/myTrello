@@ -1,12 +1,13 @@
 import React from 'react'
+import { dragStartCardFunction, dragEndCardFunction } from './dragCard'
 
 export default function card (props) {
   return (
     <p
       className='card draggable'
       id={props.card._id}
-      onDragStart={e => props.dragStartCard(e, props.card, props.listId)}
-      onDragEnd={e => props.dragEndCard(e)}
+      onDragStart={e => dragStartCardFunction(e, props.card, props.listId)}
+      onDragEnd={e => dragEndCardFunction(e)}
       draggable='true'
       onClick={e => props.displayCardFunction(e, props.card, props.list)}
     >

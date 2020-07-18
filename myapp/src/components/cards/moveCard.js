@@ -1,10 +1,38 @@
 import React, { useState } from 'react'
+import { getCookie } from '../util/cookies'
+import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
 
 export default function MoveCard (props) {
   // console.log(props)
   // const [boardName, setBoardName] = useState(props.boardName)
   // const [listName, setListName] = useState(props.list.listName)
   const [inPosition, setPosition] = useState(0)
+
+  // async function deleteCard (boardId, listId, cardId) {
+  //   const newLists = await deleteCardFunction(
+  //     boardId,
+  //     props.lists,
+  //     listId,
+  //     cardId,
+  //     getCookie,
+  //     props.updateListState
+  //   )
+  //   // props.updateListState(newLists)
+  // }
+
+  // async function createCardAtIndex (boardId, listId, cardIndex, moveCard) {
+  //   await window.fetch(
+  //     `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
+  //     {
+  //       method: 'POST',
+  //       body: JSON.stringify(moveCard),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'x-auth-token': getCookie('x-auth-token')
+  //       }
+  //     }
+  //   )
+  // }
 
   async function handleMoveCard (
     fromBoardId,
@@ -15,28 +43,37 @@ export default function MoveCard (props) {
     toIndex = 0
   ) {
     const cardId = card._id
-    // console.log('before', lists)
-    await deleteCard(fromBoardId, fromListId, cardId)
-    // console.log('after', lists)
-    const newLists = lists.map(list => {
+    // await deleteCard(fromBoardId, fromListId, cardId)
+    await deleteCardFunction(
+      fromBoardId,
+      props.lists,
+      fromListId,
+      cardId,
+      getCookie,
+      props.updateListState
+    )
+    const newLists = props.lists.map(list => {
       if (list._id === toListId) {
         list.cards.splice(toIndex, 0, card)
       }
       return list
     })
     props.updateListState(newLists)
-    // setLists(newLists)
-    await createCardAtIndex(toBoardId, toListId, toIndex, card)
-    closeMoveCard()
-    setCardDetailToggle(false)
-    setCardEditToggle(false)
+    await createCardAtIndexFunction(
+      toBoardId,
+      toListId,
+      toIndex,
+      card,
+      getCookie
+    )
+    props.closeMoveCard()
+    props.closeCardEditAndDetail()
   }
 
   return (
     <div
       className='moveCardContainer'
       style={{
-        // display: props.cardMoveShow ? ' block' : ' none',
         marginTop: props.cardMoveShow ? `${props.moveCardPosition.y}px` : '0px',
         marginLeft: props.cardMoveShow ? `${props.moveCardPosition.x}px` : '0px'
       }}
@@ -108,4 +145,3 @@ export default function MoveCard (props) {
     </div>
   )
 }
-// fromboardId,toBoardId,fromListId,toListId,card,toIndex

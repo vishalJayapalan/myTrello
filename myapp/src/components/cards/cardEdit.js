@@ -1,7 +1,23 @@
 import React, { useState } from 'react'
-
+import { getCookie } from '../util/cookies'
+import { updateCardFunction, deleteCardFunction } from './cardFunctions'
 export default function CardEdit (props) {
   const [cardName, setCardName] = useState('')
+  function updateNExitCardEdit (event, cardName, listId, cardId) {
+    event.stopPropagation()
+    updateCardFunction(
+      props.boardId,
+      props.lists,
+      'cardName',
+      cardName,
+      listId,
+      cardId,
+      getCookie,
+      props.updateListState
+    )
+    // setCardEditToggle(false)
+    props.exitCardEdit(event)
+  }
   return (
     <div
       className='overlay'
@@ -30,12 +46,7 @@ export default function CardEdit (props) {
         <button
           className='cardEditSaveBtn'
           onClick={e =>
-            props.updateNExitCardEdit(
-              e,
-              cardName,
-              props.list._id,
-              props.card._id
-            )
+            updateNExitCardEdit(e, cardName, props.list._id, props.card._id)
           }
         >
           Save
@@ -47,7 +58,14 @@ export default function CardEdit (props) {
           <a>Change Due Date</a>
           <a
             onClick={e => {
-              props.deleteCard(props.boardId, props.list._id, props.card._id)
+              deleteCardFunction(
+                props.boardId,
+                props.lists,
+                props.list._id,
+                props.card._id,
+                getCookie,
+                props.updateListState
+              )
               props.exitCardEdit(e)
             }}
           >

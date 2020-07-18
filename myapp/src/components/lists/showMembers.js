@@ -1,7 +1,11 @@
 import React from 'react'
+import { removeTeamMemberFunction } from '../users/userFunctions'
+import { getCookie } from '../util/cookies'
 
 export default function ShowMembers (props) {
-  const teamUsers = props.users.filter(user => props.team.includes(user._id))
+  const teamUsers = props.users.filter(user =>
+    props.board.team.includes(user._id)
+  )
   return (
     <div
       className='showTeamContainer'
@@ -25,7 +29,16 @@ export default function ShowMembers (props) {
             {teamUser._id !== props.board.adminUser && (
               <i
                 className='fas fa-times removeFromTeam'
-                onClick={e => props.removeTeamMember(e)}
+                onClick={e =>
+                  removeTeamMemberFunction(
+                    e,
+                    props.board._id,
+                    props.user,
+                    getCookie,
+                    props.updateBoardState,
+                    props.updateBoardDeletedState
+                  )
+                }
               />
             )}
           </div>

@@ -26,4 +26,67 @@ async function createBoardFunction (boardName, getCookie) {
   const { boardId } = await response.json() // changed here
   return boardId
 }
-module.exports = { fetchBoardsFunction, createBoardFunction }
+
+async function deleteBoardFunction (
+  boardId,
+  getCookie,
+  updateBoardDeletedState
+) {
+  //   const boardId = props.match.params.boardId
+  await window.fetch(`http://localhost:8000/${boardId}`, {
+    method: 'DELETE',
+    headers: {
+      'x-auth-token': getCookie('x-auth-token')
+    }
+  })
+  //   setBoardDeleted(true)
+  updateBoardDeletedState()
+}
+async function updateBoardFunction (
+  boardId,
+  name,
+  value,
+  getCookie,
+  updateBoardState
+) {
+  //   setBoard({ ...board, [name]: value })
+  await window.fetch(`http://localhost:8000/${boardId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ name: name, value: value }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': getCookie('x-auth-token')
+    }
+  })
+  updateBoardState(name, value)
+}
+
+async function leaveBoardFunction (
+  boardId,
+  user,
+  getCookie,
+  updateBoardState,
+  updateBoardDeletedState
+) {
+  const data = await window.fetch(`http://localhost:8000/team/${boardId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ teamMemberId: user._id }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': getCookie('x-auth-token')
+    }
+  })
+  const jsonData = await data.json()
+  updateBoardState(jsonData)
+  updateBoardDeletedState()
+  // setBoard(jsonData)
+  // setBoardDeleted(true)
+}
+
+module.exports = {
+  fetchBoardsFunction,
+  createBoardFunction,
+  deleteBoardFunction,
+  updateBoardFunction,
+  leaveBoardFunction
+}

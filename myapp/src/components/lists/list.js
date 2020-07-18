@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from '../cards/card'
+import Cards from '../cards/cards'
 
 function List (props) {
   return (
@@ -20,37 +20,35 @@ function List (props) {
           }}
         />
       </div>
-      <div
-        className='cardsContainer'
-        onDragOver={e => props.dragOverCard(e)}
-        onDrop={e => {
-          props.dropCard(e, props.list._id)
-        }}
-      >
-        {props.list.cards.map(card => (
+
+      {/* {props.list.cards.map(card => (
           <Card
             displayCardFunction={props.displayCardFunction}
-            updateCardName={props.updateCardName}
             cardEditFunction={props.cardEditFunction}
             key={card._id}
             listId={props.list._id}
-            dragStartCard={props.dragStartCard}
-            dragEndCard={props.dragEndCard}
+            // dragStartCard={props.dragStartCard}
+            // dragEndCard={props.dragEndCard}
             card={card}
             list={props.list}
           />
-        ))}
-        <input
-          className='newCardInput'
-          onKeyUp={e => {
-            if (e.target.value && e.keyCode === 13) {
-              return props.createCard(e, props.list._id)
-            }
-          }}
-          placeholder='+ Add New Card....'
-        />
-      </div>
+        ))} */}
+      <Cards
+        displayCardFunction={props.displayCardFunction}
+        cardEditFunction={props.cardEditFunction}
+        // key={card._id}
+        // listId={props.list._id}
+        // dragStartCard={props.dragStartCard}
+        // dragEndCard={props.dragEndCard}
+        // card={card}
+        lists={props.lists}
+        updateListState={props.updateListState}
+        dropCard={props.dropCard}
+        boardId={props.boardId}
+        list={props.list}
+      />
     </div>
+    // </div>
   )
 }
 

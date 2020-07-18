@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { deleteCardFunction, updateCardFunction } from './cardFunctions'
+import { getCookie } from '../util/cookies'
 
 export default function CardDetails (props) {
-  console.log(props)
+  // console.log(props)
   // const [moveCardPosition, setMoveCardPosition] = useState([])
   // const [moveCardShow, setMoveCardShow] = useState(false)
   // const [inBoard, setInBoard] = useState(
@@ -50,11 +52,15 @@ export default function CardDetails (props) {
             defaultValue={props.card.cardName}
             spellCheck='false'
             onBlur={e =>
-              props.updateCard(
+              updateCardFunction(
+                props.boardId,
+                props.lists,
                 'cardName',
                 e.target.value,
                 props.list._id,
-                props.card._id
+                props.card._id,
+                getCookie,
+                props.updateListState
               )
             }
           />
@@ -104,10 +110,13 @@ export default function CardDetails (props) {
               <a
                 className='darker'
                 onClick={e => {
-                  props.deleteCard(
+                  deleteCardFunction(
                     props.boardId,
+                    props.lists,
                     props.list._id,
-                    props.card._id
+                    props.card._id,
+                    getCookie,
+                    props.updateListState
                   )
                   props.exitCardDetails(e)
                 }}

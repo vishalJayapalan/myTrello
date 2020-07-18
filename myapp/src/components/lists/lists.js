@@ -12,14 +12,12 @@ import InviteToBoard from './inviteToBoard.js'
 import ShowMembers from './showMembers'
 import MoveCard from '../cards/moveCard'
 import { getCookie } from '../util/cookies'
-import dragCard from '../cards/dragCard'
 import boardFunctions from '../boards/boardFunctions'
 
 export default function Lists (props) {
   const [logout, setLogout] = useState(false)
   const [boards, setBoards] = useState([])
   const [lists, setLists] = useState([])
-  // const [cardList, setCardList] = useState([])
   const [card, setCard] = useState([])
   const [board, setBoard] = useState([])
   const [list, setList] = useState([])
@@ -120,62 +118,6 @@ export default function Lists (props) {
     setLists([...lists, { listName, _id: jsonData.listId, cards: [] }])
   }
 
-  async function createCard (event, listId) {
-    const boardId = props.match.params.boardId
-    const cardName = event.target.value
-    event.target.value = ''
-    const data = await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ cardName: cardName, description: '' }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-    const jsonData = await data.json()
-    const newLists = lists.map(list => {
-      if (list._id === listId) {
-        list.cards.push({ cardName, _id: jsonData.cardId })
-      }
-      return list
-    })
-    setLists(newLists)
-  }
-
-  function handleDragStartCard (event, card, listId) {
-    event.persist()
-    dragCard.dragStartCard(event, card, listId)
-  }
-
-  function handleDragEndCard (event) {
-    event.persist()
-    dragCard.dragEndCard(event)
-  }
-
-  function handleDragOverCard (event) {
-    event.persist()
-    dragCard.dragOverCard(event)
-  }
-
-  async function handleDropCard (event, listId) {
-    event.persist()
-    const boardId = props.match.params.boardId
-    const prevListId = event.dataTransfer.getData('prevListId')
-    const moveCard = JSON.parse(event.dataTransfer.getData('card'))
-    await deleteCard(boardId, prevListId, moveCard._id)
-    const { newLists, cardIndex } = dragCard.dropCard(
-      event,
-      listId,
-      lists,
-      moveCard
-    )
-    setLists(newLists)
-    await createCardAtIndex(boardId, listId, cardIndex, moveCard)
-  }
-
   async function createListAtIndex (boardId, list, listIndex) {
     await window.fetch(`http://localhost:8000/board/${boardId}/${listIndex}`, {
       method: 'POST',
@@ -185,20 +127,6 @@ export default function Lists (props) {
         'x-auth-token': getCookie('x-auth-token')
       }
     })
-  }
-
-  async function createCardAtIndex (boardId, listId, cardIndex, moveCard) {
-    await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(moveCard),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
   }
 
   async function updateListName (event, listId) {
@@ -223,26 +151,11 @@ export default function Lists (props) {
     )
   }
 
-  async function updateBoard (name, value) {
+  function updateBoardState (name, value) {
     setBoard({ ...board, [name]: value })
-    await window.fetch(`http://localhost:8000/${props.match.params.boardId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ name: name, value: value }),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
   }
 
-  async function deleteBoard () {
-    const boardId = props.match.params.boardId
-    await window.fetch(`http://localhost:8000/${boardId}`, {
-      method: 'DELETE',
-      headers: {
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
+  function updateBoardDeletedState () {
     setBoardDeleted(true)
   }
 
@@ -257,59 +170,9 @@ export default function Lists (props) {
     setListActionToggle(false)
   }
 
-  async function updateCard (name, cardName, listId, cardId) {
-    const boardId = props.match.params.boardId
-    const newLists = lists.map(list => {
-      if (list._id === listId) {
-        const newCards = list.cards.map(card => {
-          if (card._id === cardId) {
-            card[`${name}`] = cardName
-          }
-          return card
-        })
-        list.cards = newCards
-      }
-
-      return list
-    })
-    setLists(newLists)
-    await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ name: name, value: cardName }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-  }
-
-  async function deleteCard (boardId, listId, cardId) {
-    await window.fetch(
-      `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-    const newLists = lists.map(list => {
-      if (list._id === listId) {
-        list.cards = list.cards.filter(card => card._id !== cardId)
-      }
-      return list
-    })
-    setLists(newLists)
-  }
-
   function cardDetailsTogglerFunction (event, card, list) {
     event.stopPropagation()
     setCard(card)
-    console.log(list)
-    // setCardList(list)
     setList(list)
     setCardDetailToggle(!cardDetailToggle)
   }
@@ -318,15 +181,12 @@ export default function Lists (props) {
     e.stopPropagation()
     const position = e.target.parentNode.getBoundingClientRect()
     setCard(card)
-    // setCardList(list)
     setList(list)
     setCardEditToggle(!cardEditToggle)
     setCardPosition(position)
   }
-
-  function updateNExitCardEdit (event, cardName, listId, cardId) {
-    event.stopPropagation()
-    updateCard('cardName', cardName, listId, cardId)
+  function closeCardEditAndDetail () {
+    setCardDetailToggle(false)
     setCardEditToggle(false)
   }
 
@@ -347,34 +207,8 @@ export default function Lists (props) {
     await setToBoard(boards.filter(board => board.boardName === boardName))
   }
 
-  // just for testing
   function updateListState (newLists) {
     setLists(newLists)
-  }
-
-  async function handleMoveCard (
-    fromBoardId,
-    toBoardId,
-    fromListId,
-    toListId,
-    card,
-    toIndex = 0
-  ) {
-    const cardId = card._id
-    // console.log('before', lists)
-    await deleteCard(fromBoardId, fromListId, cardId)
-    // console.log('after', lists)
-    const newLists = lists.map(list => {
-      if (list._id === toListId) {
-        list.cards.splice(toIndex, 0, card)
-      }
-      return list
-    })
-    setLists(newLists)
-    await createCardAtIndex(toBoardId, toListId, toIndex, card)
-    closeMoveCard()
-    setCardDetailToggle(false)
-    setCardEditToggle(false)
   }
 
   async function viewUsers (event) {
@@ -385,61 +219,6 @@ export default function Lists (props) {
 
   function closeInviteToBoard () {
     setShowUsersToTeamToggle(false)
-  }
-
-  async function addTeamMember (event) {
-    const teamMemberId = event.target.id
-    const data = await window.fetch(
-      `http://localhost:8000/team/${props.match.params.boardId}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ teamMemberId: teamMemberId }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-
-    const jsonData = await data.json()
-    setBoard(jsonData)
-  }
-
-  async function removeTeamMember (event) {
-    const teamMemberId = event.target.parentNode.id
-    const data = await window.fetch(
-      `http://localhost:8000/team/${props.match.params.boardId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ teamMemberId: teamMemberId }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-    const jsonData = await data.json()
-    setBoard(jsonData)
-    if (teamMemberId === user._id) {
-      setBoardDeleted(true)
-    }
-  }
-
-  async function leaveBoard () {
-    const data = await window.fetch(
-      `http://localhost:8000/team/${props.match.params.boardId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ teamMemberId: user._id }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      }
-    )
-    const jsonData = await data.json()
-    setBoard(jsonData)
-    setBoardDeleted(true)
   }
 
   async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
@@ -495,11 +274,9 @@ export default function Lists (props) {
   }
 
   async function changeInList (event) {
-    console.log('before', inList)
     await setInList(
       inBoard[0].lists.filter(list => list.listName === event.target.value)
     )
-    console.log('after', inList)
   }
 
   function renderRedirect () {
@@ -521,7 +298,13 @@ export default function Lists (props) {
           spellCheck='false'
           className='boardNameInList'
           onBlur={e => {
-            return updateBoard('boardName', e.target.value)
+            return boardFunctions.updateBoardFunction(
+              props.match.params.boardId,
+              'boardName',
+              e.target.value,
+              getCookie,
+              updateBoardState
+            )
           }}
         />
         <p className='showMembers' onClick={showMembers}>
@@ -543,12 +326,10 @@ export default function Lists (props) {
             cardDetailToggle={cardDetailToggle}
             key={list._id}
             list={list}
-            dragOverCard={handleDragOverCard}
-            dropCard={handleDropCard}
-            dragStartCard={handleDragStartCard}
-            dragEndCard={handleDragEndCard}
+            lists={lists}
+            boardId={props.match.params.boardId}
             updateListName={updateListName}
-            createCard={createCard}
+            updateListState={updateListState}
             openListActions={ListActionsTogglerFunction}
           />
         ))}
@@ -568,15 +349,14 @@ export default function Lists (props) {
         <CardDetails
           card={card}
           list={list}
+          lists={lists}
           boards={boards}
           openMoveCard={openMoveCard}
           closeMoveCard={closeMoveCard}
           boardId={props.match.params.boardId}
           detailShow={cardDetailToggle}
           exitCardDetails={cardDetailsTogglerFunction}
-          updateCard={updateCard}
-          deleteCard={deleteCard}
-          handleMoveCard={handleMoveCard}
+          updateListState={updateListState}
         />
       )}
       {cardEditToggle && (
@@ -585,12 +365,12 @@ export default function Lists (props) {
           boardId={props.match.params.boardId}
           card={card}
           list={list}
+          lists={lists}
           openMoveCard={openMoveCard}
           closeMoveCard={closeMoveCard}
-          updateNExitCardEdit={updateNExitCardEdit}
           exitCardEdit={cardEditTogglerFunction}
           cardPosition={cardPosition}
-          deleteCard={deleteCard}
+          updateListState={updateListState}
         />
       )}
       {listActionToggle && (
@@ -615,17 +395,17 @@ export default function Lists (props) {
           toBoard={toBoard}
           changeToBoard={changeToBoard}
           onMoveList={handleMoveList}
+          cardEditTogglerFunction={cardEditTogglerFunction}
         />
       )}
       {showMenuToggle && (
         <ShowMenuComponent
           showMenuToggle={showMenuToggle}
           showMenuToggler={showMenuTogglerFunction}
-          deleteBoard={deleteBoard}
+          updateBoardDeletedState={updateBoardDeletedState}
           user={user}
           board={board}
-          leaveBoard={leaveBoard}
-          updateBoard={updateBoard}
+          updateBoardState={updateBoardState}
         />
       )}
       {showUsersToTeamToggle && (
@@ -633,18 +413,20 @@ export default function Lists (props) {
           users={users}
           usersPosition={usersPosition}
           closeInviteToBoard={closeInviteToBoard}
-          addTeamMember={addTeamMember}
           team={board.team}
+          board={board}
+          updateBoardState={updateBoardState}
         />
       )}
       {showMembersToggle && (
         <ShowMembers
           users={users}
+          user={user}
           teamPosition={teamViewPosition}
-          team={board.team}
-          showMembers={showMembers}
-          removeTeamMember={removeTeamMember}
           board={board}
+          showMembers={showMembers}
+          updateBoardState={updateBoardState}
+          updateBoardDeletedState={updateBoardDeletedState}
         />
       )}
       {moveCardShow && (
@@ -660,10 +442,9 @@ export default function Lists (props) {
           changeInList={changeInList}
           inBoard={inBoard}
           changeInBoard={changeInBoard}
-          onMoveCard={handleMoveCard}
           updateListState={updateListState}
           lists={lists}
-          deleteCard={deleteCard}
+          closeCardEditAndDetail={closeCardEditAndDetail}
         />
       )}
     </div>

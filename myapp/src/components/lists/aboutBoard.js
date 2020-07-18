@@ -1,4 +1,6 @@
 import React from 'react'
+import { getCookie } from '../util/cookies'
+import { updateBoardFunction } from '../boards/boardFunctions'
 
 export default function AboutBoard (props) {
   return (
@@ -33,7 +35,13 @@ export default function AboutBoard (props) {
             defaultValue={props.board.description}
             placeholder="Its's your boards time to shine! let people know what this board is used for and what they can expect to see."
             onChange={event =>
-              props.updateBoard('description', event.target.value)
+              updateBoardFunction(
+                props.board._id,
+                'description',
+                event.target.value,
+                getCookie,
+                props.updateBoardState
+              )
             }
           />
         </div>

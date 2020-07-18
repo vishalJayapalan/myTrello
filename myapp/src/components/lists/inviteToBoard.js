@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { addTeamMemberFunction } from '../users/userFunctions'
+import { getCookie } from '../util/cookies'
 
 export default function InviteToBoard (props) {
   const [search, setSearch] = useState('')
@@ -40,7 +42,12 @@ export default function InviteToBoard (props) {
               key={user._id}
               id={user._id}
               onClick={e => {
-                props.addTeamMember(e)
+                addTeamMemberFunction(
+                  e,
+                  props.board._id,
+                  getCookie,
+                  props.updateBoardState
+                )
               }}
             >
               {user.userName}

@@ -5,6 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd myapp && npm run build",
+    "install-client": "cd myapp && npm install",
+    "herokhu-postbuild": "npm run install-client && npm run build",
     "start": "nodemon server.js"
   },
   "author": "vishal jayapalan",

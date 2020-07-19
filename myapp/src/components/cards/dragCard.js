@@ -92,7 +92,7 @@ function dropCardFunction (event, listId, lists, moveCard) {
 //   await createCardAtIndex(boardId, listId, cardIndex, moveCard)
 // }
 
-module.exports = {
+export {
   dragStartCardFunction,
   dragEndCardFunction,
   dragOverCardFunction,

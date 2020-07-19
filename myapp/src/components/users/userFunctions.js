@@ -45,4 +45,4 @@ async function addTeamMemberFunction (
   //   setBoard(jsonData)
 }
 
-module.exports = { removeTeamMemberFunction, addTeamMemberFunction }
+export { removeTeamMemberFunction, addTeamMemberFunction }

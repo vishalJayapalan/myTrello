@@ -13,7 +13,10 @@ import ShowMembers from './showMembers'
 import MoveCard from '../cards/moveCard'
 import CopyCard from '../cards/copyCard'
 import { getCookie } from '../util/cookies'
-import boardFunctions from '../boards/boardFunctions'
+import {
+  updateBoardFunction,
+  fetchBoardsFunction
+} from '../boards/boardFunctions'
 
 export default function Lists (props) {
   const [logout, setLogout] = useState(false)
@@ -77,9 +80,7 @@ export default function Lists (props) {
 
   async function fetchBoards () {
     try {
-      const { data, jsonData } = await boardFunctions.fetchBoardsFunction(
-        getCookie
-      )
+      const { data, jsonData } = await fetchBoardsFunction(getCookie)
       if (!(data.status >= 200 && data.status < 300)) {
         throw new Error(data.statusText)
       }
@@ -310,7 +311,7 @@ export default function Lists (props) {
           spellCheck='false'
           className='boardNameInList'
           onBlur={e => {
-            return boardFunctions.updateBoardFunction(
+            return updateBoardFunction(
               props.match.params.boardId,
               'boardName',
               e.target.value,

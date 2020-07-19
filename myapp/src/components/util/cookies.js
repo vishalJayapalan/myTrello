@@ -17,4 +17,4 @@ const setCookie = (name, value) => {
   document.cookie = name + '=' + value + ';' + expires + ';path=/'
 }
 
-module.exports = { getCookie, setCookie }
+export { getCookie, setCookie }

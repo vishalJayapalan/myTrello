@@ -120,7 +120,7 @@ async function createCardAtIndexFunction (
   )
 }
 
-module.exports = {
+export {
   deleteCardFunction,
   updateCardFunction,
   createCardFunction,

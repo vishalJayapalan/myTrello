@@ -35,7 +35,7 @@ export default function SignIn () {
   async function userLogin (event) {
     event.preventDefault()
     try {
-      const response = await window.fetch('http://localhost:8000/user/login', {
+      const response = await window.fetch('user/login', {
         method: 'POST',
         body: JSON.stringify({ email: email, password: password }),
         headers: {

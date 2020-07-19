@@ -31,7 +31,7 @@ const connection = mongoose.connection
 connection.once('open', () =>
   console.log('mongoDb connection established succesfully!!!!')
 )
-
+console.log(path.join(__dirname, 'myapp/build'))
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, './myapp/build')))
   app.get('*', (req, res) => {

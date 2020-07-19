@@ -106,6 +106,7 @@ async function createCardAtIndexFunction (
   moveCard,
   getCookie
 ) {
+  console.log('inFunc', moveCard)
   await window.fetch(
     `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
     {

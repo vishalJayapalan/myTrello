@@ -40,8 +40,10 @@ export default function CardDetails (props) {
       // style={{ display: props.detailShow ? ' block' : ' none' }}
       onClick={e => {
         if (e.target.className === 'overlay') {
-          props.exitCardDetails(e)
-          props.closeMoveCard(e)
+          props.closeCardEditAndDetail()
+
+          // props.exitCardDetails(e)
+          // props.closeMoveCard(e)
         }
       }}
     >
@@ -103,7 +105,9 @@ export default function CardDetails (props) {
               </a>
             </div>
             <div>
-              <a className='darker'>Copy</a>
+              <a className='darker' onClick={e => props.copyCardToggler(e)}>
+                Copy
+              </a>
             </div>
 
             <div>

@@ -11,6 +11,7 @@ import ShowMenuComponent from './showMenu'
 import InviteToBoard from './inviteToBoard.js'
 import ShowMembers from './showMembers'
 import MoveCard from '../cards/moveCard'
+import CopyCard from '../cards/copyCard'
 import { getCookie } from '../util/cookies'
 import boardFunctions from '../boards/boardFunctions'
 
@@ -39,8 +40,9 @@ export default function Lists (props) {
   const [showUsersToTeamToggle, setShowUsersToTeamToggle] = useState(false)
   const [showMembersToggle, setShowMembersToggle] = useState(false)
 
-  const [moveCardPosition, setMoveCardPosition] = useState([])
+  const [moveOrCopyCardPosition, setMoveOrCopyCardPosition] = useState([])
   const [moveCardShow, setMoveCardShow] = useState(false)
+  const [copyCardShow, setCopyCardShow] = useState(false)
   const [inBoard, setInBoard] = useState([])
   const [inList, setInList] = useState(props.list)
 
@@ -188,6 +190,8 @@ export default function Lists (props) {
   function closeCardEditAndDetail () {
     setCardDetailToggle(false)
     setCardEditToggle(false)
+    setMoveCardShow(false)
+    setCopyCardShow(false)
   }
 
   function ListActionsTogglerFunction (e, list) {
@@ -256,7 +260,7 @@ export default function Lists (props) {
 
   function openMoveCard (event) {
     const position = event.target.getBoundingClientRect()
-    setMoveCardPosition(position)
+    setMoveOrCopyCardPosition(position)
     setInBoard(boards.filter(board => board._id === props.match.params.boardId))
     setInList([list])
     setMoveCardShow(true)
@@ -264,6 +268,14 @@ export default function Lists (props) {
 
   function closeMoveCard (event) {
     setMoveCardShow(false)
+  }
+
+  function copyCardToggler (event) {
+    const position = event.target.getBoundingClientRect()
+    setMoveOrCopyCardPosition(position)
+    setInBoard(boards.filter(board => board._id === props.match.params.boardId))
+    setInList([list])
+    setCopyCardShow(!copyCardShow)
   }
 
   async function changeInBoard (event) {
@@ -357,6 +369,8 @@ export default function Lists (props) {
           detailShow={cardDetailToggle}
           exitCardDetails={cardDetailsTogglerFunction}
           updateListState={updateListState}
+          copyCardToggler={copyCardToggler}
+          closeCardEditAndDetail={closeCardEditAndDetail}
         />
       )}
       {cardEditToggle && (
@@ -371,6 +385,8 @@ export default function Lists (props) {
           exitCardEdit={cardEditTogglerFunction}
           cardPosition={cardPosition}
           updateListState={updateListState}
+          copyCardToggler={copyCardToggler}
+          closeCardEditAndDetail={closeCardEditAndDetail}
         />
       )}
       {listActionToggle && (
@@ -431,9 +447,26 @@ export default function Lists (props) {
       )}
       {moveCardShow && (
         <MoveCard
-          moveCardPosition={moveCardPosition}
+          moveOrCopyCardPosition={moveOrCopyCardPosition}
           cardMoveShow={moveCardShow}
           closeMoveCard={closeMoveCard}
+          card={card}
+          list={list}
+          boards={boards}
+          boardId={props.match.params.boardId}
+          inList={inList}
+          changeInList={changeInList}
+          inBoard={inBoard}
+          changeInBoard={changeInBoard}
+          updateListState={updateListState}
+          lists={lists}
+          closeCardEditAndDetail={closeCardEditAndDetail}
+        />
+      )}
+      {copyCardShow && (
+        <CopyCard
+          moveOrCopyCardPosition={moveOrCopyCardPosition}
+          copyCardToggler={copyCardToggler}
           card={card}
           list={list}
           boards={boards}

@@ -533,8 +533,40 @@ textarea {
 }
 
 .moveCardBtn {
-  margin-top: 10px;
-  margin-left: 40%;
+  margin: 10px 30% 10px 30%;
+  /* width: 40%; */
+}
+
+/* COPY CARD */
+.copyCardContainer {
+  background-color: white;
+  z-index: 2;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+}
+.copyCardTitleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.copyCardTitle {
+  margin: 10px 10px 10px 20px;
+}
+
+.copyCardName {
+  width: auto;
+}
+
+.copyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.copyCardBtn {
+  margin: 10px 30% 10px 30%;
 }
 
 /* CARD EDIT */

@@ -57,15 +57,12 @@ export default function Lists (props) {
     try {
       await fetchBoards()
       await fetchUsers()
-      const data = await window.fetch(
-        `http://localhost:8000/board/${props.match.params.boardId}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-auth-token': getCookie('x-auth-token')
-          }
+      const data = await window.fetch(`board/${props.match.params.boardId}`, {
+        method: 'GET',
+        headers: {
+          'x-auth-token': getCookie('x-auth-token')
         }
-      )
+      })
       if (data.status >= 200 && data.status < 300) {
         const jsonData = await data.json()
         setBoard(jsonData)
@@ -92,7 +89,7 @@ export default function Lists (props) {
   }
 
   async function fetchUsers () {
-    const response = await window.fetch('http://localhost:8000/user/all', {
+    const response = await window.fetch('/user/all', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -106,23 +103,20 @@ export default function Lists (props) {
   async function createList (event) {
     const listName = event.target.value
     event.target.value = ''
-    const data = await window.fetch(
-      `http://localhost:8000/board/${props.match.params.boardId}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ listName: listName }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    const data = await window.fetch(`board/${props.match.params.boardId}`, {
+      method: 'POST',
+      body: JSON.stringify({ listName: listName }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
     const jsonData = await data.json()
     setLists([...lists, { listName, _id: jsonData.listId, cards: [] }])
   }
 
   async function createListAtIndex (boardId, list, listIndex) {
-    await window.fetch(`http://localhost:8000/board/${boardId}/${listIndex}`, {
+    await window.fetch(`board/${boardId}/${listIndex}`, {
       method: 'POST',
       body: JSON.stringify(list),
       headers: {
@@ -141,17 +135,14 @@ export default function Lists (props) {
       return list
     })
     setLists(newLists)
-    await window.fetch(
-      `http://localhost:8000/board/${props.match.params.boardId}/${listId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ listName: value }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    await window.fetch(`board/${props.match.params.boardId}/${listId}/`, {
+      method: 'PUT',
+      body: JSON.stringify({ listName: value }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
   }
 
   function updateBoardState (name, value) {
@@ -166,7 +157,7 @@ export default function Lists (props) {
     const newLists = lists.filter(lis => lis._id !== list._id)
     setLists(newLists)
     const boardId = props.match.params.boardId
-    await window.fetch(`http://localhost:8000/board/${boardId}/${list._id}`, {
+    await window.fetch(`board/${boardId}/${list._id}/`, {
       method: 'DELETE',
       headers: { 'x-auth-token': getCookie('x-auth-token') }
     })

@@ -7,7 +7,7 @@ async function removeTeamMemberFunction (
   updateBoardDeletedState
 ) {
   const teamMemberId = event.target.parentNode.id
-  const data = await window.fetch(`http://localhost:8000/team/${boardId}`, {
+  const data = await window.fetch(`team/${boardId}`, {
     method: 'PUT',
     body: JSON.stringify({ teamMemberId: teamMemberId }),
     headers: {
@@ -31,7 +31,7 @@ async function addTeamMemberFunction (
   updateBoardState
 ) {
   const teamMemberId = event.target.id
-  const data = await window.fetch(`http://localhost:8000/team/${boardId}`, {
+  const data = await window.fetch(`team/${boardId}`, {
     method: 'POST',
     body: JSON.stringify({ teamMemberId: teamMemberId }),
     headers: {

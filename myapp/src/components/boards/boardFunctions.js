@@ -1,7 +1,7 @@
 // import { getCookie } from '../util/cookies'
 
 async function fetchBoardsFunction (getCookie) {
-  const data = await window.fetch('http://localhost:8000/', {
+  const data = await window.fetch('team/', {
     method: 'GET',
     headers: {
       'x-auth-token': getCookie('x-auth-token')
@@ -15,7 +15,7 @@ async function fetchBoardsFunction (getCookie) {
 }
 
 async function createBoardFunction (boardName, getCookie) {
-  const response = await window.fetch('http://localhost:8000/', {
+  const response = await window.fetch('team/', {
     method: 'POST',
     body: JSON.stringify({ boardName }),
     headers: {
@@ -33,7 +33,7 @@ async function deleteBoardFunction (
   updateBoardDeletedState
 ) {
   //   const boardId = props.match.params.boardId
-  await window.fetch(`http://localhost:8000/${boardId}`, {
+  await window.fetch(`${boardId}/`, {
     method: 'DELETE',
     headers: {
       'x-auth-token': getCookie('x-auth-token')
@@ -50,7 +50,7 @@ async function updateBoardFunction (
   updateBoardState
 ) {
   //   setBoard({ ...board, [name]: value })
-  await window.fetch(`http://localhost:8000/${boardId}`, {
+  await window.fetch(`${boardId}/`, {
     method: 'PUT',
     body: JSON.stringify({ name: name, value: value }),
     headers: {
@@ -68,7 +68,7 @@ async function leaveBoardFunction (
   updateBoardState,
   updateBoardDeletedState
 ) {
-  const data = await window.fetch(`http://localhost:8000/team/${boardId}`, {
+  const data = await window.fetch(`team/${boardId}`, {
     method: 'PUT',
     body: JSON.stringify({ teamMemberId: user._id }),
     headers: {

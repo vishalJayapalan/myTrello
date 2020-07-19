@@ -9,17 +9,14 @@ async function createCardFunction (
   //   const boardId = props.match.params.boardId
   const cardName = event.target.value
   event.target.value = ''
-  const data = await window.fetch(
-    `http://localhost:8000/board/card/${boardId}/${listId}`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ cardName: cardName, description: '' }),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
+  const data = await window.fetch(`board/card/${boardId}/${listId}`, {
+    method: 'POST',
+    body: JSON.stringify({ cardName: cardName, description: '' }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': getCookie('x-auth-token')
     }
-  )
+  })
   const jsonData = await data.json()
   const newLists = lists.map(list => {
     if (list._id === listId) {
@@ -39,15 +36,12 @@ async function deleteCardFunction (
   getCookie,
   updateListState
 ) {
-  await window.fetch(
-    `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'x-auth-token': getCookie('x-auth-token')
-      }
+  await window.fetch(`board/card/${boardId}/${listId}/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      'x-auth-token': getCookie('x-auth-token')
     }
-  )
+  })
   const newLists = lists.map(list => {
     if (list._id === listId) {
       list.cards = list.cards.filter(card => card._id !== cardId)
@@ -86,17 +80,14 @@ async function updateCardFunction (
   })
   updateListState(newLists)
   //   setLists(newLists)
-  await window.fetch(
-    `http://localhost:8000/board/card/${boardId}/${listId}/${cardId}`,
-    {
-      method: 'PUT',
-      body: JSON.stringify({ name: name, value: cardName }),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
+  await window.fetch(`board/card/${boardId}/${listId}/${cardId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ name: name, value: cardName }),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': getCookie('x-auth-token')
     }
-  )
+  })
 }
 
 async function createCardAtIndexFunction (
@@ -106,18 +97,14 @@ async function createCardAtIndexFunction (
   moveCard,
   getCookie
 ) {
-  console.log('inFunc', moveCard)
-  await window.fetch(
-    `http://localhost:8000/board/card/${boardId}/${listId}/${cardIndex}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(moveCard),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
+  await window.fetch(`board/card/${boardId}/${listId}/${cardIndex}`, {
+    method: 'POST',
+    body: JSON.stringify(moveCard),
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': getCookie('x-auth-token')
     }
-  )
+  })
 }
 
 export {

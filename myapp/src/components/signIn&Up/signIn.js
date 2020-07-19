@@ -13,25 +13,6 @@ export default function SignIn () {
     token && setLogin(true)
   }, [])
 
-  // const setCookie = (name, value) => {
-  //   const d = new Date()
-  //   d.setTime(d.getTime() + 60 * 60 * 1000)
-  //   const expires = 'expires=' + d.toUTCString()
-  //   document.cookie = name + '=' + value + ';' + expires + ';path=/'
-  // }
-
-  // function getCookie (cookieName) {
-  //   const name = cookieName + '='
-  //   const cookies = document.cookie.split(';')
-  //   for (let index = 0; index < cookies.length; index++) {
-  //     const cookie = cookies[index].trim()
-  //     if (cookie.startsWith(name)) {
-  //       return cookie.slice(name.length, cookie.length)
-  //     }
-  //   }
-  //   return ''
-  // }
-
   async function userLogin (event) {
     event.preventDefault()
     try {
@@ -45,6 +26,7 @@ export default function SignIn () {
 
       if (response.status >= 200 && response.status < 300) {
         const jsonData = await response.json()
+        console.log('inhere')
         // console.log(jsonData)
         setEmail('')
         setPassword('')

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { getCookie } from '../util/cookies'
 import { updateCardFunction, deleteCardFunction } from './cardFunctions'
 export default function CardEdit (props) {
-  const [cardName, setCardName] = useState('')
+  const [cardName, setCardName] = useState(props.card.cardName)
   function updateNExitCardEdit (event, cardName, listId, cardId) {
     event.stopPropagation()
     updateCardFunction(
@@ -39,7 +39,7 @@ export default function CardEdit (props) {
       >
         <div className='cardEditTextarea'>
           <textarea
-            defaultValue={props.card.cardName}
+            value={cardName}
             onChange={e => setCardName(e.target.value)}
             // onKeyUp={e => props.editCardName(e)}
           />

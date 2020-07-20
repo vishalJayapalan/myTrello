@@ -10,7 +10,7 @@ export default function SignUp () {
   const [password, setPassword] = useState('')
   useEffect(() => {
     const token = getCookie('x-auth-token')
-    if (token) setLogin(true)
+    token && setLogin(true)
   }, [])
 
   async function userSignUp (event) {

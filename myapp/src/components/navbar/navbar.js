@@ -27,11 +27,12 @@ export default function Navbar ({ user }) {
         <p className='navP'>Trello </p>
       </Link>
 
-      <div>
+      <div className='userAndLogout'>
+        {user && <span className='navSpan'>welcome {user.userName}</span>}
         <button className='button' onClick={() => logoutAndReroute()}>
           Logout
         </button>
-        {user && <p className='navSpan'>User: {user.userName}</p>}
+
         {/* <button className='button'>+</button>
         <button className='button'>i</button>
         <button className='button'>notification</button> */}

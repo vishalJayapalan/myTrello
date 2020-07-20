@@ -82,7 +82,7 @@ i {
 }
 
 .navSpan {
-  /* color: white; */
+  color: white;
   height: 25px;
   margin: 4px 2px;
   cursor: auto;
@@ -393,10 +393,8 @@ hr {
   margin: 5px 0px 0px 7.5px;
   padding: 5px;
   background-color: white;
-  margin: black;
   cursor: pointer;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-  /* border: 1px solid black; */
 }
 
 .newCardInput {
@@ -694,7 +692,6 @@ textarea {
   position: fixed;
   width: 20vw;
   background-color: white;
-  /* display: none; */
   border: 1px solid black;
 }
 
@@ -730,7 +727,6 @@ textarea {
   position: fixed;
   width: 20vw;
   background-color: white;
-  /* display: none; */
   border: 1px solid black;
 }
 
@@ -738,4 +734,9 @@ textarea {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
+}
+
+.userAndLogout {
+  display: flex;
+  justify-content: space-between;
 }

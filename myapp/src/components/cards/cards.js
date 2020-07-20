@@ -43,10 +43,10 @@ export default function Cards (props) {
     <div>
       <div
         className='cardsContainer'
-        onDragOver={e => dragOverCardFunction(e)}
-        onDrop={e => {
-          handleDropCard(e, props.list._id)
-        }}
+        // onDragOver={e => dragOverCardFunction(e)}
+        // onDrop={e => {
+        //   handleDropCard(e, props.list._id)
+        // }}
       >
         {props.list.cards.map(card => (
           <Card
@@ -56,10 +56,17 @@ export default function Cards (props) {
             listId={props.list._id}
             card={card}
             list={props.list}
+            lists={props.lists}
+            boardId={props.boardId}
+            updateListState={props.updateListState}
           />
         ))}
         <input
           className='newCardInput'
+          onDragOver={e => dragOverCardFunction(e)}
+          onDrop={e => {
+            handleDropCard(e, props.list._id)
+          }}
           onKeyUp={e => {
             if (e.target.value && e.keyCode === 13) {
               return createCardFunction(

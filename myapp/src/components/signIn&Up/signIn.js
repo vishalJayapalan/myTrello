@@ -26,7 +26,6 @@ export default function SignIn () {
 
       if (response.status >= 200 && response.status < 300) {
         const jsonData = await response.json()
-        console.log('inhere')
         // console.log(jsonData)
         setEmail('')
         setPassword('')

@@ -1,33 +1,32 @@
-function dragStartCardFunction (event, card, listId) {
+function dragStartListFunction (event, list) {
   const target = event.target
-  event.dataTransfer.setData('card', JSON.stringify(card))
-  event.dataTransfer.setData('prevListId', listId)
-  // event.target.classList.add('dragging')
+  event.dataTransfer.setData('list', JSON.stringify(list))
+  //   event.dataTransfer.setData('prevListId', listId)
+  //   event.target.classList.add('dragging')
 
   setTimeout(() => {
     target.style.display = 'none'
   }, 0)
 }
 
-function dragEndCardFunction (event) {
+function dragEndListFunction (event) {
   event.target.style.display = 'flex'
 }
 
-function dragOverCardFunction (event) {
+function dragOverListFunction (event) {
   event.preventDefault()
   const target = event.target
-  console.log(target.parentNode.className === 'cardsContainer')
   const childs = event.target.parentNode.childNodes
   for (const child of Array.from(childs)) {
-    if (child.style.display !== 'none') child.style = 'margin-top:5px'
+    if (child.style.display !== 'none') child.style = 'margin-left:10px'
   }
-  target.style = 'margin-top:20px'
+  target.style = 'margin-left:30px'
 }
-const dragCardLeaveFunction = event => {
-  event.currentTarget.style = 'margin-top:5px'
+const dragListLeaveFunction = event => {
+  event.currentTarget.style = 'margin-left:5px'
 }
 
-function dropCardFunction (event, listId, lists, moveCard) {
+function dropListFunction (event, listId, lists, moveCard) {
   //   const boardId = props.match.params.boardId
   const target = event.target
   let cardIndex = 0
@@ -59,9 +58,9 @@ function dropCardFunction (event, listId, lists, moveCard) {
 }
 
 export {
-  dragStartCardFunction,
-  dragEndCardFunction,
-  dragOverCardFunction,
-  dropCardFunction,
-  dragCardLeaveFunction
+  dragStartListFunction,
+  dragEndListFunction,
+  dragOverListFunction,
+  dropListFunction,
+  dragListLeaveFunction
 }

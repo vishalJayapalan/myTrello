@@ -114,7 +114,8 @@ i {
 }
 
 .newList {
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
+  background-color: hsla(0, 0%, 100%, 0.24);
   display: flex;
   align-items: center;
   height: 50px;
@@ -127,6 +128,15 @@ i {
   border: none;
   margin-left: 5px;
   outline: none;
+  /* color: #fff; */
+  color: white;
+  /* display: none; */
+  padding: 6px 8px;
+  /* transition: color 85ms ease-in; */
+}
+
+.createNewList::placeholder {
+  color: white;
 }
 
 .boardsContainer {
@@ -221,7 +231,7 @@ i {
   line-height: 32px;
   padding: 0 4px;
   border-radius: 3px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .showMenu:hover {
@@ -253,9 +263,10 @@ i {
 .menu {
   background-color: inherit;
   padding: 5px;
+  cursor: pointer;
 }
 .menu:hover {
-  background-color: rgb(228, 218, 230);
+  background-color: rgb(245, 247, 244);
 }
 
 hr {
@@ -345,12 +356,30 @@ hr {
 }
 
 /* LIST ACTIONS */
+.listActionsPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  /* z-index: 2; */
+  /* cursor: pointer; */
+}
+
 .listActionsContainer {
   position: fixed;
   width: 15vw;
   background-color: white;
-  display: none;
-  border: 1px solid black;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  /* border: 1px solid black; */
+  border-radius: 5px;
+}
+
+.closeListActions {
+  margin-top: 4.5px;
 }
 
 .listActionTitleContainer {
@@ -361,7 +390,22 @@ hr {
   margin-top: 4.5px;
   margin-left: 4.5px;
   font-size: 125%;
-  font-weight: bold;
+  /* font-style: italic; */
+  /* font-weight: bold; */
+}
+.listActionsContents {
+  display: flex;
+  flex-direction: column;
+}
+
+.listActionContent {
+  margin: 2.5% 0 2.5% 0;
+  padding: 0.5% 10% 2.5% 10%;
+  cursor: pointer;
+}
+
+.listActionContent:hover {
+  background-color: rgb(245, 247, 244);
 }
 
 /* .listNameInput {
@@ -370,9 +414,9 @@ hr {
   background-color: rgb(203, 216, 228);
 } */
 
-.dropMargin {
+/* .dropMargin {
   margin-top: 30px;
-}
+} */
 
 .cardsContainer {
   display: flex;
@@ -402,6 +446,8 @@ hr {
   border: none;
   outline: none;
   background-color: inherit;
+  resize: vertical;
+  overflow-wrap: break-word;
 }
 
 .fa-edit {
@@ -431,8 +477,10 @@ hr {
   border-radius: 5px;
   margin-top: 7.5vh;
   margin-left: 17.5vw;
-  width: 65vw;
-  height: 75vh;
+  /* width: 65vw; */
+  /* height: 75vh; */
+  height: 75%;
+  width: 65%;
 }
 
 .nameCardDetails {
@@ -506,6 +554,16 @@ textarea {
 }
 
 /* MOVE CARD */
+.moveCardPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
 
 .moveCardContainer {
   background-color: white;
@@ -513,11 +571,18 @@ textarea {
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 17.5vw;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px;
 }
 .moveCardTitleContainer {
   display: flex;
   justify-content: space-between;
+}
+
+.closeMoveCard {
+  margin: 5%;
+  padding: 1.5%;
 }
 
 .moveCardTitle {
@@ -527,7 +592,8 @@ textarea {
 .moveCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 2.5%;
+  align-items: stretch;
 }
 
 .moveCardBtn {
@@ -536,13 +602,26 @@ textarea {
 }
 
 /* COPY CARD */
+.copyCardPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
 .copyCardContainer {
   background-color: white;
   z-index: 2;
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 17.5vw;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px;
 }
 .copyCardTitleContainer {
   display: flex;
@@ -550,7 +629,12 @@ textarea {
 }
 
 .copyCardTitle {
+  font-size: 125%;
   margin: 10px 10px 10px 20px;
+}
+.closeCopyCard {
+  margin: 5%;
+  padding: 1.5%;
 }
 
 .copyCardName {
@@ -560,7 +644,9 @@ textarea {
 .copyCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  padding: 2.5%;
+  align-items: stretch;
 }
 
 .copyCardBtn {
@@ -656,6 +742,18 @@ textarea {
 }
 
 /* moveList */
+.moveListPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  /* z-index: 2; */
+  /* cursor: pointer; */
+}
 
 .moveListContainer {
   background-color: white;
@@ -663,7 +761,9 @@ textarea {
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: 15vw;
+  width: 17.5vw;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px;
 }
 .moveListTitleContainer {
   display: flex;
@@ -677,28 +777,51 @@ textarea {
 
 .moveList {
   display: flex;
-  /* flex-direction: column; */
-  align-items: center;
+  flex-direction: column;
+  padding: 2.5%;
+  align-items: stretch;
 }
 
 .moveListBtn {
-  margin-top: 10px;
-  margin-left: 40%;
+  margin: 10px 30% 10px 30%;
 }
 
 /* INVITE TO BOARD */
+
+.inviteToBoardPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  /* z-index: 2; */
+  /* cursor: pointer; */
+}
 
 .inviteToBoardContainer {
   position: fixed;
   width: 20vw;
   background-color: white;
-  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px;
+  /* border: 1px solid black; */
 }
 
 .inviteToBoardTitleContainer {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
+}
+
+.inviteToBoardMember {
+  margin: 2.5% 10% 2.5% 10%;
+  cursor: pointer;
+}
+.inviteToBoardMember:hover {
+  background-color: rgb(245, 247, 244);
 }
 
 .inviteToBoardInput {
@@ -723,17 +846,51 @@ textarea {
 
 /* SHOW TEAM */
 
+.showTeamPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  /* z-index: 2; */
+  /* cursor: pointer; */
+}
+
 .showTeamContainer {
   position: fixed;
   width: 20vw;
   background-color: white;
-  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px;
+  /* border: 1px solid black; */
 }
 
 .showTeamTitleContainer {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
+}
+
+.teamMemberContainer {
+  /* margin-left: 10%; */
+  display: flex;
+  justify-content: space-between;
+}
+
+.teamMemberContainer:hover {
+  background-color: rgb(245, 247, 244);
+}
+
+.teamMember {
+  margin: 2.5% 10% 2.5% 10%;
+  cursor: unset;
+}
+.removeFromTeam {
+  margin-right: 5%;
+  margin-top: 2.5%;
 }
 
 .userAndLogout {

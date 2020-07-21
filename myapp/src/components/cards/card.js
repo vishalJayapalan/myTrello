@@ -4,7 +4,7 @@ import {
   dragEndCardFunction,
   dragOverCardFunction,
   dropCardFunction,
-  dragLeaveFunction
+  dragCardLeaveFunction
 } from './dragCard'
 import { getCookie } from '../util/cookies'
 import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
@@ -49,7 +49,7 @@ export default function card (props) {
       onDrop={e => {
         handleDropCard(e, props.list._id)
       }}
-      onDragLeave={e => dragLeaveFunction(e)}
+      onDragLeave={e => dragCardLeaveFunction(e)}
       draggable='true'
       onClick={e => props.displayCardFunction(e, props.card, props.list)}
     >

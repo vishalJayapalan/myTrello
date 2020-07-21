@@ -1,9 +1,54 @@
 import React from 'react'
 import Cards from '../cards/cards'
-
+// import {
+//   dragStartListFunction,
+//   dragEndListFunction,
+//   dragListLeaveFunction,
+//   dragOverListFunction
+// } from './dragList'
+// import { getCookie } from '../util/cookies'
 function List (props) {
+  // async function handleDropList (event, listId) {
+  //   event.persist()
+  //   const boardId = props.boardId
+  //   const prevListId = event.dataTransfer.getData('prevListId')
+  //   const moveCard = JSON.parse(event.dataTransfer.getData('card'))
+  //   await deleteCardFunction(
+  //     boardId,
+  //     props.lists,
+  //     prevListId,
+  //     moveCard._id,
+  //     getCookie,
+  //     props.updateListState
+  //   )
+  //   const { newLists, cardIndex } = dropCardFunction(
+  //     event,
+  //     listId,
+  //     props.lists,
+  //     moveCard
+  //   )
+  //   // setLists(newLists)
+  //   props.updateListState(newLists)
+  //   await createCardAtIndexFunction(
+  //     boardId,
+  //     listId,
+  //     cardIndex,
+  //     moveCard,
+  //     getCookie
+  //   )
+  // }
   return (
-    <div className='listContainer'>
+    <div
+      className='listContainer'
+      // onDragStart={e => dragStartListFunction(e, props.card, props.listId)}
+      // onDragEnd={e => dragEndListFunction(e)}
+      // onDragOver={e => dragOverListFunction(e)}
+      // onDrop={e => {
+      //   handleDropList(e, props.list._id)
+      // }}
+      // onDragLeave={e => dragListLeaveFunction(e)}
+      // draggable='true'
+    >
       <div className='listNameContainer'>
         <textarea
           className='listName'

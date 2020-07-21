@@ -16,43 +16,52 @@ export default function InviteToBoard (props) {
 
   return (
     <div
-      className='inviteToBoardContainer'
-      style={{
-        marginTop: `${props.usersPosition.y + 30}px`,
-        marginLeft: `${props.usersPosition.x}px`
-      }}
+      className='inviteToBoardPage'
+      onClick={e =>
+        e.target.className === 'inviteToBoardPage' &&
+        props.closeInviteToBoard(e)
+      }
     >
-      <div className='inviteToBoardTitleContainer'>
-        <span>Invite To Board</span>
-        <i
-          className='fas fa-times closeInviteToBoard'
-          onClick={() => props.closeInviteToBoard()}
-        />
-      </div>
-      <hr />
-      <div>
-        <input
-          className='inviteToBoardInput'
-          onChange={e => setSearch(e.target.value)}
-          placeholder='userName'
-        />
+      <div
+        className='inviteToBoardContainer'
+        style={{
+          marginTop: `${props.usersPosition.y + 30}px`,
+          marginLeft: `${props.usersPosition.x}px`
+        }}
+      >
+        <div className='inviteToBoardTitleContainer'>
+          <span>Invite To Board</span>
+          <i
+            className='fas fa-times closeInviteToBoard'
+            onClick={() => props.closeInviteToBoard()}
+          />
+        </div>
+        <hr />
         <div>
-          {searchUsers.map(user => (
-            <p
-              key={user._id}
-              id={user._id}
-              onClick={e => {
-                addTeamMemberFunction(
-                  e,
-                  props.board._id,
-                  getCookie,
-                  props.updateBoardState
-                )
-              }}
-            >
-              {user.userName}
-            </p>
-          ))}
+          <input
+            className='inviteToBoardInput'
+            onChange={e => setSearch(e.target.value)}
+            placeholder='userName'
+          />
+          <div>
+            {searchUsers.map(user => (
+              <p
+                className='inviteToBoardMember'
+                key={user._id}
+                id={user._id}
+                onClick={e => {
+                  addTeamMemberFunction(
+                    e,
+                    props.board._id,
+                    getCookie,
+                    props.updateBoardState
+                  )
+                }}
+              >
+                {user.userName}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>

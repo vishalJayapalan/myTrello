@@ -431,15 +431,21 @@ hr {
   justify-content: space-between;
   /* overflow-wrap: break-word; */
   overflow: hidden;
-}
 
-.draggable {
   margin: 5px 0px 0px 7.5px;
   padding: 5px;
   background-color: white;
   cursor: pointer;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 }
+
+/* .draggable {
+  margin: 5px 0px 0px 7.5px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+} */
 
 .newCardInput {
   margin: 7.5px;

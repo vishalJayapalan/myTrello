@@ -1,11 +1,12 @@
 import React from 'react'
 import Cards from '../cards/cards'
-// import {
-//   dragStartListFunction,
-//   dragEndListFunction,
-//   dragListLeaveFunction,
-//   dragOverListFunction
-// } from './dragList'
+import {
+  dragStartListFunction,
+  dragEndListFunction,
+  dragListLeaveFunction,
+  dragOverListFunction,
+  dropListFunction
+} from './dragList'
 // import { getCookie } from '../util/cookies'
 function List (props) {
   // async function handleDropList (event, listId) {
@@ -40,14 +41,14 @@ function List (props) {
   return (
     <div
       className='listContainer'
-      // onDragStart={e => dragStartListFunction(e, props.card, props.listId)}
-      // onDragEnd={e => dragEndListFunction(e)}
-      // onDragOver={e => dragOverListFunction(e)}
-      // onDrop={e => {
-      //   handleDropList(e, props.list._id)
-      // }}
-      // onDragLeave={e => dragListLeaveFunction(e)}
-      // draggable='true'
+      onDragStart={e => dragStartListFunction(e, props.list)}
+      onDragEnd={e => dragEndListFunction(e)}
+      onDragOver={e => dragOverListFunction(e)}
+      onDrop={e => {
+        dropListFunction(e, props.list._id)
+      }}
+      onDragLeave={e => dragListLeaveFunction(e)}
+      draggable='true'
     >
       <div className='listNameContainer'>
         <textarea
@@ -66,18 +67,6 @@ function List (props) {
         />
       </div>
 
-      {/* {props.list.cards.map(card => (
-          <Card
-            displayCardFunction={props.displayCardFunction}
-            cardEditFunction={props.cardEditFunction}
-            key={card._id}
-            listId={props.list._id}
-            // dragStartCard={props.dragStartCard}
-            // dragEndCard={props.dragEndCard}
-            card={card}
-            list={props.list}
-          />
-        ))} */}
       <Cards
         displayCardFunction={props.displayCardFunction}
         cardEditFunction={props.cardEditFunction}
@@ -87,7 +76,7 @@ function List (props) {
         // dragEndCard={props.dragEndCard}
         // card={card}
         lists={props.lists}
-        updateListState={props.updateListState}
+        updateListsState={props.updateListsState}
         dropCard={props.dropCard}
         boardId={props.boardId}
         list={props.list}

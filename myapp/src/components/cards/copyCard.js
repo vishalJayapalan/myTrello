@@ -23,7 +23,7 @@ export default function CopyCard (props) {
       }
       return list
     })
-    props.updateListState(newLists)
+    props.updateListsState(newLists)
     await createCardAtIndexFunction(
       toBoardId,
       toListId,

@@ -21,7 +21,7 @@ export default function MoveCard (props) {
       fromListId,
       cardId,
       getCookie,
-      props.updateListState
+      props.updateListsState
     )
     const newLists = props.lists.map(list => {
       if (list._id === toListId) {
@@ -29,7 +29,7 @@ export default function MoveCard (props) {
       }
       return list
     })
-    props.updateListState(newLists)
+    props.updateListsState(newLists)
     await createCardAtIndexFunction(
       toBoardId,
       toListId,

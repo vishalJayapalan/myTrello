@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { deleteCardFunction, updateCardFunction } from './cardFunctions'
 import { getCookie } from '../util/cookies'
 
@@ -62,7 +62,7 @@ export default function CardDetails (props) {
                 props.list._id,
                 props.card._id,
                 getCookie,
-                props.updateListState
+                props.updateListsState
               )
             }
           />
@@ -120,7 +120,7 @@ export default function CardDetails (props) {
                     props.list._id,
                     props.card._id,
                     getCookie,
-                    props.updateListState
+                    props.updateListsState
                   )
                   props.exitCardDetails(e)
                 }}

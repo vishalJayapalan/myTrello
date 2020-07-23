@@ -13,7 +13,7 @@ export default function CardEdit (props) {
       listId,
       cardId,
       getCookie,
-      props.updateListState
+      props.updateListsState
     )
     // setCardEditToggle(false)
     props.exitCardEdit(event)
@@ -65,7 +65,7 @@ export default function CardEdit (props) {
                 props.list._id,
                 props.card._id,
                 getCookie,
-                props.updateListState
+                props.updateListsState
               )
               props.exitCardEdit(e)
             }}

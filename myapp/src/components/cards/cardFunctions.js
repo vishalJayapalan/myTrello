@@ -1,10 +1,12 @@
+// import { getCookie } from '../util/cookies'
+
 async function createCardFunction (
   event,
   boardId,
   lists,
   listId,
   getCookie,
-  updateListState
+  updateListsState
 ) {
   //   const boardId = props.match.params.boardId
   const cardName = event.target.value
@@ -24,7 +26,7 @@ async function createCardFunction (
     }
     return list
   })
-  updateListState(newLists)
+  updateListsState(newLists)
   //   setLists(newLists)
 }
 
@@ -34,7 +36,7 @@ async function deleteCardFunction (
   listId,
   cardId,
   getCookie,
-  updateListState
+  updateListsState
 ) {
   await window.fetch(`board/card/${boardId}/${listId}/${cardId}`, {
     method: 'DELETE',
@@ -48,7 +50,7 @@ async function deleteCardFunction (
     }
     return list
   })
-  updateListState(newLists)
+  updateListsState(newLists)
 
   return newLists
   // setLists(newLists)
@@ -62,7 +64,7 @@ async function updateCardFunction (
   listId,
   cardId,
   getCookie,
-  updateListState
+  updateListsState
 ) {
   // const boardId = props.match.params.boardId
   const newLists = lists.map(list => {
@@ -78,7 +80,7 @@ async function updateCardFunction (
 
     return list
   })
-  updateListState(newLists)
+  updateListsState(newLists)
   //   setLists(newLists)
   await window.fetch(`board/card/${boardId}/${listId}/${cardId}`, {
     method: 'PUT',

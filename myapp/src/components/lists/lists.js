@@ -203,7 +203,7 @@ export default function Lists (props) {
     await setToBoard(boards.filter(board => board.boardName === boardName))
   }
 
-  function updateListState (newLists) {
+  function updateListsState (newLists) {
     setLists(newLists)
   }
 
@@ -333,7 +333,7 @@ export default function Lists (props) {
             lists={lists}
             boardId={props.match.params.boardId}
             updateListName={updateListName}
-            updateListState={updateListState}
+            updateListsState={updateListsState}
             openListActions={ListActionsTogglerFunction}
           />
         ))}
@@ -360,7 +360,7 @@ export default function Lists (props) {
           boardId={props.match.params.boardId}
           detailShow={cardDetailToggle}
           exitCardDetails={cardDetailsTogglerFunction}
-          updateListState={updateListState}
+          updateListsState={updateListsState}
           copyCardToggler={copyCardToggler}
           closeCardEditAndDetail={closeCardEditAndDetail}
         />
@@ -376,7 +376,7 @@ export default function Lists (props) {
           closeMoveCard={closeMoveCard}
           exitCardEdit={cardEditTogglerFunction}
           cardPosition={cardPosition}
-          updateListState={updateListState}
+          updateListsState={updateListsState}
           copyCardToggler={copyCardToggler}
           closeCardEditAndDetail={closeCardEditAndDetail}
         />
@@ -450,7 +450,7 @@ export default function Lists (props) {
           changeInList={changeInList}
           inBoard={inBoard}
           changeInBoard={changeInBoard}
-          updateListState={updateListState}
+          updateListsState={updateListsState}
           lists={lists}
           closeCardEditAndDetail={closeCardEditAndDetail}
         />
@@ -467,7 +467,7 @@ export default function Lists (props) {
           changeInList={changeInList}
           inBoard={inBoard}
           changeInBoard={changeInBoard}
-          updateListState={updateListState}
+          updateListsState={updateListsState}
           lists={lists}
           closeCardEditAndDetail={closeCardEditAndDetail}
         />

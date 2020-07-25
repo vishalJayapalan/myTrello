@@ -91,7 +91,7 @@ const registerUser = async (req, res) => {
     const token = user.generateAuthToken()
     res
       .status(201)
-      // .header('x-auth-token', token)
+      .header('x-auth-token', token)
       .json({
         token: token
       })

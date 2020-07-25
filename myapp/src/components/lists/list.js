@@ -7,6 +7,7 @@ import {
   dragOverListFunction,
   dropListFunction
 } from './dragList'
+import { updateListName } from './listFunctions'
 // import { getCookie } from '../util/cookies'
 function List (props) {
   // async function handleDropList (event, listId) {
@@ -56,7 +57,13 @@ function List (props) {
           spellCheck='false'
           defaultValue={props.list.listName}
           onBlur={e => {
-            return props.updateListName(e, props.list._id)
+            return updateListName(
+              e.target.value,
+              props.boardId,
+              props.lists,
+              props.list._id,
+              props.updateListsState
+            )
           }}
         />
         <i

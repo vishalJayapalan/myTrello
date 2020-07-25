@@ -17,6 +17,7 @@ import {
   updateBoardFunction,
   fetchBoardsFunction
 } from '../boards/boardFunctions'
+import { deleteList, createList, createListAtIndex } from './listFunctions'
 
 export default function Lists (props) {
   const [logout, setLogout] = useState(false)
@@ -100,68 +101,12 @@ export default function Lists (props) {
     setUsers(jsonResp)
   }
 
-  async function createList (event) {
-    const listName = event.target.value
-    event.target.value = ''
-    const data = await window.fetch(`board/${props.match.params.boardId}`, {
-      method: 'POST',
-      body: JSON.stringify({ listName: listName }),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
-    const jsonData = await data.json()
-    setLists([...lists, { listName, _id: jsonData.listId, cards: [] }])
-  }
-
-  async function createListAtIndex (boardId, list, listIndex) {
-    await window.fetch(`board/${boardId}/${listIndex}`, {
-      method: 'POST',
-      body: JSON.stringify(list),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
-  }
-
-  async function updateListName (event, listId) {
-    const value = event.target.value
-    const newLists = lists.map(list => {
-      if (list._id === listId) {
-        list.listName = value
-      }
-      return list
-    })
-    setLists(newLists)
-    await window.fetch(`board/${props.match.params.boardId}/${listId}/`, {
-      method: 'PUT',
-      body: JSON.stringify({ listName: value }),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
-  }
-
   function updateBoardState (name, value) {
     setBoard({ ...board, [name]: value })
   }
 
   function updateBoardDeletedState () {
     setBoardDeleted(true)
-  }
-
-  async function deleteList () {
-    const newLists = lists.filter(lis => lis._id !== list._id)
-    setLists(newLists)
-    const boardId = props.match.params.boardId
-    await window.fetch(`board/${boardId}/${list._id}/`, {
-      method: 'DELETE',
-      headers: { 'x-auth-token': getCookie('x-auth-token') }
-    })
-    setListActionToggle(false)
   }
 
   function cardDetailsTogglerFunction (event, card, list) {
@@ -207,6 +152,10 @@ export default function Lists (props) {
     setLists(newLists)
   }
 
+  function updateListActionToggle () {
+    setListActionToggle(false)
+  }
+
   async function viewUsers (event) {
     const box = event.target.getBoundingClientRect()
     setUsersPosition(box)
@@ -219,7 +168,13 @@ export default function Lists (props) {
 
   async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
     setList(moveList)
-    await deleteList()
+    await deleteList(
+      fromBoardId,
+      lists,
+      list,
+      updateListsState,
+      updateListActionToggle
+    )
 
     const newBoards = boards.map(board => {
       if (board._id === fromBoardId) {
@@ -332,7 +287,6 @@ export default function Lists (props) {
             list={list}
             lists={lists}
             boardId={props.match.params.boardId}
-            updateListName={updateListName}
             updateListsState={updateListsState}
             openListActions={ListActionsTogglerFunction}
           />
@@ -343,7 +297,12 @@ export default function Lists (props) {
             placeholder='+ Add Another List...'
             onKeyUp={event => {
               if (event.target.value && event.keyCode === 13) {
-                return createList(event)
+                return createList(
+                  event,
+                  props.match.params.boardId,
+                  lists,
+                  updateListsState
+                )
               }
             }}
           />
@@ -386,7 +345,11 @@ export default function Lists (props) {
           listActionShow={listActionToggle}
           listPosition={listPosition}
           closeListActions={ListActionsTogglerFunction}
-          deleteList={deleteList}
+          lists={lists}
+          list={list}
+          boardId={props.match.params.boardId}
+          updateListsState={updateListsState}
+          updateListActionToggle={updateListActionToggle}
           openMoveList={moveListToggler}
         />
       )}

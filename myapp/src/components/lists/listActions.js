@@ -1,6 +1,14 @@
 import React from 'react'
+import { deleteList } from './listFunctions'
 
 export default function ListActions (props) {
+  const {
+    boardId,
+    lists,
+    list,
+    updateListsState,
+    updateListActionToggle
+  } = props
   return (
     <div
       className='listActionsPage'
@@ -29,7 +37,18 @@ export default function ListActions (props) {
           <p className='listActionContent' onClick={() => props.openMoveList()}>
             Move List
           </p>
-          <p className='listActionContent' onClick={() => props.deleteList()}>
+          <p
+            className='listActionContent'
+            onClick={() =>
+              deleteList(
+                boardId,
+                lists,
+                list,
+                updateListsState,
+                updateListActionToggle
+              )
+            }
+          >
             DeleteList
           </p>
         </div>

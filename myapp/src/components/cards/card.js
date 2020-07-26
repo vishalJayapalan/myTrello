@@ -44,19 +44,29 @@ export default function card (props) {
     <p
       className='card'
       id={props.card._id}
-      onDragStart={e => dragStartCardFunction(e, props.card, props.listId)}
-      onDragEnd={e => dragEndCardFunction(e)}
-      onDragOver={e => dragOverCardFunction(e)}
-      onDrop={e => {
-        dropCardFunction(
+      onDragStart={e =>
+        dragStartCardFunction(
           e,
-          props.boardId,
-          props.lists,
-          props.list._id,
-          props.updateListsState
+          props.card,
+          props.listId,
+          props.dragCardToggler
         )
+      }
+      onDragEnd={e => {
+        props.dragCard && dragEndCardFunction(e, props.dragCardToggler)
       }}
-      onDragLeave={e => dragCardLeaveFunction(e)}
+      onDragOver={e => props.dragCard && dragOverCardFunction(e)}
+      onDrop={e => {
+        props.dragCard &&
+          dropCardFunction(
+            e,
+            props.boardId,
+            props.lists,
+            props.list._id,
+            props.updateListsState
+          )
+      }}
+      onDragLeave={e => props.dragCard && dragCardLeaveFunction(e)}
       draggable='true'
       onClick={e => props.displayCardFunction(e, props.card, props.list)}
     >

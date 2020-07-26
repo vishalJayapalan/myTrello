@@ -42,13 +42,29 @@ function List (props) {
   return (
     <div
       className='listContainer'
-      onDragStart={e => dragStartListFunction(e, props.list)}
-      onDragEnd={e => dragEndListFunction(e)}
-      onDragOver={e => dragOverListFunction(e)}
+      id={props.list._id}
+      onDragStart={e =>
+        dragStartListFunction(e, props.list, props.dragListToggler)
+      }
+      onDragEnd={e =>
+        props.dragList && dragEndListFunction(e, props.dragListToggler)
+      }
+      onDragOver={e => props.dragList && dragOverListFunction(e)}
       onDrop={e => {
-        dropListFunction(e, props.list._id)
+        props.dragList &&
+          dropListFunction(
+            e,
+            props.boardId,
+            props.lists,
+            props.boards,
+            props.updateListsState,
+            props.updateListActionToggle,
+            props.updateListMoveToggle,
+            props.updateBoardsState,
+            props.dragListToggler
+          )
       }}
-      onDragLeave={e => dragListLeaveFunction(e)}
+      onDragLeave={e => props.dragList && dragListLeaveFunction(e)}
       draggable='true'
     >
       <div className='listNameContainer'>
@@ -87,6 +103,8 @@ function List (props) {
         dropCard={props.dropCard}
         boardId={props.boardId}
         list={props.list}
+        dragCard={props.dragCard}
+        dragCardToggler={props.dragCardToggler}
       />
     </div>
     // </div>

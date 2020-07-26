@@ -65,4 +65,55 @@ async function updateListName (name, boardId, lists, listId, updateListsState) {
   })
 }
 
-export { createList, createListAtIndex, deleteList, updateListName }
+// fromBoardId,toBoardId,moveList,toIndex,boards,lists,updateListsState,updatelistMoveToggle,updateListActionToggle,updateBoardsState
+async function moveListFunction (
+  fromBoardId,
+  toBoardId,
+  moveList,
+  toIndex,
+  boards,
+  lists,
+  updateListsState,
+  updateListMoveToggle,
+  updateListActionToggle,
+  updateBoardsState
+) {
+  // setList(moveList)
+  // updateListState(moveList)
+  await deleteList(
+    fromBoardId,
+    lists,
+    moveList,
+    updateListsState,
+    updateListActionToggle
+  )
+
+  const newBoards = boards.map(board => {
+    if (board._id === fromBoardId) {
+      const newLists = board.lists.filter(list => list._id !== moveList._id)
+      board.lists = newLists
+    }
+    if (board._id === toBoardId) {
+      board.lists.splice(toIndex, 0, moveList)
+    }
+    return board
+  })
+  updateBoardsState(newBoards)
+  // setBoards(newBoards)
+  const board = newBoards.filter(board => {
+    return board._id === fromBoardId
+  })
+  // setLists(board[0].lists)
+  updateListsState(board[0].lists)
+  // setListMoveToggle(false)
+  updateListMoveToggle(false)
+  await createListAtIndex(toBoardId, moveList, toIndex)
+}
+
+export {
+  createList,
+  createListAtIndex,
+  deleteList,
+  updateListName,
+  moveListFunction
+}

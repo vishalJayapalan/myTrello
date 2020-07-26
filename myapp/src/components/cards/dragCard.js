@@ -2,22 +2,23 @@ import { getCookie } from '../util/cookies'
 
 import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
 
-function dragStartCardFunction (event, card, listId) {
+function dragStartCardFunction (event, card, listId, dragCardToggler) {
   const target = event.target
   event.stopPropagation()
-  event.dataTransfer.setData('type', 'card')
+  // event.dataTransfer.setData('type', 'card')
   event.dataTransfer.setData('card', JSON.stringify(card))
   event.dataTransfer.setData('prevListId', listId)
-
+  dragCardToggler(true)
   setTimeout(() => {
     target.style.display = 'none'
   }, 0)
 }
 
-function dragEndCardFunction (event) {
+function dragEndCardFunction (event, dragCardToggler) {
   event.stopPropagation()
-
-  if (event.target.className === 'card') event.target.style.display = 'flex'
+  dragCardToggler(false)
+  console.log('dropEnd')
+  event.target.style.display = 'flex'
 }
 
 function dragOverCardFunction (event) {
@@ -52,56 +53,56 @@ async function dropCardFunction (
   listId,
   updateListsState
 ) {
+  console.log('drop')
   event.persist()
   event.stopPropagation()
+  // if (event.dataTransfer.getData('type') === 'card') {
+  const prevListId = event.dataTransfer.getData('prevListId')
+  const moveCard = JSON.parse(event.dataTransfer.getData('card'))
+  await deleteCardFunction(
+    boardId,
+    lists,
+    prevListId,
+    moveCard._id,
+    getCookie,
+    updateListsState
+  )
 
-  if (event.dataTransfer.getData('type') === 'card') {
-    const prevListId = event.dataTransfer.getData('prevListId')
-    const moveCard = JSON.parse(event.dataTransfer.getData('card'))
-    await deleteCardFunction(
-      boardId,
-      lists,
-      prevListId,
-      moveCard._id,
-      getCookie,
-      updateListsState
-    )
+  const target = event.target
+  let cardIndex = 0
 
-    const target = event.target
-    let cardIndex = 0
+  const box = target.getBoundingClientRect()
+  const offset = event.clientY - box.top - box.height / 2
+  target.style = 'margin-top:5px'
 
-    const box = target.getBoundingClientRect()
-    const offset = event.clientY - box.top - box.height / 2
-    target.style = 'margin-top:5px'
-
-    const newLists = lists.map(list => {
-      if (list._id === listId) {
-        let index = list.cards.length
-        for (let i = 0; i < list.cards.length; i++) {
-          if (list.cards[i]._id === target.id) {
-            if (offset > 0) {
-              index = i + 1
-            } else {
-              index = i
-            }
+  const newLists = lists.map(list => {
+    if (list._id === listId) {
+      let index = list.cards.length
+      for (let i = 0; i < list.cards.length; i++) {
+        if (list.cards[i]._id === target.id) {
+          if (offset > 0) {
+            index = i + 1
+          } else {
+            index = i
           }
         }
-        cardIndex = index
-        list.cards.splice(index, 0, moveCard)
-        // console.log(list.cards)
       }
-      return list
-    })
+      cardIndex = index
+      list.cards.splice(index, 0, moveCard)
+      // console.log(list.cards)
+    }
+    return list
+  })
 
-    updateListsState(newLists)
-    await createCardAtIndexFunction(
-      boardId,
-      listId,
-      cardIndex,
-      moveCard,
-      getCookie
-    )
-  }
+  updateListsState(newLists)
+  await createCardAtIndexFunction(
+    boardId,
+    listId,
+    cardIndex,
+    moveCard,
+    getCookie
+  )
+  // }
 }
 
 export {

@@ -2,7 +2,12 @@ import React from 'react'
 import Card from './card'
 import { getCookie } from '../util/cookies'
 import { createCardFunction } from './cardFunctions'
-import { dragOverCardFunction, dropCardFunction } from './dragCard'
+import {
+  dragOverCardFunction,
+  dropCardFunction,
+  dragEndCardFunction,
+  dragCardLeaveFunction
+} from './dragCard'
 
 export default function Cards (props) {
   // async function handleDropCard (event, listId) {
@@ -55,19 +60,26 @@ export default function Cards (props) {
             lists={props.lists}
             boardId={props.boardId}
             updateListsState={props.updateListsState}
+            dragCard={props.dragCard}
+            dragCardToggler={props.dragCardToggler}
           />
         ))}
         <input
           className='newCardInput'
-          onDragOver={e => dragOverCardFunction(e)}
+          onDragOver={e => props.dragCard && dragOverCardFunction(e)}
+          onDragEnd={e => {
+            props.dragCard && dragEndCardFunction(e, props.dragCardToggler)
+          }}
+          onDragLeave={e => props.dragCard && dragCardLeaveFunction(e)}
           onDrop={e => {
-            dropCardFunction(
-              e,
-              props.boardId,
-              props.lists,
-              props.list._id,
-              props.updateListsState
-            )
+            props.dragCard &&
+              dropCardFunction(
+                e,
+                props.boardId,
+                props.lists,
+                props.list._id,
+                props.updateListsState
+              )
           }}
           onKeyUp={e => {
             if (e.target.value && e.keyCode === 13) {

@@ -18,6 +18,12 @@ import {
   fetchBoardsFunction
 } from '../boards/boardFunctions'
 import { deleteList, createList, createListAtIndex } from './listFunctions'
+import {
+  dragListLeaveFunction,
+  dropListFunction,
+  dragOverListFunction,
+  dragEndListFunction
+} from './dragList'
 
 export default function Lists (props) {
   const [logout, setLogout] = useState(false)
@@ -49,6 +55,9 @@ export default function Lists (props) {
   const [copyCardShow, setCopyCardShow] = useState(false)
   const [inBoard, setInBoard] = useState([])
   const [inList, setInList] = useState(props.list)
+
+  const [dragCard, setDragCard] = useState(false)
+  const [dragList, setDragList] = useState(false)
 
   useEffect(() => {
     fetchList()
@@ -156,6 +165,14 @@ export default function Lists (props) {
     setListActionToggle(false)
   }
 
+  function updateListMoveToggle () {
+    setListMoveToggle(false)
+  }
+
+  function updateBoardsState (newBoards) {
+    setBoards(newBoards)
+  }
+
   async function viewUsers (event) {
     const box = event.target.getBoundingClientRect()
     setUsersPosition(box)
@@ -166,34 +183,34 @@ export default function Lists (props) {
     setShowUsersToTeamToggle(false)
   }
 
-  async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
-    setList(moveList)
-    await deleteList(
-      fromBoardId,
-      lists,
-      list,
-      updateListsState,
-      updateListActionToggle
-    )
+  // async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
+  //   setList(moveList)
+  //   await deleteList(
+  //     fromBoardId,
+  //     lists,
+  //     list,
+  //     updateListsState,
+  //     updateListActionToggle
+  //   )
 
-    const newBoards = boards.map(board => {
-      if (board._id === fromBoardId) {
-        const newLists = board.lists.filter(list => list._id !== moveList._id)
-        board.lists = newLists
-      }
-      if (board._id === toBoardId) {
-        board.lists.splice(toIndex, 0, list)
-      }
-      return board
-    })
-    setBoards(newBoards)
-    const board = newBoards.filter(board => {
-      return board._id === props.match.params.boardId
-    })
-    setLists(board[0].lists)
-    setListMoveToggle(false)
-    await createListAtIndex(toBoardId, moveList, toIndex)
-  }
+  //   const newBoards = boards.map(board => {
+  //     if (board._id === fromBoardId) {
+  //       const newLists = board.lists.filter(list => list._id !== moveList._id)
+  //       board.lists = newLists
+  //     }
+  //     if (board._id === toBoardId) {
+  //       board.lists.splice(toIndex, 0, list)
+  //     }
+  //     return board
+  //   })
+  //   setBoards(newBoards)
+  //   const board = newBoards.filter(board => {
+  //     return board._id === props.match.params.boardId
+  //   })
+  //   setLists(board[0].lists)
+  //   setListMoveToggle(false)
+  //   await createListAtIndex(toBoardId, moveList, toIndex)
+  // }
 
   function showMenuTogglerFunction () {
     setShowMenuToggle(!showMenuToggle)
@@ -223,6 +240,15 @@ export default function Lists (props) {
     setInBoard(boards.filter(board => board._id === props.match.params.boardId))
     setInList([list])
     setCopyCardShow(!copyCardShow)
+  }
+
+  function dragCardToggler (dragStatus) {
+    setDragCard(dragStatus)
+  }
+
+  function dragListToggler (dragStatus) {
+    console.log(dragStatus)
+    setDragList(dragStatus)
   }
 
   async function changeInBoard (event) {
@@ -286,9 +312,17 @@ export default function Lists (props) {
             key={list._id}
             list={list}
             lists={lists}
+            boards={boards}
+            updateListActionToggle={updateListActionToggle}
+            updateBoardsState={updateBoardsState}
+            updateListMoveToggle={updateListMoveToggle}
             boardId={props.match.params.boardId}
             updateListsState={updateListsState}
             openListActions={ListActionsTogglerFunction}
+            dragCardToggler={dragCardToggler}
+            dragListToggler={dragListToggler}
+            dragList={dragList}
+            dragCard={dragCard}
           />
         ))}
         <div className='newList'>
@@ -305,6 +339,23 @@ export default function Lists (props) {
                 )
               }
             }}
+            onDragEnd={e => dragList && dragEndListFunction(e, dragListToggler)}
+            onDragOver={e => dragList && dragOverListFunction(e)}
+            onDrop={e => {
+              dragList &&
+                dropListFunction(
+                  e,
+                  props.match.params.boardId,
+                  lists,
+                  boards,
+                  updateListsState,
+                  updateListActionToggle,
+                  updateListMoveToggle,
+                  updateBoardsState,
+                  dragListToggler
+                )
+            }}
+            onDragLeave={e => dragList && dragListLeaveFunction(e)}
           />
         </div>
       </div>
@@ -365,8 +416,12 @@ export default function Lists (props) {
           board={board}
           toBoard={toBoard}
           changeToBoard={changeToBoard}
-          onMoveList={handleMoveList}
+          // onMoveList={handleMoveList}
+          updateListsState={updateListsState}
+          updateListMoveToggle={updateListMoveToggle}
           cardEditTogglerFunction={cardEditTogglerFunction}
+          updateListActionToggle={updateListActionToggle}
+          updateBoardsState={updateBoardsState}
         />
       )}
       {showMenuToggle && (

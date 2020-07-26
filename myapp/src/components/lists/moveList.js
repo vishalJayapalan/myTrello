@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { moveListFunction } from './listFunctions'
 
 export default function MoveList (props) {
   // listMoveSHow moveListPosition closeMoveListChangeInBoard boards
@@ -63,14 +64,17 @@ export default function MoveList (props) {
         <button
           className='moveListBtn'
           onClick={() =>
-            props.onMoveList(
+            moveListFunction(
               props.boardId,
               props.toBoard[0]._id,
-              // props.list._id,
-              // props.inList[0]._id,
-              // props.card,
               props.list,
-              inPosition
+              inPosition,
+              props.boards,
+              props.lists,
+              props.updateListsState,
+              props.updateListMoveToggle,
+              props.updateListActionToggle,
+              props.updateBoardsState
             )
           }
         >

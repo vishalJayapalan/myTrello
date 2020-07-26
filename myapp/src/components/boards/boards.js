@@ -17,7 +17,8 @@ export default function Boards (props) {
   async function fetchBoards () {
     try {
       const { data, jsonData } = await fetchBoardsFunction(getCookie)
-      if (!(data.status >= 200 && data.status < 300)) {
+      // console.log(data.ok)
+      if (!data.ok) {
         throw new Error(data.statusText)
       }
       setUser(jsonData.user)

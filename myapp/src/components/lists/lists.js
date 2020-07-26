@@ -73,9 +73,11 @@ export default function Lists (props) {
           'x-auth-token': getCookie('x-auth-token')
         }
       })
-      if (data.status >= 200 && data.status < 300) {
+      // if (data.status >= 200 && data.status < 300) {
+      if (data.ok) {
         const jsonData = await data.json()
         setBoard(jsonData)
+        setInBoard(jsonData)
         setLists(jsonData.lists)
       } else {
         throw new Error(data.statusText)
@@ -88,7 +90,8 @@ export default function Lists (props) {
   async function fetchBoards () {
     try {
       const { data, jsonData } = await fetchBoardsFunction(getCookie)
-      if (!(data.status >= 200 && data.status < 300)) {
+      if (!data.ok) {
+        // if (!(data.status >= 200 && data.status < 300)) {
         throw new Error(data.statusText)
       }
       setUser(jsonData.user)
@@ -142,6 +145,9 @@ export default function Lists (props) {
 
   function ListActionsTogglerFunction (e, list) {
     setList(list)
+    setInList(list)
+    // setInBoard({ ...inBoard, lists: lists })
+    // console.log(inBoard)
     const box = e.target.getBoundingClientRect()
     setListPosition(box)
     setToBoard(boards.filter(board => board._id === props.match.params.boardId))
@@ -183,35 +189,6 @@ export default function Lists (props) {
     setShowUsersToTeamToggle(false)
   }
 
-  // async function handleMoveList (fromBoardId, toBoardId, moveList, toIndex) {
-  //   setList(moveList)
-  //   await deleteList(
-  //     fromBoardId,
-  //     lists,
-  //     list,
-  //     updateListsState,
-  //     updateListActionToggle
-  //   )
-
-  //   const newBoards = boards.map(board => {
-  //     if (board._id === fromBoardId) {
-  //       const newLists = board.lists.filter(list => list._id !== moveList._id)
-  //       board.lists = newLists
-  //     }
-  //     if (board._id === toBoardId) {
-  //       board.lists.splice(toIndex, 0, list)
-  //     }
-  //     return board
-  //   })
-  //   setBoards(newBoards)
-  //   const board = newBoards.filter(board => {
-  //     return board._id === props.match.params.boardId
-  //   })
-  //   setLists(board[0].lists)
-  //   setListMoveToggle(false)
-  //   await createListAtIndex(toBoardId, moveList, toIndex)
-  // }
-
   function showMenuTogglerFunction () {
     setShowMenuToggle(!showMenuToggle)
   }
@@ -226,6 +203,8 @@ export default function Lists (props) {
     const position = event.target.getBoundingClientRect()
     setMoveOrCopyCardPosition(position)
     setInBoard(boards.filter(board => board._id === props.match.params.boardId))
+    setInBoard({ ...inBoard, lists: lists })
+    setBoard({ ...board, lists: lists })
     setInList([list])
     setMoveCardShow(true)
   }
@@ -252,15 +231,19 @@ export default function Lists (props) {
   }
 
   async function changeInBoard (event) {
+    console.log(event.target.value)
+    console.log(boards)
     await setInBoard(
-      boards.filter(board => board.boardName === event.target.value)
+      boards.filter(board => board.boardName === event.target.value)[0]
     )
-    await setInList([inBoard[0].lists[0]])
+    console.log('inBoard', inBoard)
+    await setInList(inBoard.lists)
+    console.log('inList', inList)
   }
 
   async function changeInList (event) {
     await setInList(
-      inBoard[0].lists.filter(list => list.listName === event.target.value)
+      inBoard.lists.filter(list => list.listName === event.target.value)
     )
   }
 

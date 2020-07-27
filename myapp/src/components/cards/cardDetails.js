@@ -77,11 +77,15 @@ export default function CardDetails (props) {
             placeholder='Add a more detailed Description'
             value={props.card.cardDescription}
             onChange={e =>
-              props.updateCard(
+              updateCardFunction(
+                props.boardId,
+                props.lists,
                 'cardDescription',
                 e.target.value,
                 props.list._id,
-                props.card._id
+                props.card._id,
+                getCookie,
+                props.updateListsState
               )
             }
           />

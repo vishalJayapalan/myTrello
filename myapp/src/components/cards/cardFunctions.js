@@ -1,4 +1,4 @@
-// import { getCookie } from '../util/cookies'
+import { getCookie } from '../util/cookies'
 
 async function createCardFunction (
   event,
@@ -67,6 +67,7 @@ async function updateCardFunction (
   updateListsState
 ) {
   // const boardId = props.match.params.boardId
+  // console.log(lists, listId)
   const newLists = lists.map(list => {
     if (list._id === listId) {
       const newCards = list.cards.map(card => {

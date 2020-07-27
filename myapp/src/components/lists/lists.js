@@ -216,7 +216,10 @@ export default function Lists (props) {
   function copyCardToggler (event) {
     const position = event.target.getBoundingClientRect()
     setMoveOrCopyCardPosition(position)
-    setInBoard(boards.filter(board => board._id === props.match.params.boardId))
+    setInBoard(
+      boards.filter(board => board._id === props.match.params.boardId)[0]
+    )
+    setInBoard({ ...inBoard, lists: lists })
     setInList([list])
     setCopyCardShow(!copyCardShow)
   }

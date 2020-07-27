@@ -5,7 +5,7 @@ import { createCardAtIndexFunction } from './cardFunctions'
 export default function CopyCard (props) {
   const [inPosition, setPosition] = useState(0)
   const [newCardName, setNewCardName] = useState(props.card.cardName)
-
+  console.log(props)
   async function handleCopyCard (
     // fromBoardId,
     toBoardId,
@@ -74,7 +74,7 @@ export default function CopyCard (props) {
             onChange={e => {
               props.changeInBoard(e)
             }}
-            value={props.inBoard[0].boardName}
+            value={props.inBoard.boardName}
           >
             {props.boards.map(board => (
               <option key={board._id} id={board.id}>
@@ -90,12 +90,11 @@ export default function CopyCard (props) {
             onChange={e => props.changeInList(e)}
             value={props.inList[0].listName}
           >
-            {props.inBoard.length &&
-              props.inBoard[0].lists.map(list => (
-                <option key={list._id} id={list._id}>
-                  {list.listName}
-                </option>
-              ))}
+            {props.inBoard.lists.map(list => (
+              <option key={list._id} id={list._id}>
+                {list.listName}
+              </option>
+            ))}
           </select>
         </div>
         <div className='copyCard copyCardPosition'>
@@ -104,12 +103,11 @@ export default function CopyCard (props) {
             className='copyCardSelect'
             onChange={e => setPosition(e.target.value)}
           >
-            {props.inBoard.length &&
-              props.inList[0].cards.map(card => (
-                <option key={card._id + '1'}>
-                  {props.inList[0].cards.indexOf(card)}
-                </option>
-              ))}
+            {props.inList[0].cards.map(card => (
+              <option key={card._id + '1'}>
+                {props.inList[0].cards.indexOf(card)}
+              </option>
+            ))}
           </select>
         </div>
         <button
@@ -118,7 +116,7 @@ export default function CopyCard (props) {
             // props.onMoveCard(
             handleCopyCard(
               //   props.boardId,
-              props.inBoard[0]._id,
+              props.inBoard._id,
               //   props.list._id,
               props.inList[0]._id,
               props.card,

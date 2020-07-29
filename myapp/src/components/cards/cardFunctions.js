@@ -1,5 +1,3 @@
-import { getCookie } from '../util/cookies'
-
 async function createCardFunction (
   event,
   boardId,
@@ -8,7 +6,6 @@ async function createCardFunction (
   getCookie,
   updateListsState
 ) {
-  //   const boardId = props.match.params.boardId
   const cardName = event.target.value
   event.target.value = ''
   const data = await window.fetch(`board/card/${boardId}/${listId}`, {
@@ -27,7 +24,6 @@ async function createCardFunction (
     return list
   })
   updateListsState(newLists)
-  //   setLists(newLists)
 }
 
 async function deleteCardFunction (
@@ -53,7 +49,6 @@ async function deleteCardFunction (
   updateListsState(newLists)
 
   return newLists
-  // setLists(newLists)
 }
 
 async function updateCardFunction (
@@ -66,8 +61,6 @@ async function updateCardFunction (
   getCookie,
   updateListsState
 ) {
-  // const boardId = props.match.params.boardId
-  // console.log(lists, listId)
   const newLists = lists.map(list => {
     if (list._id === listId) {
       const newCards = list.cards.map(card => {
@@ -82,7 +75,6 @@ async function updateCardFunction (
     return list
   })
   updateListsState(newLists)
-  //   setLists(newLists)
   await window.fetch(`board/card/${boardId}/${listId}/${cardId}`, {
     method: 'PUT',
     body: JSON.stringify({ name: name, value: cardName }),

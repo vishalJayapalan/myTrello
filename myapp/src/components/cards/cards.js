@@ -10,45 +10,9 @@ import {
 } from './dragCard'
 
 export default function Cards (props) {
-  // async function handleDropCard (event, listId) {
-  //   event.persist()
-  //   const boardId = props.boardId
-  //   const prevListId = event.dataTransfer.getData('prevListId')
-  //   const moveCard = JSON.parse(event.dataTransfer.getData('card'))
-  //   await deleteCardFunction(
-  //     boardId,
-  //     props.lists,
-  //     prevListId,
-  //     moveCard._id,
-  //     getCookie,
-  //     props.updateListsState
-  //   )
-  //   const { newLists, cardIndex } = dropCardFunction(
-  //     event,
-  //     listId,
-  //     props.lists,
-  //     moveCard
-  //   )
-  //   // setLists(newLists)
-  //   props.updateListsState(newLists)
-  //   await createCardAtIndexFunction(
-  //     boardId,
-  //     listId,
-  //     cardIndex,
-  //     moveCard,
-  //     getCookie
-  //   )
-  // }
-
   return (
     <div>
-      <div
-        className='cardsContainer'
-        // onDragOver={e => dragOverCardFunction(e)}
-        // onDrop={e => {
-        //   handleDropCard(e, props.list._id)
-        // }}
-      >
+      <div className='cardsContainer'>
         {props.list.cards.map(card => (
           <Card
             displayCardFunction={props.displayCardFunction}

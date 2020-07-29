@@ -1,5 +1,4 @@
 const Board = require('../boards/boardsModel')
-// const mongoose = require('mongoose')
 
 /*
 route : /board/id

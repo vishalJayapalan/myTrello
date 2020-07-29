@@ -16,11 +16,9 @@ async function removeTeamMemberFunction (
     }
   })
   const jsonData = await data.json()
-  //   setBoard(jsonData)
   updateBoardState('team', jsonData.team)
   if (teamMemberId === user._id) {
     updateBoardDeletedState()
-    // setBoardDeleted(true)
   }
 }
 
@@ -42,7 +40,6 @@ async function addTeamMemberFunction (
 
   const jsonData = await data.json()
   updateBoardState('team', jsonData.team)
-  //   setBoard(jsonData)
 }
 
 export { removeTeamMemberFunction, addTeamMemberFunction }

@@ -6,7 +6,6 @@ export default function Home (props) {
     <div>
       <Navbar />
       <p>Activities Still Work on Progresss !!!</p>
-      {/* <img src = ''></img> */}
     </div>
   )
 }

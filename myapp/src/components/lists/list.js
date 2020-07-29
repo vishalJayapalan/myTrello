@@ -8,7 +8,6 @@ import {
   dropListFunction
 } from './dragList'
 import { updateListName } from './listFunctions'
-// import { getCookie } from '../util/cookies'
 function List (props) {
   return (
     <div
@@ -64,11 +63,6 @@ function List (props) {
       <Cards
         displayCardFunction={props.displayCardFunction}
         cardEditFunction={props.cardEditFunction}
-        // key={card._id}
-        // listId={props.list._id}
-        // dragStartCard={props.dragStartCard}
-        // dragEndCard={props.dragEndCard}
-        // card={card}
         lists={props.lists}
         updateListsState={props.updateListsState}
         dropCard={props.dropCard}
@@ -78,7 +72,6 @@ function List (props) {
         dragCardToggler={props.dragCardToggler}
       />
     </div>
-    // </div>
   )
 }
 

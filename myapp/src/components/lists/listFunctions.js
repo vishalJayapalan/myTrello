@@ -13,7 +13,6 @@ async function createList (event, boardId, lists, updateListsState) {
   })
   const jsonData = await data.json()
   updateListsState([...lists, { listName, _id: jsonData.listId, cards: [] }])
-  //   setLists([...lists, { listName, _id: jsonData.listId, cards: [] }])
 }
 
 async function createListAtIndex (boardId, list, listIndex) {
@@ -43,10 +42,7 @@ async function deleteList (
   updateListActionToggle()
 }
 
-// boardId,lists
-
 async function updateListName (name, boardId, lists, listId, updateListsState) {
-  //   const value = event.target.value
   const newLists = lists.map(list => {
     if (list._id === listId) {
       list.listName = name
@@ -54,7 +50,6 @@ async function updateListName (name, boardId, lists, listId, updateListsState) {
     return list
   })
   updateListsState(newLists)
-  //   setLists(newLists)
   await window.fetch(`board/${boardId}/${listId}/`, {
     method: 'PUT',
     body: JSON.stringify({ listName: name }),
@@ -65,7 +60,6 @@ async function updateListName (name, boardId, lists, listId, updateListsState) {
   })
 }
 
-// fromBoardId,toBoardId,moveList,toIndex,boards,lists,updateListsState,updatelistMoveToggle,updateListActionToggle,updateBoardsState
 async function moveListFunction (
   fromBoardId,
   toBoardId,
@@ -78,8 +72,6 @@ async function moveListFunction (
   updateListActionToggle,
   updateBoardsState
 ) {
-  // setList(moveList)
-  // updateListState(moveList)
   await deleteList(
     fromBoardId,
     lists,
@@ -99,15 +91,12 @@ async function moveListFunction (
     return board
   })
   updateBoardsState(newBoards)
-  // setBoards(newBoards)
   const board = newBoards.filter(board => {
     return board._id === fromBoardId
   })
-  // setLists(board[0].lists)
   updateListsState(board[0].lists)
-  // setListMoveToggle(false)
   updateListMoveToggle(false)
-  await createListAtIndex(toBoardId, moveList, toIndex)
+  createListAtIndex(toBoardId, moveList, toIndex)
 }
 
 export {

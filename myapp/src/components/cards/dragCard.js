@@ -5,7 +5,6 @@ import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
 function dragStartCardFunction (event, card, listId, dragCardToggler) {
   const target = event.target
   event.stopPropagation()
-  // event.dataTransfer.setData('type', 'card')
   event.dataTransfer.setData('card', JSON.stringify(card))
   event.dataTransfer.setData('prevListId', listId)
   dragCardToggler(true)
@@ -17,7 +16,6 @@ function dragStartCardFunction (event, card, listId, dragCardToggler) {
 function dragEndCardFunction (event, dragCardToggler) {
   event.stopPropagation()
   dragCardToggler(false)
-  console.log('dropEnd')
   event.target.style.display = 'flex'
 }
 
@@ -42,7 +40,6 @@ function dragOverCardFunction (event) {
 
 const dragCardLeaveFunction = event => {
   event.stopPropagation()
-
   event.currentTarget.style = 'margin-top:5px'
 }
 
@@ -53,10 +50,8 @@ async function dropCardFunction (
   listId,
   updateListsState
 ) {
-  console.log('drop')
   event.persist()
   event.stopPropagation()
-  // if (event.dataTransfer.getData('type') === 'card') {
   const prevListId = event.dataTransfer.getData('prevListId')
   const moveCard = JSON.parse(event.dataTransfer.getData('card'))
   await deleteCardFunction(
@@ -89,7 +84,6 @@ async function dropCardFunction (
       }
       cardIndex = index
       list.cards.splice(index, 0, moveCard)
-      // console.log(list.cards)
     }
     return list
   })
@@ -110,6 +104,5 @@ export {
   dragEndCardFunction,
   dragOverCardFunction,
   dropCardFunction,
-  // handleDropCard,
   dragCardLeaveFunction
 }

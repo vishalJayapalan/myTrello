@@ -1,6 +1,5 @@
 const { User, validate } = require('./usersModel')
 const bcrypt = require('bcrypt')
-// const jwt = require('jsonwebtoken')
 
 /*
 Route localhost:8000/user

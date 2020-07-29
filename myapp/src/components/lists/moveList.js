@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import { moveListFunction } from './listFunctions'
 
 export default function MoveList (props) {
-  // listMoveSHow moveListPosition closeMoveListChangeInBoard boards
   const [boardName, setBoardName] = useState(props.board.boardName)
   const [inPosition, setPosition] = useState(0)
-  // console.log(boardName)
   return (
     <div
       className='moveListPage'
@@ -16,7 +14,6 @@ export default function MoveList (props) {
       <div
         className='moveListContainer'
         style={{
-          // display: props.listMoveShow ? ' block' : ' none',
           marginTop: props.listMoveShow ? `${props.listPosition.y}px` : '0px',
           marginLeft: props.listMoveShow ? `${props.listPosition.x}px` : '0px'
         }}
@@ -37,14 +34,9 @@ export default function MoveList (props) {
               setBoardName(e.target.value)
               props.changeToBoard(e.target.value)
             }}
-            // defaultValue={props.boardName}
           >
             {props.boards.map(board => (
-              <option
-                key={board._id}
-                id={board._id}
-                // selected={board._id === props.boardId}
-              >
+              <option key={board._id} id={board._id}>
                 {board.boardName}
               </option>
             ))}

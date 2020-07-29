@@ -1,6 +1,5 @@
 import React from 'react'
 import Navbar from '../navbar/navbar'
-// Styling has to be done
 
 export default function PageNotFound () {
   return (

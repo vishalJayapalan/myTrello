@@ -4,42 +4,9 @@ import {
   dragEndCardFunction,
   dragOverCardFunction,
   dropCardFunction,
-  // handleDropCard,
   dragCardLeaveFunction
 } from './dragCard'
-// import { getCookie } from '../util/cookies'
-// import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
-
 export default function card (props) {
-  // async function handleDropCard (event, listId) {
-  //   event.persist()
-  //   const boardId = props.boardId
-  //   const prevListId = event.dataTransfer.getData('prevListId')
-  //   const moveCard = JSON.parse(event.dataTransfer.getData('card'))
-  //   await deleteCardFunction(
-  //     boardId,
-  //     props.lists,
-  //     prevListId,
-  //     moveCard._id,
-  //     getCookie,
-  //     props.updateListsState
-  //   )
-  //   const { newLists, cardIndex } = dropCardFunction(
-  //     event,
-  //     listId,
-  //     props.lists,
-  //     moveCard
-  //   )
-  //   // setLists(newLists)
-  //   props.updateListsState(newLists)
-  //   await createCardAtIndexFunction(
-  //     boardId,
-  //     listId,
-  //     cardIndex,
-  //     moveCard,
-  //     getCookie
-  //   )
-  // }
   return (
     <p
       className='card'

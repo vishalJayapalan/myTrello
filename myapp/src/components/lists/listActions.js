@@ -32,8 +32,6 @@ export default function ListActions (props) {
         </div>
         <hr />
         <div className='listActionsContents'>
-          {/* <p>Add Card...</p> */}
-          {/* <p>Copy List</p> */}
           <p className='listActionContent' onClick={() => props.openMoveList()}>
             Move List
           </p>

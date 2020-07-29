@@ -5,7 +5,6 @@ const CardSchema = require('../cards/cardsModel')
 
 const ListSchema = new Schema({
   listName: { type: String, required: true },
-  // BoardId: { type: mongoose.Schema.Types.ObjectId }
   cards: [CardSchema]
 })
 

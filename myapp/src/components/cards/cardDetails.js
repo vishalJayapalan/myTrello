@@ -3,47 +3,12 @@ import { deleteCardFunction, updateCardFunction } from './cardFunctions'
 import { getCookie } from '../util/cookies'
 
 export default function CardDetails (props) {
-  // console.log(props)
-  // const [moveCardPosition, setMoveCardPosition] = useState([])
-  // const [moveCardShow, setMoveCardShow] = useState(false)
-  // const [inBoard, setInBoard] = useState(
-  //   props.boards.filter(board => board._id === props.boardId)
-  // )
-  // const [inList, setInList] = useState(props.list)
-
-  // function openMoveCard (event) {
-  //   const position = event.target.getBoundingClientRect()
-  //   setMoveCardPosition(position)
-  //   setMoveCardShow(true)
-  //   setInBoard(props.boards.filter(board => board._id === props.boardId))
-  //   setInList([props.list])
-  // }
-  // function closeMoveCard (event) {
-  //   setMoveCardShow(false)
-  // }
-  // async function changeInBoard (event) {
-  //   await setInBoard(
-  //     props.boards.filter(board => board.boardName === event.target.value)
-  //   )
-  //   await setInList([inBoard[0].lists[0]])
-  // }
-
-  // async function changeInList (event) {
-  //   await setInList(
-  //     inBoard[0].lists.filter(list => list.listName === event.target.value)
-  //   )
-  // }
-
   return (
     <div
       className='overlay'
-      // style={{ display: props.detailShow ? ' block' : ' none' }}
       onClick={e => {
         if (e.target.className === 'overlay') {
           props.closeCardEditAndDetail()
-
-          // props.exitCardDetails(e)
-          // props.closeMoveCard(e)
         }
       }}
     >
@@ -135,23 +100,6 @@ export default function CardDetails (props) {
           </div>
         </div>
       </div>
-      {/* {moveCardShow && (
-        <MoveCard
-          moveCardPosition={moveCardPosition}
-          cardMoveShow={moveCardShow}
-          closeMoveCard={closeMoveCard}
-          card={props.card}
-          list={props.list}
-          boards={props.boards}
-          boardName={props.boardName}
-          boardId={props.boardId}
-          inList={inList}
-          changeInList={changeInList}
-          inBoard={inBoard}
-          changeInBoard={changeInBoard}
-          onMoveCard={props.handleMoveCard}
-        />
-      )} */}
     </div>
   )
 }

@@ -4,7 +4,6 @@ import { deleteCardFunction, createCardAtIndexFunction } from './cardFunctions'
 
 export default function MoveCard (props) {
   const [inPosition, setPosition] = useState(0)
-  console.log(props)
   async function handleMoveCard (
     fromBoardId,
     toBoardId,
@@ -14,7 +13,6 @@ export default function MoveCard (props) {
     toIndex = 0
   ) {
     const cardId = card._id
-    // await deleteCard(fromBoardId, fromListId, cardId)
     await deleteCardFunction(
       fromBoardId,
       props.lists,
@@ -37,7 +35,6 @@ export default function MoveCard (props) {
       card,
       getCookie
     )
-    // props.closeMoveCard()
     props.closeCardEditAndDetail()
   }
 
@@ -104,7 +101,6 @@ export default function MoveCard (props) {
         <button
           className='moveCardBtn'
           onClick={() =>
-            // props.onMoveCard(
             handleMoveCard(
               props.boardId,
               props.inBoard._id,

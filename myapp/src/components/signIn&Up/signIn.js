@@ -24,9 +24,8 @@ export default function SignIn () {
         }
       })
 
-      if (response.status >= 200 && response.status < 300) {
+      if (response.ok) {
         const jsonData = await response.json()
-        // console.log(jsonData)
         setEmail('')
         setPassword('')
         setCookie('x-auth-token', jsonData.token)
@@ -37,13 +36,10 @@ export default function SignIn () {
         setErrMsg(jsonData.msg)
         setEmail('')
         setPassword('')
-        // throw new Error(response.statusText)
         throw new Error(jsonData.msg)
       }
     } catch (err) {
       console.log(err)
-      // errMsg.push(err)
-      // should handle when invalid
     }
   }
 

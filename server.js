@@ -24,7 +24,6 @@ mongoose.connect(uri, {
 app.use('/', boardRoutes)
 app.use('/board', listRoutes)
 app.use('/user', userRoutes)
-// app.use('/users', require('./routers/users'))
 
 const connection = mongoose.connection
 

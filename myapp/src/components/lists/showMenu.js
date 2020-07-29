@@ -18,10 +18,7 @@ export default function ShowMenu (props) {
   }
   return (
     <div className='aboutAndShowMenuContainer'>
-      <div
-        className='showMenuContainer'
-        // style={{ display: props.showMenuToggle ? 'block' : 'none' }}
-      >
+      <div className='showMenuContainer'>
         <div className='menuTitleContainer'>
           <h3 className='menuTitle'>Menu</h3>
           <i
@@ -34,7 +31,6 @@ export default function ShowMenu (props) {
           <p className='menu' onClick={() => aboutBoardToggler()}>
             About this Board
           </p>
-          {/* <p className='menu'>Copy Board</p> */}
           {props.user._id === props.board.adminUser ? (
             <p
               className='menu'

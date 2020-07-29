@@ -15,18 +15,14 @@ export default function CardEdit (props) {
       getCookie,
       props.updateListsState
     )
-    // setCardEditToggle(false)
     props.exitCardEdit(event)
   }
   return (
     <div
       className='overlay'
-      // style={{ display: props.cardEditShow ? 'block' : 'none' }}
       onClick={e => {
         if (e.target.className === 'overlay') {
           props.closeCardEditAndDetail()
-          // props.exitCardEdit(e)
-          // props.closeMoveCard(e)
         }
       }}
     >
@@ -41,7 +37,6 @@ export default function CardEdit (props) {
           <textarea
             value={cardName}
             onChange={e => setCardName(e.target.value)}
-            // onKeyUp={e => props.editCardName(e)}
           />
         </div>
         <button
@@ -53,7 +48,6 @@ export default function CardEdit (props) {
           Save
         </button>
         <div className='cardEditButtons'>
-          {/* <a>Change Members</a> */}
           <a onClick={e => props.openMoveCard(e)}>Move</a>
           <a onClick={e => props.copyCardToggler(e)}>Copy</a>
           <a>Change Due Date</a>

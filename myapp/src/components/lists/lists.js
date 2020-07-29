@@ -17,7 +17,7 @@ import {
   updateBoardFunction,
   fetchBoardsFunction
 } from '../boards/boardFunctions'
-import { deleteList, createList, createListAtIndex } from './listFunctions'
+import { createList } from './listFunctions'
 import {
   dragListLeaveFunction,
   dropListFunction,
@@ -73,7 +73,6 @@ export default function Lists (props) {
           'x-auth-token': getCookie('x-auth-token')
         }
       })
-      // if (data.status >= 200 && data.status < 300) {
       if (data.ok) {
         const jsonData = await data.json()
         setBoard(jsonData)
@@ -91,7 +90,6 @@ export default function Lists (props) {
     try {
       const { data, jsonData } = await fetchBoardsFunction(getCookie)
       if (!data.ok) {
-        // if (!(data.status >= 200 && data.status < 300)) {
         throw new Error(data.statusText)
       }
       setUser(jsonData.user)
@@ -146,8 +144,6 @@ export default function Lists (props) {
   function ListActionsTogglerFunction (e, list) {
     setList(list)
     setInList(list)
-    // setInBoard({ ...inBoard, lists: lists })
-    // console.log(inBoard)
     const box = e.target.getBoundingClientRect()
     setListPosition(box)
     setToBoard(boards.filter(board => board._id === props.match.params.boardId))
@@ -229,19 +225,14 @@ export default function Lists (props) {
   }
 
   function dragListToggler (dragStatus) {
-    console.log(dragStatus)
     setDragList(dragStatus)
   }
 
   async function changeInBoard (event) {
-    console.log(event.target.value)
-    console.log(boards)
     await setInBoard(
       boards.filter(board => board.boardName === event.target.value)[0]
     )
-    console.log('inBoard', inBoard)
     await setInList(inBoard.lists)
-    console.log('inList', inList)
   }
 
   async function changeInList (event) {
@@ -402,7 +393,6 @@ export default function Lists (props) {
           board={board}
           toBoard={toBoard}
           changeToBoard={changeToBoard}
-          // onMoveList={handleMoveList}
           updateListsState={updateListsState}
           updateListMoveToggle={updateListMoveToggle}
           cardEditTogglerFunction={cardEditTogglerFunction}

@@ -2,19 +2,8 @@ const Board = require('./boardsModel')
 
 /*
 GET
-  route :  /
+  route :  /team
 */
-
-// const getBoards = async (req, res) => {
-//   try {
-//     const board = await Board.find({ adminUser: req.user._id })
-//     return res.status(200).json(board)
-//   } catch (err) {
-//     return res
-//       .status(500)
-//       .json({ message: 'There was an error. Please try again later' })
-//   }
-// }
 
 const getBoardsTeam = async (req, res) => {
   try {
@@ -142,7 +131,6 @@ const removeTeamMember = async (req, res) => {
 }
 
 module.exports = {
-  // getBoards,
   getBoardsTeam,
   createBoard,
   deleteBoard,

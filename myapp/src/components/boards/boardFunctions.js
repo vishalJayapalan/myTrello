@@ -1,5 +1,3 @@
-// import { getCookie } from '../util/cookies'
-
 async function fetchBoardsFunction (getCookie) {
   const data = await window.fetch('team/', {
     method: 'GET',
@@ -8,7 +6,7 @@ async function fetchBoardsFunction (getCookie) {
       'x-auth-token': getCookie('x-auth-token')
     }
   })
-  if (!(data.status >= 200 && data.status < 300)) {
+  if (!data.ok) {
     throw new Error(data.statusText)
   }
   const jsonData = await data.json()
@@ -24,7 +22,7 @@ async function createBoardFunction (boardName, getCookie) {
       'x-auth-token': getCookie('x-auth-token')
     }
   })
-  const { boardId } = await response.json() // changed here
+  const { boardId } = await response.json()
   return boardId
 }
 
@@ -33,14 +31,12 @@ async function deleteBoardFunction (
   getCookie,
   updateBoardDeletedState
 ) {
-  //   const boardId = props.match.params.boardId
   await window.fetch(`${boardId}/`, {
     method: 'DELETE',
     headers: {
       'x-auth-token': getCookie('x-auth-token')
     }
   })
-  //   setBoardDeleted(true)
   updateBoardDeletedState()
 }
 async function updateBoardFunction (
@@ -50,7 +46,6 @@ async function updateBoardFunction (
   getCookie,
   updateBoardState
 ) {
-  //   setBoard({ ...board, [name]: value })
   await window.fetch(`${boardId}/`, {
     method: 'PUT',
     body: JSON.stringify({ name: name, value: value }),
@@ -80,8 +75,6 @@ async function leaveBoardFunction (
   const jsonData = await data.json()
   updateBoardState(jsonData)
   updateBoardDeletedState()
-  // setBoard(jsonData)
-  // setBoardDeleted(true)
 }
 
 export {

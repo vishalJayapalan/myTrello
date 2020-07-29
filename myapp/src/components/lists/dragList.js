@@ -1,4 +1,4 @@
-import { moveListFunction, deleteList } from './listFunctions'
+import { moveListFunction } from './listFunctions'
 
 function dragStartListFunction (event, list, dragListToggler) {
   const target = event.target
@@ -15,7 +15,6 @@ function dragEndListFunction (event, dragListToggler) {
   event.stopPropagation()
   const target = event.target
   target.style.display = 'block'
-  // dragListToggler(false)
 }
 
 function dragOverListFunction (event) {
@@ -81,7 +80,6 @@ async function dropListFunction (
   } else if (event.target.className === 'listNameContainer') {
     target = event.target.parentNode
   } else if (event.target.className === 'createNewList') {
-    console.log('inputParent', event.target.parentNode)
     target = event.target.parentNode
   } else {
     return

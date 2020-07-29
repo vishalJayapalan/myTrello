@@ -9,11 +9,9 @@ const BoardSchema = new Schema({
   description: { type: String },
   adminUser: {
     type: mongoose.Schema.Types.ObjectId,
-    // ref: 'User',
     required: true
   },
   team: [mongoose.Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model('Board', BoardSchema)
-// module.exports = BoardSchema

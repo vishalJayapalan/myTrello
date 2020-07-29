@@ -5,15 +5,7 @@ import { createCardAtIndexFunction } from './cardFunctions'
 export default function CopyCard (props) {
   const [inPosition, setPosition] = useState(0)
   const [newCardName, setNewCardName] = useState(props.card.cardName)
-  console.log(props)
-  async function handleCopyCard (
-    // fromBoardId,
-    toBoardId,
-    // fromListId,
-    toListId,
-    card,
-    toIndex = 0
-  ) {
+  async function handleCopyCard (toBoardId, toListId, card, toIndex = 0) {
     const copyCard = { ...card }
     delete copyCard._id
     copyCard.cardName = newCardName
@@ -24,17 +16,10 @@ export default function CopyCard (props) {
       return list
     })
     props.updateListsState(newLists)
-    await createCardAtIndexFunction(
-      toBoardId,
-      toListId,
-      toIndex,
-      copyCard,
-      getCookie
-    )
+    createCardAtIndexFunction(toBoardId, toListId, toIndex, copyCard, getCookie)
     props.closeCardEditAndDetail()
   }
 
-  // cardCopyShow, copyCardPosition
   return (
     <div
       className='copyCardPage'
@@ -113,11 +98,8 @@ export default function CopyCard (props) {
         <button
           className='copyCardBtn'
           onClick={() =>
-            // props.onMoveCard(
             handleCopyCard(
-              //   props.boardId,
               props.inBoard._id,
-              //   props.list._id,
               props.inList[0]._id,
               props.card,
               inPosition

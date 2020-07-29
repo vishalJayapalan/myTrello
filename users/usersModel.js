@@ -3,7 +3,6 @@ const Schema = mongoose.Schema
 const jwt = require('jsonwebtoken')
 const Joi = require('joi')
 require('dotenv').config()
-// const BoardSchema = require('./boards')
 
 const UserSchema = new Schema({
   userName: {

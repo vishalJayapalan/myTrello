@@ -1,11 +1,8 @@
 const express = require('express')
-// const app = express()
 const auth = require('../middleware/auth')
 const Router = express.Router()
 
 const boardController = require('./boardsController.js')
-
-// Router.get('/', auth, boardController.getBoards)
 
 Router.get('/team', auth, boardController.getBoardsTeam)
 

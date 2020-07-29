@@ -27,7 +27,7 @@ export default function SignUp () {
           'Content-Type': 'application/json'
         }
       })
-      if (response.status >= 200 && response.status < 300) {
+      if (response.ok) {
         const jsonData = await response.json()
         setEmail('')
         setUserName('')
@@ -37,12 +37,10 @@ export default function SignUp () {
       } else {
         const jsonData = await response.json()
         setErrMsg(jsonData.msg)
-        // throw new Error(response.statusText)
         throw new Error(jsonData.msg)
       }
     } catch (err) {
       console.log(err)
-      // should handle when invalid
     }
   }
 

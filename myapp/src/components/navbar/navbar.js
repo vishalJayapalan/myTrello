@@ -21,7 +21,6 @@ export default function Navbar ({ user }) {
         <Link to='/boards'>
           <button className='button'>Boards</button>
         </Link>
-        {/* <input type='text' placeholder='Search...' className='navInput' /> */}
       </div>
       <Link style={{ textDecoration: 'none' }} to='/boards'>
         <p className='navP'>Trello </p>
@@ -32,10 +31,6 @@ export default function Navbar ({ user }) {
         <button className='button' onClick={() => logoutAndReroute()}>
           Logout
         </button>
-
-        {/* <button className='button'>+</button>
-        <button className='button'>i</button>
-        <button className='button'>notification</button> */}
       </div>
     </nav>
   )

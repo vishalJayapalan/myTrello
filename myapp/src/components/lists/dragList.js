@@ -91,7 +91,7 @@ async function dropListFunction (
   let toIndex = lists.length
   let fromIndex = 0
   for (let index = 0; index < lists.length; index++) {
-    if (lists[index] === moveList._id) {
+    if (lists[index]._id === moveList._id) {
       fromIndex = index
     }
     if (lists[index]._id === target.id) {

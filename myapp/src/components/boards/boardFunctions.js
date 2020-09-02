@@ -1,10 +1,10 @@
 async function fetchBoardsFunction (getCookie) {
   const data = await window.fetch('team/', {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'x-auth-token': getCookie('x-auth-token')
-    }
+    method: 'GET'
+    // credentials: 'include',
+    // headers: {
+    //   'x-auth-token': getCookie('x-auth-token')
+    // }
   })
   if (!data.ok) {
     throw new Error(data.statusText)

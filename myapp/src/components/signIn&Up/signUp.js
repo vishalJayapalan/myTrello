@@ -32,7 +32,7 @@ export default function SignUp () {
         setEmail('')
         setUserName('')
         setPassword('')
-        setCookie('x-auth-token', jsonData.token)
+        // setCookie('x-auth-token', jsonData.token)
         setLogin(true)
       } else {
         const jsonData = await response.json()
@@ -57,6 +57,7 @@ export default function SignUp () {
             type='email'
             required
             title='enter a valid email address'
+            pattern='.{6,}'
             value={email}
             placeholder='Enter Email Address'
             onChange={e => {

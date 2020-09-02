@@ -48,12 +48,15 @@ const login = async (req, res) => {
     const correctPassword = await bcrypt.compare(password, user.password)
     if (correctPassword) {
       const token = user.generateAuthToken()
-      return res
-        .status(200)
-        .header('x-auth-token', token)
-        .json({
-          token: token
-        })
+      return (
+        res
+          .status(200)
+          .cookie('x-auth-token', token, { maxAge: 3600000 })
+          // .header('x-auth-token', token)
+          .json({
+            token: token
+          })
+      )
     } else {
       return res.status(404).json({ msg: 'emailId or password is incorrect' })
     }
@@ -90,7 +93,8 @@ const registerUser = async (req, res) => {
     const token = user.generateAuthToken()
     res
       .status(201)
-      .header('x-auth-token', token)
+      .cookie('x-auth-token', token, { maxAge: 3600000 })
+      // .header('x-auth-token', token)
       .json({
         token: token
       })

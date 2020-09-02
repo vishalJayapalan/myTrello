@@ -28,7 +28,7 @@ export default function SignIn () {
         const jsonData = await response.json()
         setEmail('')
         setPassword('')
-        setCookie('x-auth-token', jsonData.token)
+        // setCookie('x-auth-token', jsonData.token)
         setLogin(true)
       } else {
         const jsonData = await response.json()

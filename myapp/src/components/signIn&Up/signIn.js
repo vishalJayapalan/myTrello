@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-// import { getUser } from '../../../../users/usersController'
 
 import { setCookie, getCookie } from '../util/cookies'
 
@@ -17,6 +16,10 @@ export default function SignIn () {
 
   async function getUser () {
     const response = await window.fetch('user')
+    if (response.ok) {
+      const jsonData = await response.json()
+      // console.log(jsonData)
+    }
     if (response.ok) setLogin(true)
   }
 

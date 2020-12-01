@@ -12,7 +12,7 @@ async function createList (event, boardId, lists, updateListsState) {
     }
   })
   const jsonData = await data.json()
-  console.log([...lists, { listName, _id: jsonData.listId, cards: [] }])
+  // console.log([...lists, { listName, _id: jsonData.listId, cards: [] }])
   updateListsState([...lists, { listName, _id: jsonData.listId, cards: [] }])
 }
 

@@ -82,13 +82,24 @@ i {
 }
 
 .navSpan {
-  color: white;
+  border-radius: 50%;
+  background-color: white;
+  height: 29px;
+  width: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  cursor: pointer;
+  /* color: white;
   height: 25px;
+  max-width: 25%;
+  overflow: hidden;
   margin: 4px 2px;
   cursor: auto;
   font-style: italic;
   margin-left: -15%;
-  text-decoration: none;
+  text-decoration: none; */
 }
 
 .boardsPage {
@@ -165,7 +176,7 @@ i {
 .listsWithBoardName {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background-color: rgb(80, 178, 240);
 }
 
@@ -186,7 +197,10 @@ i {
   border: none;
   outline: none;
   font-size: 150%;
+  border-radius: 5px;
+  padding: 1%;
 }
+
 .boardNameInList:hover {
   background-color: hsla(0, 0%, 100%, 0.24);
 }
@@ -256,9 +270,19 @@ i {
   background-color: rgb(245, 247, 244);
 }
 
-hr {
-  border: 1px solid black;
+/* hr {
+  background-color: rgb(230, 236, 240);
+  height: .5px;
   width: 80%;
+} */
+
+hr{
+  background-color: rgba(9,30,66,.13);
+    /* content: " "; */
+    display: block;
+    /* height: 1px; */
+    margin: 8px auto;
+    width: calc(100% - 20px);
 }
 
 .aboutAndShowMenuContainer {
@@ -718,8 +742,8 @@ textarea {
 }
 
 .form-row button {
-  /* background: #4168b4; */
-  background-color: green;
+  background: #4168b4;
+  /* background-color: green; */
   border: none;
   border-radius: 3px;
   color: white;
@@ -746,13 +770,14 @@ textarea {
   cursor: pointer;
 }
 .form-footer p {
-  color: green;
+  color: #4168b4;
+  /* color: green; */
   cursor: pointer;
 }
 
 /* new till here */
 
-.signInContainer {
+/* .signInContainer {
   display: flex;
   flex-direction: column;
   margin: 10vh 40vw 20vh 40vw;
@@ -769,7 +794,7 @@ textarea {
 .fal {
   color: black;
   background-color: white;
-}
+} */
 
 /* moveList */
 .moveListPage {
@@ -912,4 +937,57 @@ textarea {
 .userAndLogout {
   display: flex;
   justify-content: space-between;
+}
+
+
+/* USER DETAILS */
+
+.userDetailsPage{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  /* background-color: teal; */
+}
+
+.userDetailsContainer{
+z-index: 3;
+background-color: #fff;
+width: 200px;
+height: 150px;
+display: flex;
+flex-direction: column;
+border-radius: 5px;
+box-shadow: 0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+}
+.userDetailsTitle{
+  display: flex;
+  padding: 1% 3%;
+  align-items: center;
+  justify-content: space-between;
+}
+.userNameContainer{
+  display: flex;
+  align-items: center;
+}
+
+.userNameNEmail{
+  display: flex;
+  flex-direction: column;
+}
+
+.logoutContainer{
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 2%;
+  margin-left: 2%;
+  cursor: pointer;
+}
+.logoutContainer:hover{
+  background-color: rgb(245, 247, 244);
+  
 }

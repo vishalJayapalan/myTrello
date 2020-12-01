@@ -161,6 +161,18 @@ export default function Lists (props) {
 
   function updateListsState (newLists) {
     setLists(newLists)
+    setBoard({ ...board, lists: newLists })
+    const newBoards = boards.map(bord => {
+      if (bord._id === board._id) {
+        // console.log(board.boardName)
+        return { ...bord, lists: newLists }
+      } else return bord
+    })
+    setBoards(newBoards)
+    // console.log('newLists', newLists)
+    // console.log('lists', lists)
+    // console.log('boards', boards)
+    // console.log('board', board)
   }
 
   function updateListActionToggle () {

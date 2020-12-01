@@ -18,7 +18,7 @@ export default function Navbar () {
       const jsonData = await response.json()
 
       // const jsonData = await response.json()
-      console.log('jsonData', jsonData)
+      // console.log('jsonData', jsonData)
       setUser(jsonData)
     }
   }

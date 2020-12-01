@@ -84,22 +84,13 @@ i {
 .navSpan {
   border-radius: 50%;
   background-color: white;
-  height: 29px;
-  width: 29px;
+  height: 25px;
+  width: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
+  margin:  2px 15px 0 0;
   cursor: pointer;
-  /* color: white;
-  height: 25px;
-  max-width: 25%;
-  overflow: hidden;
-  margin: 4px 2px;
-  cursor: auto;
-  font-style: italic;
-  margin-left: -15%;
-  text-decoration: none; */
 }
 
 .boardsPage {
@@ -338,7 +329,8 @@ hr{
 .listContainer {
   background-color: #ebecf0;
   border-radius: 5px;
-  width: 20vw;
+  width: 90%;
+  max-width: 20em;
   margin: 10px;
 }
 
@@ -883,7 +875,7 @@ textarea {
   padding: 0 4px;
   border-radius: 3px;
   cursor: pointer;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .showMembers:hover {

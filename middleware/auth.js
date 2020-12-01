@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
-  console.log('HEADER', req.headers)
-  // const token = req.headers['x-auth-token'] || req.headers['authorization']
   let token = null
   const cookieHeaderString = req.headers.cookie
 
@@ -19,7 +17,6 @@ module.exports = (req, res, next) => {
     }
   }
 
-  console.log('token', token)
   if (!token) return res.status(401).send('Access denied. No token Provided.')
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)

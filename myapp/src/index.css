@@ -671,6 +671,87 @@ textarea {
 
 /* SIGN IN PAGE */
 
+/* new */
+
+.signin-container {
+  width: 90%;
+  max-width: 25em;
+  margin: auto;
+  padding-top: 6em;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 80%;
+}
+
+.form-container {
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 3px;
+  color: black;
+}
+
+.form-row {
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  font-size: 0.9rem;
+}
+
+.form-row input {
+  margin-top: 0.3em;
+  border: 1px solid #dddfe2;
+  padding: 0.5em;
+  font-size: 0.9rem;
+  border-radius: 3px;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0 0 0.8em 0;
+  margin: 0;
+}
+
+.form-row button {
+  /* background: #4168b4; */
+  background-color: green;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 0.7em;
+  cursor: pointer;
+}
+
+.signup-container {
+  width: 90%;
+  max-width: 25em;
+  margin: auto;
+  padding-top: 6em;
+}
+
+.signupNin-title-container {
+  display: flex;
+  justify-content: space-between;
+  color: black;
+}
+.signupNin-title-container img {
+  width: 1em;
+  height: 1em;
+  color: black;
+  cursor: pointer;
+}
+.form-footer p {
+  color: green;
+  cursor: pointer;
+}
+
+/* new till here */
+
 .signInContainer {
   display: flex;
   flex-direction: column;

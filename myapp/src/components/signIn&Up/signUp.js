@@ -97,7 +97,7 @@ export default function Signup () {
                 <button type='submit'>Register</button>
               </div>
               <div className='form-footer'>
-                <Link to='/login'>already Have an Account?login</Link>
+                <Link to='/login'>Already have an Account?Login</Link>
               </div>
             </form>
           </div>

@@ -18,7 +18,6 @@ export default function SignIn () {
     const response = await window.fetch('user')
     if (response.ok) {
       const jsonData = await response.json()
-      // console.log(jsonData)
     }
     if (response.ok) setLogin(true)
   }

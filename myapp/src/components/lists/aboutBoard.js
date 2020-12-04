@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { getCookie } from '../util/cookies'
 import { updateBoardFunction } from '../boards/boardFunctions'
 
 export default function AboutBoard (props) {
+  const [adminUser, setAdminUser] = useState('')
+  useEffect(() => {
+    getAdminDetails()
+  }, [])
+
+  async function getAdminDetails () {
+    const response = await window.fetch('user/all')
+    const allUsers = await response.json()
+    // console.log(props)
+    const adminUser = allUsers.filter(
+      user => user._id === props.board.adminUser
+    )
+    // console.log(adminUser)
+    setAdminUser(adminUser[0].userName)
+  }
+
   return (
     <div
       className='aboutBoardContainer'
@@ -25,7 +41,8 @@ export default function AboutBoard (props) {
           <span>Made By</span>
           <p>
             <i className='fas fa-user' />
-            {props.user.userName}
+            {adminUser}
+            {/* {props.user.userName} */}
           </p>
         </div>
         <div className='boardDescriptionContainer'>
